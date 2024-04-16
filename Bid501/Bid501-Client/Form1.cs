@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Bid501_Server;
 
 namespace Bid501_Client
 {
@@ -15,6 +16,11 @@ namespace Bid501_Client
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void UxLoginBtn_Click(object sender, EventArgs e)
+        {
+            // send message to the server.
         }
     }
 }
