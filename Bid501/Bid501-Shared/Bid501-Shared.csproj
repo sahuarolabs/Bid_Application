@@ -7,7 +7,7 @@
     <ProjectGuid>{09CFB283-674B-4A00-8C6A-1233FBA5E6F9}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>Bid501_Shared</RootNamespace>
-    <AssemblyName>Bid501_Shared</AssemblyName>
+    <AssemblyName>Bid501-Shared</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
