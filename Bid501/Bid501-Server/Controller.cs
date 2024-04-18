@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using WebSocketSharp;
+using WebSocket = WebSocketSharp.WebSocket;
 
 namespace Bid501_Server
 {
