@@ -7,11 +7,11 @@ using WebSocketSharp;
 
 namespace Bid501_Shared
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {
-            //using (var ws = new WebSocket())
+
         }
     }
 }
