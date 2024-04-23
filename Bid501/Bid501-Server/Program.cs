@@ -9,21 +9,6 @@ using WebSocketSharp;
 
 namespace Bid501_Server
 {
-    public class TestService : WebSocketServer
-    {
-        // Click Events that should be happening.
-        protected override void OnMessage(MessageEventArgs e)
-        {
-            Console.WriteLine("Recieved something from the client: " + e.Data);
-
-            Send("Data from server");
-        }
-
-        protected override void OnError(WebSocketSharp.ErrorEventArgs e)
-        {
-            // do nothing
-        }
-    }
 
     public static class Program
     {
@@ -47,13 +32,11 @@ namespace Bid501_Server
             Application.Run(view);
             controller.Close();
 
-            // Added some websocket stuff.
-            var ws = new WebSocketServer("ws://localhost:9006");
+            var wss = new WebSocketServer(8001);
 
-            ws.AddWebSocketService<TestService>("/Test");
-            ws.Start();
-            Console.ReadKey(true);
-            ws.Stop();
+            wss.AddWebSocketService<Shared>("/shared");
+
+            wss.Start();
 
         }
     }

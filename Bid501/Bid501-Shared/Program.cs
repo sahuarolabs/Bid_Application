@@ -11,7 +11,12 @@ namespace Bid501_Shared
     {
         static void Main(string[] args)
         {
+            using (var ws = new WebSocket("ws://127.0.0.1:8001/shared"))
+            {
+                ws.OnMessage += (sender, e) => Console.WriteLine(e.Data);
 
+                ws.Connect();
+            }
         }
     }
 }
