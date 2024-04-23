@@ -23,5 +23,16 @@ namespace Bid501_Server
         {
 
         }
+
+        public bool LogInStatus()
+        {
+            //place holder for now.
+            return false;
+        }
+
+        public void LogOut(string username)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
