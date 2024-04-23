@@ -1,7 +1,6 @@
 ﻿using Bid501_Server;
 using System.Net.WebSockets;
 using System;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,7 +32,7 @@ namespace Bid501_Server
         /// <summary>
         /// The App's user interaction
         /// </summary>
-        Form1 view;
+        LoginView view;
         WebSocket ws;
         /// <summary>
         /// 

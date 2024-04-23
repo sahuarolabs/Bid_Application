@@ -21,7 +21,7 @@ namespace Bid501_Server
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Form1 view = new Form1();
+            LoginView view = new LoginView();
 
             Controller controller = new Controller();
             //view.SetController(controller);
@@ -34,7 +34,7 @@ namespace Bid501_Server
 
             var wss = new WebSocketServer(8001);
 
-            wss.AddWebSocketService<Shared>("/shared");
+            wss.AddWebSocketService<ServerCommControl>("/shared");
 
             wss.Start();
 

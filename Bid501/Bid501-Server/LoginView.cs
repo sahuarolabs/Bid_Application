@@ -11,7 +11,7 @@ using static System.Windows.Forms.AxHost;
 
 namespace Bid501_Server
 {
-    public partial class Form1 : Form
+    public partial class LoginView : Form
     {
         public handleEvents he { get; set; } //added
 
@@ -21,7 +21,7 @@ namespace Bid501_Server
         /// </summary>
         Controller controller;
 
-        public Form1()
+        public LoginView()
         {
             InitializeComponent();
 
