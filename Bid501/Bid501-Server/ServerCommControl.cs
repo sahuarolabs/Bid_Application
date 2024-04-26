@@ -10,7 +10,7 @@ using Bid501_Shared;
 namespace Bid501_Server
 {
     // A behavior
-    public class ServerCommControl : WebSocketBehavior, ILogin
+    public class ServerCommControl : WebSocketBehavior
     {
         protected override void OnMessage(MessageEventArgs e)
         {
