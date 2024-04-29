@@ -9,7 +9,7 @@ using Bid501_Shared;
 
 namespace Bid501_Server
 {
-    //Server Communication Controller that will Handle communication between Websocket and JSON.Met
+    // A behavior
     public class ServerCommControl : WebSocketBehavior, ILogin
     {
         protected override void OnMessage(MessageEventArgs e)
