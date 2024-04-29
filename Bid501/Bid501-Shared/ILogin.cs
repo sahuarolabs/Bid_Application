@@ -8,10 +8,10 @@ namespace Bid501_Shared
 {
     public interface ILogin
     {
-        void LogIn(string username, string password);
+        public void LogIn(string username, string password);
 
-        void LogOut(string username);
+        public void LogOut(string username);
 
-        bool LogInStatus();
+        public Boolean LogInStatus();
     }
 }
