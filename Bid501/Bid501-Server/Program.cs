@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using static System.Windows.Forms.AxHost;
 using WebSocketSharp.Server;
 using WebSocketSharp;
+using System.Runtime.CompilerServices;
 
 namespace Bid501_Server
 {
@@ -20,7 +21,11 @@ namespace Bid501_Server
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            var wss = new WebSocketServer(8001);
 
+            wss.AddWebSocketService<ServerCommControl>("/shared");
+
+            wss.Start();
             LoginView view = new LoginView();
 
             Controller controller = new Controller();
@@ -30,13 +35,10 @@ namespace Bid501_Server
             view.handleLogin = controller.handleEvents; //added
 
             Application.Run(view);
+            
             controller.Close();
 
-            var wss = new WebSocketServer(8001);
-
-            wss.AddWebSocketService<ServerCommControl>("/shared");
-
-            wss.Start();
+            
 
         }
     }

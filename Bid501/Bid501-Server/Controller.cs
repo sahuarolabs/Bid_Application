@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using WebSocketSharp;
 using WebSocket = WebSocketSharp.WebSocket;
+using System.Windows.Forms;
 
 namespace Bid501_Server
 {
@@ -41,7 +42,7 @@ namespace Bid501_Server
         /// <param name="v"></param>
         public Controller()
         {
-            ws = ws = new WebSocket("ws://127.0.0.1:8001/login");
+            ws = new WebSocket("ws://127.0.0.1:8001/login");
             ws.OnMessage += OnMessage;
             ws.Connect();
         }
@@ -80,6 +81,7 @@ namespace Bid501_Server
 
         public void OnMessage(object sender, MessageEventArgs e)
         {
+            MessageBox.Show("Recieved");
             if (e.Data.Equals("VALID"))
             {
                 displayState(State.SUCCESS); //changed

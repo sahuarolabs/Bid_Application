@@ -7,7 +7,7 @@ using WebSocketSharp;
 
 namespace Bid501_Client
 {
-    internal static class Program
+    public static class Program
     {
         /// <summary>
         /// The main entry point for the application.
@@ -17,17 +17,20 @@ namespace Bid501_Client
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            
 
             //Websocket testing.
-            var ws = new WebSocket("ws://localhost:9006/Test");
-            ws.OnMessage += (sender, e) => Console.WriteLine("Received: " + e.Data);
-
+            var ws = new WebSocket("ws://127.0.0.1:8001/shared");
             ws.Connect();
+            //ws.OnMessage += (sender, e) => Console.WriteLine("Received: " + e.Data);
+
+            
             ws.Send("Data from client");
 
-            Console.ReadKey(true);
+            //Console.ReadKey(true);
+            Application.Run(new Form1(ws));
             ws.Close();
+            
         }
     }
 }

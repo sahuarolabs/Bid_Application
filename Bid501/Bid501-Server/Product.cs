@@ -24,7 +24,7 @@ namespace Bid501_Server
             ProductID = productID;
             TimeLeft = timeLeft;
             CurrentStatus = currentStatus;
-            Products = CurrentItems();
+            //Products = CurrentItems();
             //to be implemented 
         }
     }

@@ -9,19 +9,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Bid501_Server;
+using WebSocketSharp;
+using WebSocketSharp.Server;
 
 namespace Bid501_Client
 {
     public partial class Form1 : Form
     {
-        public Form1()
+        private WebSocket ws;
+        public Form1(WebSocket ws)
         {
+            this.ws = ws;
             InitializeComponent();
         }
 
         private void UxLoginBtn_Click(object sender, EventArgs e)
         {
             // send message to the server.
+            ws.Send("Data from client");
         }
     }
 }
