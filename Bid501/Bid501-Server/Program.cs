@@ -26,8 +26,8 @@ namespace Bid501_Server
             Controller controller = new Controller();
             //view.SetController(controller);
 
-            controller.ds = view.DisplayState; //added
-            view.he = controller.handleEvents; //added
+            controller.displayState = view.DisplayState; //added
+            view.handleLogin = controller.handleEvents; //added
 
             Application.Run(view);
             controller.Close();
@@ -41,6 +41,6 @@ namespace Bid501_Server
         }
     }
     public delegate void displayState(State state); //added
-    public delegate void handleEvents(State state, String args); //added
+    public delegate void LoginDel(State state, String args); //added
     public delegate void Send(string s); //This is to send messages back an forth.
 }

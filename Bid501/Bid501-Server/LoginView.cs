@@ -13,7 +13,7 @@ namespace Bid501_Server
 {
     public partial class LoginView : Form
     {
-        public handleEvents he { get; set; } //added
+        public LoginDel handleLogin { get; set; } //added
 
         /// <summary>
         /// The reference to the controller object, later
@@ -37,38 +37,38 @@ namespace Bid501_Server
             switch (state)
             {
                 case State.START:
-                    lbStateMessage.Text = "Please Enter Username";
-                    tbPassword.Enabled = false;
-                    uxLoginBtn.Enabled = false;
+                    userTextPrompt.Text = "Please Enter Username";
+                    passwordText.Enabled = false;
+                    loginButton.Enabled = false;
                     break;
                 case State.GOTUSERNAME:
-                    lbStateMessage.Text = "Please Enter Password";
-                    tbPassword.Enabled = true;
+                    userTextPrompt.Text = "Please Enter Password";
+                    passwordText.Enabled = true;
                     break;
                 case State.GOTPASSWORD:
-                    lbStateMessage.Text = "Validating Credentials...";
+                    userTextPrompt.Text = "Validating Credentials...";
                     break;
                 case State.DECLINED:
                     //Invoke this code since it will only ever be run on a separate thread.
                     this.Invoke(new Action(() =>
                     {
-                        tbUserName.Text = "";
-                        tbPassword.Text = "";
-                        lbStateMessage.Text = "Sorry, Invalid Credentials";
+                        usernameText.Text = "";
+                        passwordText.Text = "";
+                        userTextPrompt.Text = "Sorry, Invalid Credentials";
                     }));
                     break;
                 case State.SUCCESS:
-
+//will need to change the sucess state to close login form and open a new admin view
                     //Invoke this code since it will only ever be run on a separate thread.
                     this.Invoke(new Action(() =>
                     {
-                        tbUserName.Text = "";
-                        tbPassword.Text = "";
-                        lbStateMessage.Text = "Congrats! You are Loggedin";
+                        usernameText.Text = "";
+                        passwordText.Text = "";
+                        userTextPrompt.Text = "Congrats,admin! You are Logged In.";
                     }));
                     break;
                 default:
-                    lbStateMessage.Text = "Invalid State";
+                    userTextPrompt.Text = "Invalid State";
                     break;
 
             }
@@ -83,10 +83,10 @@ namespace Bid501_Server
         /// <param name="e"></param>
         private void UxLoginBtn_Click(object sender, EventArgs e)
         {
-            String un = tbUserName.Text;
-            String up = tbPassword.Text;
-            Console.WriteLine(un + " " + up);
-            he(State.GOTPASSWORD, un + ":" + up); //changed
+            String username = usernameText.Text;
+            String password = passwordText.Text;
+            Console.WriteLine(username + " " + password);
+            handleLogin(State.GOTPASSWORD, username + ":" + password); //changed
 
         }
 
@@ -107,7 +107,7 @@ namespace Bid501_Server
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
-            he(State.START, ""); //changed
+            handleLogin(State.START, ""); //changed
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace Bid501_Server
         /// <param name="e"></param>
         private void tbUserName_TextChanged(object sender, EventArgs e)
         {
-            he(State.GOTUSERNAME, ""); //changed
+            handleLogin(State.GOTUSERNAME, ""); //changed
         }
 
 
@@ -130,7 +130,7 @@ namespace Bid501_Server
         /// <param name="e"></param>
         private void tbPassword_TextChanged(object sender, EventArgs e)
         {
-            uxLoginBtn.Enabled = true;
+            loginButton.Enabled = true;
         }
     }
 }

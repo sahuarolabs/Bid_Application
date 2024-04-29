@@ -27,7 +27,7 @@ namespace Bid501_Server
 
     public class Controller
     {
-        public displayState ds { get; set; } //added
+        public displayState displayState { get; set; } //added
 
         /// <summary>
         /// The App's user interaction
@@ -64,13 +64,13 @@ namespace Bid501_Server
             {
                 case State.START:
 
-                    ds(State.START); //changed
+                    displayState(State.START); //changed
                     break;
                 case State.GOTUSERNAME:
-                    ds(State.GOTUSERNAME); //changed
+                    displayState(State.GOTUSERNAME); //changed
                     break;
                 case State.GOTPASSWORD:
-                    ds(State.GOTPASSWORD); //changed
+                    displayState(State.GOTPASSWORD); //changed
                     validateCredentials(args);
                     break;
                 default:
@@ -82,11 +82,11 @@ namespace Bid501_Server
         {
             if (e.Data.Equals("VALID"))
             {
-                ds(State.SUCCESS); //changed
+                displayState(State.SUCCESS); //changed
             }
             else
             {
-                ds(State.DECLINED); //changed
+                displayState(State.DECLINED); //changed
             }
 
         }
