@@ -26,7 +26,7 @@ namespace Bid501_Client
         private void UxLoginBtn_Click(object sender, EventArgs e)
         {
             // send message to the server.
-            ws.Send("Data from client");
+            ws.Send("");
         }
     }
 }
