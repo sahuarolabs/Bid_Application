@@ -14,7 +14,10 @@ namespace Bid501_Client
 {
     public partial class LoginView : Form
     {
-        public LoginDel handleLogin { get; set; } //added
+
+        
+        public LoginDel handleLogin { get; set; }
+        public LoginRequest loginRequest { get; set; }
 
         public LoginView()
         {
@@ -78,8 +81,8 @@ namespace Bid501_Client
         /// <param name="e"></param>
         private void UxLoginBtn_Click(object sender, EventArgs e)
         {
-            String username = usernameText.Text;
-            String password = passwordText.Text;
+            string username = usernameText.Text;
+            string password = passwordText.Text;
             Console.WriteLine(username + " " + password);
             handleLogin(Bid501_Shared.State.GOTPASSWORD, username + ":" + password); //changed
 

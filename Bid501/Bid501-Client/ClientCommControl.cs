@@ -9,12 +9,19 @@ using Bid501_Shared;
 
 namespace Bid501_Client
 {
+    public delegate void UpdateLoginStatus(State s);
     public class ClientCommControl
     {
         private WebSocket ws;
+        public UpdateLoginStatus updateLoginStatus { get; set; }
         public ClientCommControl(WebSocket ws)
         {
             this.ws = ws;
+        }
+
+        public void SendLoginCredentials(State s, string cred)
+        {
+            ws.Send(s.ToString() + cred);
         }
 
         public void UpdateLoginStatus(State s)
