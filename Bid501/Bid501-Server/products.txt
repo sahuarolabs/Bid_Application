@@ -1,3 +1,3 @@
-{"Name":"Computer","ID":3,"Time":"08:11:11","Status":true,"Products":null}
-{"Name":"IPhone XS","ID":1,"Time":"03:19:29","Status":true,"Products":null}
-{"Name":"Coffee Mug","ID":2,"Time":"01:11:11","Status":false,"Products":null}
+{"Name":"Computer","ID":3,"Time":"08:11:11","Status":true,"Price":277.0,"Products":null}
+{"Name":"IPhone XS","ID":1,"Time":"03:19:29","Status":true,"Price":670.0,"Products":null}
+{"Name":"Coffee Mug","ID":2,"Time":"01:11:11","Status":false,"Price":8.99,"Products":null}

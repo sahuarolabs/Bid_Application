@@ -18,10 +18,12 @@ namespace Bid501_Server
 
         public bool Status { get; set; }
 
+        public double Price { get; set; }   
         public List<Product> Products { get; set; }
 
-        public Product(string productName, int productID, TimeSpan timeLeft, bool currentStatus)
+        public Product(string productName, int productID, TimeSpan timeLeft, double p, bool currentStatus)
         {
+            Price = p;
             Name = productName;
             ID = productID;
             Time = timeLeft;
