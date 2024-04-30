@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Deployment.Application;
 using Bid501_Shared;
 using WebSocketSharp.Server;
+using System.Text.Json;
 
 namespace Bid501_Client
 {
@@ -25,7 +26,7 @@ namespace Bid501_Client
             ws.Send(cred);
         }
 
-        public void UpdateLoginStatus(State s)
+        private void UpdateLoginStatus(State s)
         {
             //delegate to show if the username and password was valid.
             updateLoginStatus(s);
@@ -33,7 +34,29 @@ namespace Bid501_Client
 
         protected override void OnMessage(MessageEventArgs e)
         {
-            base.OnMessage(e);
+            string[] split = e.ToString().Split(':');
+            if (split[0] == "login stuff")
+            {
+                switch (split[1])
+                {
+                    case "SUCCESS":
+                        UpdateLoginStatus(Bid501_Shared.State.SUCCESS);
+                        break;
+                    case "DECLINED":
+                        UpdateLoginStatus(Bid501_Shared.State.DECLINED);
+                        break;
+                }
+            }
+            else if (split[0] == "proxy")
+            {
+                MakeTheCereal(split[1]);
+            }
+        }
+
+        private void MakeTheCereal(string s)
+        {
+            Product_Proxy product_Proxy = JsonSerializer.Deserialize<Product_Proxy>(s);
+            //send the proxy and also make a new view.
         }
     }
 }
