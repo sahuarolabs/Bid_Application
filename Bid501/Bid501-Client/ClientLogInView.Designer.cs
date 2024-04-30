@@ -37,7 +37,7 @@
             // 
             // UxLoginBtn
             // 
-            this.UxLoginBtn.Location = new System.Drawing.Point(40, 337);
+            this.UxLoginBtn.Location = new System.Drawing.Point(303, 206);
             this.UxLoginBtn.Name = "UxLoginBtn";
             this.UxLoginBtn.Size = new System.Drawing.Size(166, 64);
             this.UxLoginBtn.TabIndex = 0;
@@ -61,21 +61,23 @@
             // 
             // textBox1
             // 
+            this.textBox1.BackColor = System.Drawing.SystemColors.Control;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(131, 113);
+            this.textBox1.Location = new System.Drawing.Point(245, 120);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(166, 13);
+            this.textBox1.Size = new System.Drawing.Size(52, 13);
             this.textBox1.TabIndex = 3;
             this.textBox1.Text = "Username";
             // 
             // textBox2
             // 
+            this.textBox2.BackColor = System.Drawing.SystemColors.Control;
             this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox2.Enabled = false;
-            this.textBox2.Location = new System.Drawing.Point(131, 155);
+            this.textBox2.Location = new System.Drawing.Point(245, 158);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(166, 13);
+            this.textBox2.Size = new System.Drawing.Size(49, 13);
             this.textBox2.TabIndex = 4;
             this.textBox2.Text = "Password";
             // 
