@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace Bid501_Shared
 {
     public interface IProduct
@@ -15,7 +14,5 @@ namespace Bid501_Shared
         DateTime Time { get; set; }
 
         bool Status { get; set; }
-
-         
     }
 }

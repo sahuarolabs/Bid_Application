@@ -14,7 +14,27 @@ namespace Bid501_Server
     {
         public AddProductView()
         {
-            InitializeComponent();
+           InitializeComponent();
+           Product waterBottle = new Product("Computer", 004, DateTime.Now, true);
+            List<Product> products = new List<Product>();
+            products.Add(waterBottle);
+            productList.DataSource = null;
+            productList.DataSource = products;
+        }
+
+        public void AddProductDel()
+        {
+            this.ShowDialog();
+        }
+
+        private void addProductButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void productList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           
         }
     }
 }

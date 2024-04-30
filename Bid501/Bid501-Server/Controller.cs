@@ -12,9 +12,7 @@ using System.Windows.Forms;
 
 namespace Bid501_Server
 {
-    /// <summary>
-    /// The valid App states.
-    /// </summary>
+
     public enum State
     {
         NOTINIT = -1,
@@ -25,23 +23,21 @@ namespace Bid501_Server
         DECLINED,
         EXIT
     }
-
+  
     public class Controller
     {
+        private AddProductDel addProductViewOpen;
+        private Product product;
         public displayState displayState { get; set; } //added
-
-        /// <summary>
-        /// The App's user interaction
-        /// </summary>
+       
         LoginView view;
+
         WebSocket ws;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="m"></param>
-        /// <param name="v"></param>
-        public Controller()
+     
+
+        public Controller(Product p)
         {
+            this.product = p;
             ws = new WebSocket("ws://127.0.0.1:8001/login");
             ws.OnMessage += OnMessage;
             ws.Connect();
@@ -52,13 +48,7 @@ namespace Bid501_Server
             ws.Close();
         }
 
-        /// <summary>
-        /// Based on the state the controller will act and apply
-        /// the logic needed to process the information. After taking action,
-        /// it will notify the view of the result.
-        /// </summary>
-        /// <param name="state"></param>
-        /// <param name="args"></param>
+
         public void handleEvents(State state, String args)
         {
             switch (state)
@@ -93,16 +83,15 @@ namespace Bid501_Server
 
         }
 
-        /// <summary>
-        /// Process the credential following the preestablished format and
-        /// using the information stored in the DB, validates if the user is 
-        /// allowed to log in.
-        /// </summary>
-        /// <param name="cred"></param>
-        /// <returns></returns>
+
         private void validateCredentials(String cred)
         {
             ws.Send(cred);
+        }
+
+        public void AddProduct()
+        {
+            addProductViewOpen();
         }
     }
 }

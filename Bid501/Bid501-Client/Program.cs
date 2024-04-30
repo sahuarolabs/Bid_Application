@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bid501_Server;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using WebSocketSharp;
 
 namespace Bid501_Client
 {
+    public delegate void LoginDel(Bid501_Shared.State s, string cred);
     public static class Program
     {
         /// <summary>
@@ -24,11 +26,13 @@ namespace Bid501_Client
             ws.Connect();
             //ws.OnMessage += (sender, e) => Console.WriteLine("Received: " + e.Data);
 
-            
+
             //ws.Send("Data from client");
 
             //Console.ReadKey(true);
-            Application.Run(new Form1(ws));
+            ClientCommControl ccm = new ClientCommControl(ws);
+            Controller controller = new Controller();
+            Application.Run(new LoginView());
             //ws.Close();
             
         }

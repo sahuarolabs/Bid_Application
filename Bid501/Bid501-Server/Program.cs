@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 
 namespace Bid501_Server
 {
+    public delegate void AddProduct();
 
     public static class Program
     {
@@ -27,14 +28,14 @@ namespace Bid501_Server
 
             wss.Start();
             LoginView view = new LoginView();
-
-            Controller controller = new Controller();
+            Product p = new Product();
+            Controller controller = new Controller(p);
             //view.SetController(controller);
 
             controller.displayState = view.DisplayState; //added
             view.handleLogin = controller.handleEvents; //added
-
-            Application.Run(view);
+            AdminView adminView = new AdminView( controller.AddProduct);
+            Application.Run(adminView);
             
             controller.Close();
 

@@ -8,9 +8,11 @@ using WebSocketSharp;
 
 namespace Bid501_Client
 {
-    public class Product_Proxy : IProduct
+    public class Product_Proxy : IProductDB
     {
         private WebSocket ws;
+        public List<IProduct> ProductList { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public void SetWebsocket(WebSocket ws)
         {
             this.ws = ws;
@@ -41,7 +43,7 @@ namespace Bid501_Client
             throw new NotImplementedException();
         }
 
-        public void ServerUpdate(List<IProduct> listProduct)
+        public void ServerUpdate(List<IProductDB> listProduct)
         {
             throw new NotImplementedException();
         }

@@ -12,27 +12,32 @@ namespace Bid501_Server
 {
     public partial class AdminView : Form
     {
-        public AdminView()
+        private AddProduct addProduct;
+
+        public AdminView( AddProduct ap)
         {
             InitializeComponent();
             Product iphone = new Product("IPhone XS", 001, DateTime.Now, true);
             Product coffeeMug = new Product("Coffee Mug", 002, DateTime.Now, false);
             Product computer = new Product("Computer", 003, DateTime.Now, true);
-
+            this.addProduct = ap;   
             List<Product> products = new List<Product>();
             products.Add(iphone);
             products.Add(coffeeMug);
             products.Add(computer);
-            foreach(Product product in products)
-            {
-                //activeProductList.ControlAdded()
-            }
+            activeProductList.DataSource = null;
+            activeProductList.DataSource = products;
 
         }
 
         private void activeProductList_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void addProductButton_Click(object sender, EventArgs e)
+        {
+            addProduct();
         }
     }
 }
