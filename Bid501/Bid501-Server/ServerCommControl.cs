@@ -68,7 +68,7 @@ namespace Bid501_Server
         {
 
         }
-        /// <summary>
+        /// <summary>S
         /// Method to send a message to all users that a bid has ended.
         /// </summary>
         /// <param name="product">The product that the bid ended on.</param>
