@@ -1,5 +1,7 @@
 ﻿using Bid501_Shared;
+using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -24,7 +26,6 @@ namespace Bid501_Server
             products = model.Sync();
             activeProductList.DataSource = null;
             activeProductList.DataSource = products;
-
         }
         public void Resync()
         {
