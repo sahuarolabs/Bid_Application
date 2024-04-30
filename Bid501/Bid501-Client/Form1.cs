@@ -14,10 +14,10 @@ using WebSocketSharp.Server;
 
 namespace Bid501_Client
 {
-    public partial class Form1 : Form
+    public partial class ClientLogIn : Form
     {
         private WebSocket ws;
-        public Form1(WebSocket ws)
+        public ClientLogIn(WebSocket ws)
         {
             this.ws = ws;
             InitializeComponent();
