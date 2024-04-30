@@ -26,8 +26,9 @@ namespace Bid501_Server
   
     public class Controller
     {
-        private AddProductDel addProductViewOpen;
-        private Product product;
+        private AddProduct addProductViewOpen;
+        private ProductModel product;
+        private ResyncDel resyncDel;
         public displayState displayState { get; set; } //added
        
         LoginView view;
@@ -35,7 +36,7 @@ namespace Bid501_Server
         WebSocket ws;
      
 
-        public Controller(Product p)
+        public Controller(ProductModel p)
         {
             this.product = p;
             ws = new WebSocket("ws://127.0.0.1:8001/login");
@@ -83,6 +84,11 @@ namespace Bid501_Server
 
         }
 
+        public void InitializeDelegates(AddProduct add, ResyncDel resync)
+        {
+            addProductViewOpen = add;
+            resyncDel = resync;
+        }
 
         private void validateCredentials(String cred)
         {
@@ -92,6 +98,7 @@ namespace Bid501_Server
         public void AddProduct()
         {
             addProductViewOpen();
+            resyncDel();
         }
     }
 }

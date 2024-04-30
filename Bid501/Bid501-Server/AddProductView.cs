@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bid501_Shared;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,25 +13,36 @@ namespace Bid501_Server
 {
     public partial class AddProductView : Form
     {
-        public AddProductView()
+        ProductModel model;
+        List<Product> products = new List<Product>();
+        public AddProductView(ProductModel m)
         {
-           InitializeComponent();
-           Product waterBottle = new Product("Computer", 004, DateTime.Now, true);
-            List<Product> products = new List<Product>();
+            this.model = m;
+            InitializeComponent();
+            Product waterBottle = new Product("WaterBottle", 004, DateTime.Now, true);
+            Product calculator = new Product("Calculator", 006, DateTime.Now, true);
+            Product miniProjector = new Product("Mini Projector", 008, DateTime.Now, true);
+            
+            
             products.Add(waterBottle);
+            products.Add(calculator);   
+            products.Add(miniProjector);
             productList.DataSource = null;
             productList.DataSource = products;
         }
 
-        public void AddProductDel()
+        public void AddProduct()
         {
             this.ShowDialog();
         }
 
         private void addProductButton_Click(object sender, EventArgs e)
         {
-
+           model.ProductModelAdd((Product)productList.SelectedItem);
+           this.Close();
         }
+     
+
 
         private void productList_SelectedIndexChanged(object sender, EventArgs e)
         {

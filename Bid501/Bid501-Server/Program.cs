@@ -10,8 +10,12 @@ using System.Runtime.CompilerServices;
 
 namespace Bid501_Server
 {
-    public delegate void AddProduct();
 
+    public delegate void AddProduct();
+    public delegate void displayState(State state); //added
+    public delegate void LoginDel(State state, String args); //added
+    public delegate void Send(string s); //This is to send messages back an forth.
+    public delegate void ResyncDel();
     public static class Program
     {
         /// <summary>
@@ -28,13 +32,13 @@ namespace Bid501_Server
 
             wss.Start();
             LoginView view = new LoginView();
-            Product p = new Product();
-            Controller controller = new Controller(p);
-            //view.SetController(controller);
-
+            ProductModel pm = new ProductModel();
+            Controller controller = new Controller(pm);
+            AdminView adminView = new AdminView(controller.AddProduct, pm);
+            AddProductView addProduct = new AddProductView(pm);
             controller.displayState = view.DisplayState; //added
             view.handleLogin = controller.handleEvents; //added
-            AdminView adminView = new AdminView( controller.AddProduct);
+            controller.InitializeDelegates(addProduct.AddProduct, adminView.Resync);
             Application.Run(adminView);
             
             controller.Close();
@@ -43,7 +47,4 @@ namespace Bid501_Server
 
         }
     }
-    public delegate void displayState(State state); //added
-    public delegate void LoginDel(State state, String args); //added
-    public delegate void Send(string s); //This is to send messages back an forth.
 }

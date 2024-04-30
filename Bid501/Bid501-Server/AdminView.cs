@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bid501_Shared;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,23 +14,24 @@ namespace Bid501_Server
     public partial class AdminView : Form
     {
         private AddProduct addProduct;
-
-        public AdminView( AddProduct ap)
+        private ProductModel model;
+        List<Product> products = new List<Product>();
+        public AdminView( AddProduct ap, ProductModel pm)
         {
             InitializeComponent();
-            Product iphone = new Product("IPhone XS", 001, DateTime.Now, true);
-            Product coffeeMug = new Product("Coffee Mug", 002, DateTime.Now, false);
-            Product computer = new Product("Computer", 003, DateTime.Now, true);
             this.addProduct = ap;   
-            List<Product> products = new List<Product>();
-            products.Add(iphone);
-            products.Add(coffeeMug);
-            products.Add(computer);
+            this.model = pm;
+            products = model.Sync();
             activeProductList.DataSource = null;
             activeProductList.DataSource = products;
 
         }
-
+        public void Resync()
+        {
+            products = model.Sync();
+            activeProductList.DataSource = null;
+            activeProductList.DataSource = products;
+        }
         private void activeProductList_SelectedIndexChanged(object sender, EventArgs e)
         {
 
