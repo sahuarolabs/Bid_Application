@@ -1,0 +1,5 @@
+{"IsAdmin":true,"Username":"ella","Password":"carlson"}
+{"IsAdmin":false,"Username":"dylan","Password":"rosquist"}
+{"IsAdmin":false,"Username":"sam","Password":"allred"}
+{"IsAdmin":true,"Username":"caleb","Password":"chan"}
+{"IsAdmin":false,"Username":"jorge","Password":"v"}

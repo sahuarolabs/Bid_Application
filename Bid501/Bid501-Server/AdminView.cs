@@ -26,6 +26,7 @@ namespace Bid501_Server
             products = model.Sync();
             activeProductList.DataSource = null;
             activeProductList.DataSource = products;
+            AccountModel am = new AccountModel();
         }
         public void Resync()
         {
