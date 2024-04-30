@@ -33,5 +33,7 @@ namespace Bid501_Server
             }
             return templist;
         }
+
+        public List<Account> AccountSync() { return this.accounts; }
     }
 }

@@ -11,8 +11,7 @@ using WebSocket = WebSocketSharp.WebSocket;
 using System.Windows.Forms;
 
 namespace Bid501_Server
-{
-
+{ 
     public enum State
     {
         NOTINIT = -1,
@@ -28,16 +27,16 @@ namespace Bid501_Server
     {
         private AddProduct addProductViewOpen;
         private ProductModel product;
+        private AccountModel account;
         private ResyncDel resyncDel;
         public displayState displayState { get; set; } //added
-       
-        LoginView view;
 
         WebSocket ws;
      
 
-        public Controller(ProductModel p)
+        public Controller(ProductModel p, AccountModel am)
         {
+            this.account = am;
             this.product = p;
             ws = new WebSocket("ws://127.0.0.1:8001/login");
             ws.OnMessage += OnMessage;

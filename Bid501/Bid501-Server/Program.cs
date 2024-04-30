@@ -31,12 +31,13 @@ namespace Bid501_Server
             wss.AddWebSocketService<ServerCommControl>("/shared");
 
             wss.Start();
-            LoginView view = new LoginView();
+            AccountModel am = new AccountModel();
+            LoginView view = new LoginView(am);
             ProductModel pm = new ProductModel();
-            Controller controller = new Controller(pm);
+            Controller controller = new Controller(pm, am);
             AdminView adminView = new AdminView(controller.AddProduct, pm);
             AddProductView addProduct = new AddProductView(pm);
-            controller.displayState = view.DisplayState; //added
+       //     controller.displayState = view.DisplayState; //added
             view.handleLogin = controller.handleEvents; //added
             controller.InitializeDelegates(addProduct.AddProduct, adminView.Resync);
             Application.Run(adminView);
