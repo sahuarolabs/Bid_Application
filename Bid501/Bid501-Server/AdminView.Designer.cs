@@ -41,6 +41,7 @@
             this.activeProductList.Name = "activeProductList";
             this.activeProductList.Size = new System.Drawing.Size(217, 384);
             this.activeProductList.TabIndex = 0;
+            this.activeProductList.SelectedIndexChanged += new System.EventHandler(this.activeProductList_SelectedIndexChanged);
             // 
             // activeClientList
             // 
