@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,26 +21,24 @@ namespace Bid501_Server
         {
             this.model = m;
             InitializeComponent();
-            Product waterBottle = new Product("WaterBottle", 004, DateTime.Now, true);
-            Product calculator = new Product("Calculator", 006, DateTime.Now, true);
-            Product miniProjector = new Product("Mini Projector", 008, DateTime.Now, true);
-            
-            
-            products.Add(waterBottle);
-            products.Add(calculator);   
-            products.Add(miniProjector);
+            products = model.SyncHardcoded();
             productList.DataSource = null;
             productList.DataSource = products;
         }
-
+   
         public void AddProduct()
         {
             this.ShowDialog();
+            productList.DataSource = null;
+            productList.DataSource = products;
+            if(products.Count == 0 ) { addProductButton.Enabled = false; }
         }
 
         private void addProductButton_Click(object sender, EventArgs e)
         {
            model.ProductModelAdd((Product)productList.SelectedItem);
+           model.RemoveHardcoded((Product)productList.SelectedItem);
+           
            this.Close();
         }
      
