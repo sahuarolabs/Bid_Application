@@ -25,11 +25,11 @@ namespace Bid501_Client
             //ws.OnMessage += (sender, e) => Console.WriteLine("Received: " + e.Data);
 
             
-            ws.Send("Data from client");
+            //ws.Send("Data from client");
 
             //Console.ReadKey(true);
             Application.Run(new Form1(ws));
-            ws.Close();
+            //ws.Close();
             
         }
     }
