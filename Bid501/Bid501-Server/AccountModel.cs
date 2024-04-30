@@ -14,30 +14,24 @@ namespace Bid501_Server
 
         public AccountModel() 
         {
-            accounts = new List<Account>();
-            Account a = new Account("ella", "carlson", true);
-            Account b = new Account("dylan", "rosquist", false);
-            Account c = new Account("sam", "allred", false);
-            Account d = new Account("caleb", "chan", true);
-            Account e = new Account("jorge", "v", false);
-            accounts.Add(a);
-            accounts.Add(b);
-            accounts.Add(c);
-            accounts.Add(d);
-            accounts.Add(e);
-            MakeAccounts();
+            accounts = LoadAccounts();
         }
 
-
-        public void MakeAccounts()
+        public List<Account> LoadAccounts()
         {
-            StringBuilder stringBuilder = new StringBuilder();
-            foreach (Account a in accounts)
+            List<Account> templist = new List<Account>();
+            if (File.Exists("..\\..\\accounts.txt"))
             {
-                string writeJson = JsonConvert.SerializeObject(a);
-                stringBuilder.Append(writeJson + "\n");
+                StreamReader streamReader = new StreamReader("..\\..\\accounts.txt");
+                while (!streamReader.EndOfStream)
+                {
+                    string acc = streamReader.ReadLine();
+                    Account a = JsonConvert.DeserializeObject<Account>(acc);
+                    templist.Add(a);
+                }
+                streamReader.Close();
             }
-            File.WriteAllText("..\\..\\accounts.txt", stringBuilder.ToString());
+            return templist;
         }
     }
 }
