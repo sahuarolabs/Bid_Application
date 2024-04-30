@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Bid501_Shared
 {
-     public interface IProduct
+    public interface IProduct
     {
         string Name { get; set; }
         int ID { get; set; }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bid501_Shared;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,11 @@ namespace Bid501_Client
         public void Send(string message)
         {
 
+        }
+
+        public List<IProduct> LogOutHandler(string username)
+        {
+            return null;
         }
     }
 }

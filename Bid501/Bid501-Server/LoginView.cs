@@ -13,6 +13,7 @@ namespace Bid501_Server
 {
     public partial class LoginView : Form
     {
+        public string message { get; set; }
         public LoginDel handleLogin { get; set; } //added
 
         /// <summary>
