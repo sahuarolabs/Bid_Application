@@ -24,6 +24,9 @@ namespace Bid501_Client
             return null;
         }
 
-        
+        public void LogInStatusHandler(State LoginState)
+        {
+
+        }
     }
 }
