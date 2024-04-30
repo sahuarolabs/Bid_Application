@@ -15,6 +15,9 @@ namespace Bid501_Server
         public AdminView()
         {
             InitializeComponent();
+            Product iphone = new Product("IPhone", 001, DateTime.Now, true);
         }
+
+
     }
 }
