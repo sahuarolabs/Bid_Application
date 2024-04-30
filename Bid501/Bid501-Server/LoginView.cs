@@ -74,6 +74,14 @@ namespace Bid501_Server
             string username = usernameText.Text;
             string password = passwordText.Text;
             admin = validateLogins(username, password);
+            if(admin == true)
+            {
+                DisplayState(Bid501_Shared.State.SUCCESS);
+            }
+            else
+            {
+                DisplayState(Bid501_Shared.State.DECLINED);
+            }
         }
 
         private bool validateLogins(string username,string password)
