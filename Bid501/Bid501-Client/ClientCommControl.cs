@@ -6,11 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Deployment.Application;
 using Bid501_Shared;
+using WebSocketSharp.Server;
 
 namespace Bid501_Client
 {
     public delegate void UpdateLoginStatus(State s);
-    public class ClientCommControl
+    public class ClientCommControl : WebSocketBehavior
     {
         private WebSocket ws;
         public UpdateLoginStatus updateLoginStatus { get; set; }
@@ -19,15 +20,20 @@ namespace Bid501_Client
             this.ws = ws;
         }
 
-        public void SendLoginCredentials(State s, string cred)
+        public void SendLoginCredentials(string cred)
         {
-            ws.Send(s.ToString() + cred);
+            ws.Send(cred);
         }
 
         public void UpdateLoginStatus(State s)
         {
             //delegate to show if the username and password was valid.
-            
+            updateLoginStatus(s);
+        }
+
+        protected override void OnMessage(MessageEventArgs e)
+        {
+            base.OnMessage(e);
         }
     }
 }

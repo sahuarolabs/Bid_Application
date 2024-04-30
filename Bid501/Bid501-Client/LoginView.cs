@@ -83,9 +83,7 @@ namespace Bid501_Client
         {
             string username = usernameText.Text;
             string password = passwordText.Text;
-            Console.WriteLine(username + " " + password);
-            handleLogin(Bid501_Shared.State.GOTPASSWORD, username + ":" + password); //changed
-
+            handleLogin(username + ":" + password); //changed
         }
 
         /// <summary>
@@ -95,7 +93,7 @@ namespace Bid501_Client
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
-            handleLogin(Bid501_Shared.State.START, ""); //changed
+            handleLogin(""); //changed
         }
 
         /// <summary>
@@ -106,7 +104,8 @@ namespace Bid501_Client
         /// <param name="e"></param>
         private void tbUserName_TextChanged(object sender, EventArgs e)
         {
-            handleLogin(Bid501_Shared.State.GOTUSERNAME, ""); //changed
+            //handleLogin(Bid501_Shared.State.GOTUSERNAME, ""); //changed
+            passwordText.Enabled = true;
         }
 
 

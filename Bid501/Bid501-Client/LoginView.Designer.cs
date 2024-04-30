@@ -70,6 +70,7 @@
             // 
             // passwordText
             // 
+            this.passwordText.Enabled = false;
             this.passwordText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.passwordText.Location = new System.Drawing.Point(146, 124);
             this.passwordText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
@@ -81,6 +82,7 @@
             // 
             // loginButton
             // 
+            this.loginButton.Enabled = false;
             this.loginButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.loginButton.Location = new System.Drawing.Point(98, 193);
             this.loginButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);

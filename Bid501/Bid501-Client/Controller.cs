@@ -27,14 +27,19 @@ namespace Bid501_Client
             return null;
         }
 
-        public void LogInHandler(State s, string cred)
+        public void LogInHandler(string cred)
         {
-            handleLogin(s, cred);
+            handleLogin(cred);
         }
 
         public void LogInStatusHandler(State LoginState)
         {
             UpdateLoginState(LoginState);
+        }
+
+        public void UpdateLoginView(State s)
+        {
+            UpdateLoginState(s);
         }
     }
 }

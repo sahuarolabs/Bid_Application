@@ -8,7 +8,7 @@ using WebSocketSharp;
 
 namespace Bid501_Client
 {
-    public delegate void LoginDel(Bid501_Shared.State s, string cred);
+    public delegate void LoginDel(string cred);
     public delegate void LoginRequest(string username, string password);
     public delegate void UpdateState(Bid501_Shared.State s);
     public static class Program
@@ -34,7 +34,7 @@ namespace Bid501_Client
             //Console.ReadKey(true);
             ClientCommControl ccm = new ClientCommControl(ws);
             Controller controller = new Controller();
-            ccm.updateLoginStatus = controller.LogInStatusHandler;
+            ccm.updateLoginStatus = controller.UpdateLoginView;
             controller.handleLogin = ccm.SendLoginCredentials;
             LoginView loginView = new LoginView();
             controller.UpdateLoginState = loginView.DisplayState;
