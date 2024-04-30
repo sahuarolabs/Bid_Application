@@ -119,5 +119,12 @@ namespace Bid501_Client
         {
             loginButton.Enabled = true;
         }
+
+        private void passwordText_Enter(object sender, EventArgs e)
+        {
+            string username = usernameText.Text;
+            string password = passwordText.Text;
+            handleLogin("Login:" + username + ":" + password);
+        }
     }
 }

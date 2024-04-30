@@ -62,7 +62,7 @@
             // 
             this.usernameText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usernameText.Location = new System.Drawing.Point(146, 67);
-            this.usernameText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.usernameText.Margin = new System.Windows.Forms.Padding(2);
             this.usernameText.Name = "usernameText";
             this.usernameText.Size = new System.Drawing.Size(126, 26);
             this.usernameText.TabIndex = 2;
@@ -73,19 +73,20 @@
             this.passwordText.Enabled = false;
             this.passwordText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.passwordText.Location = new System.Drawing.Point(146, 124);
-            this.passwordText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.passwordText.Margin = new System.Windows.Forms.Padding(2);
             this.passwordText.Name = "passwordText";
             this.passwordText.PasswordChar = '#';
             this.passwordText.Size = new System.Drawing.Size(126, 26);
             this.passwordText.TabIndex = 3;
             this.passwordText.TextChanged += new System.EventHandler(this.tbPassword_TextChanged);
+            this.passwordText.Enter += new System.EventHandler(this.passwordText_Enter);
             // 
             // loginButton
             // 
             this.loginButton.Enabled = false;
             this.loginButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.loginButton.Location = new System.Drawing.Point(98, 193);
-            this.loginButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.loginButton.Margin = new System.Windows.Forms.Padding(2);
             this.loginButton.Name = "loginButton";
             this.loginButton.Size = new System.Drawing.Size(92, 41);
             this.loginButton.TabIndex = 4;
@@ -113,7 +114,7 @@
             this.Controls.Add(this.usernameText);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "LoginView";
             this.Text = "Login Form";
             this.ResumeLayout(false);

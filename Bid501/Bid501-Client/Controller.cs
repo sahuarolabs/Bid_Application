@@ -10,12 +10,11 @@ namespace Bid501_Client
 {
     public class Controller
     {
+        private Product_Proxie proxie;
         public LoginDel handleLogin { get; set; } //added
-        public LoginRequest loginRequest { get; set; }
         public UpdateState UpdateLoginState { get; set; }
         public Controller()
         {
-
         }
         public void Send(string message)
         {
@@ -32,14 +31,14 @@ namespace Bid501_Client
             handleLogin(cred);
         }
 
-        public void LogInStatusHandler(State LoginState)
-        {
-            UpdateLoginState(LoginState);
-        }
-
         public void UpdateLoginView(State s)
         {
             UpdateLoginState(s);
+        }
+
+        public void UpdateProxie(Product_Proxie proxie)
+        {
+            this.proxie = proxie;
         }
     }
 }

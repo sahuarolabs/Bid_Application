@@ -49,13 +49,13 @@ namespace Bid501_Client
             }
             else if (split[0] == "proxy")
             {
-                MakeTheCereal(split[1]);
+                MakeTheSerial(split[1]);
             }
         }
 
-        private void MakeTheCereal(string s)
+        private void MakeTheSerial(string s)
         {
-            Product_Proxy product_Proxy = JsonSerializer.Deserialize<Product_Proxy>(s);
+            Product_Proxie product_Proxy = JsonSerializer.Deserialize<Product_Proxie>(s);
             //send the proxy and also make a new view.
         }
     }
