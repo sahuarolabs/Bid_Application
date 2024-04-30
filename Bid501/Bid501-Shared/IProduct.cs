@@ -9,11 +9,13 @@ namespace Bid501_Shared
 {
     public interface IProduct
     {
-        string GetItemName();
-        List<double> GetBidList();
-        double GetMinBid();
-        DateTime GetTimeLeft();
-        Status GetCurStatus();
-        
+        string Name { get; set; }
+        int ID { get; set; }
+
+        DateTime Time { get; set; }
+
+        bool Status { get; set; }
+
+         
     }
 }
