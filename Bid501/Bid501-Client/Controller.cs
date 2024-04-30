@@ -10,6 +10,9 @@ namespace Bid501_Client
 {
     public class Controller
     {
+        public LoginDel handleLogin { get; set; } //added
+        public LoginRequest loginRequest { get; set; }
+        public UpdateState UpdateLoginState { get; set; }
         public Controller()
         {
 
@@ -24,6 +27,19 @@ namespace Bid501_Client
             return null;
         }
 
-        
+        public void LogInHandler(string cred)
+        {
+            handleLogin(cred);
+        }
+
+        public void LogInStatusHandler(State LoginState)
+        {
+            UpdateLoginState(LoginState);
+        }
+
+        public void UpdateLoginView(State s)
+        {
+            UpdateLoginState(s);
+        }
     }
 }

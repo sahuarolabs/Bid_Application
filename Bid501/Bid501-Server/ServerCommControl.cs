@@ -18,7 +18,7 @@ namespace Bid501_Server
             string msg = e.Data;
 
             //Send("Shared: " + msg);
-            MessageBox.Show("Shared: " + msg);
+            //MessageBox.Show("Shared: " + msg);
         }
 
         public void LogIn(string username, string password)
