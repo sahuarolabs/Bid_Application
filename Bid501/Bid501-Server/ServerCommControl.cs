@@ -45,29 +45,37 @@ namespace Bid501_Server
             }
             //deserialize the data to the appropriate object or string.
             //then send it to the controller for validation after deserialize.
-            
+
 
             //Send("Shared: " + msg);
             //MessageBox.Show("Shared: " + msg);
         }
         /// <summary>
-        /// Method for when the server wants to send a message to the client using JSON.
+        /// Method to use when the server wants to send over the list of products.
         /// </summary>
-        /// <param name="cred">The message or object sent to the client using JSON.</param>
-        public void OnSend(string cred)
+        /// <param name="cred">The list sent to the client using JSON.</param>
+        public void SendProductList(List<Product> products)
         {
             //send data in form of what the object is then append it onto the message.
+            //Serialize objects before sending too.
             //string msg = "Proxy:" + msg;
         }
-        //Don't know I need this method yet.
-        public void LogIn(string username, string password)
+        /// <summary>
+        /// Method to send a product to the client when a product needs to be updated.
+        /// </summary>
+        /// <param name="product">The product that needs to be updated.</param>
+        public void SendProduct(Product product)
+        {
+
+        }
+        /// <summary>
+        /// Method to send a message to all users that a bid has ended.
+        /// </summary>
+        /// <param name="product">The product that the bid ended on.</param>
+        public void BidEnded(Product product)
         {
 
         }
 
-        public void LogOut(string username)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
