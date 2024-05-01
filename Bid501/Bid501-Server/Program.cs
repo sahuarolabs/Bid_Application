@@ -12,6 +12,7 @@ namespace Bid501_Server
 {
 
     public delegate void AddProduct();
+    public delegate void AdminOpen();
     public delegate void displayState(State state); //added
     public delegate void LoginDel(State state, String args); //added
     public delegate void Send(string s); //This is to send messages back an forth.
@@ -32,15 +33,18 @@ namespace Bid501_Server
 
             wss.Start();
             AccountModel am = new AccountModel();
-            LoginView view = new LoginView(am);
             ProductModel pm = new ProductModel();
             Controller controller = new Controller(pm, am);
+        
+            LoginView view = new LoginView(controller.AdminOpen, am);
+          
+           
             AdminView adminView = new AdminView(controller.AddProduct, pm);
             AddProductView addProduct = new AddProductView(pm);
        //     controller.displayState = view.DisplayState; //added
             view.handleLogin = controller.handleEvents; //added
-            controller.InitializeDelegates(addProduct.AddProduct, adminView.Resync);
-            Application.Run(adminView);
+            controller.InitializeDelegates(addProduct.AddProduct, adminView.Resync, adminView.AdminOpen);
+            Application.Run(view);
             
             controller.Close();
 

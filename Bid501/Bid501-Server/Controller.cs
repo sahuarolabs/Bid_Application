@@ -26,6 +26,7 @@ namespace Bid501_Server
     public class Controller
     {
         private AddProduct addProductViewOpen;
+        private AdminOpen adOpen;
         private ProductModel product;
         private AccountModel account;
         private ResyncDel resyncDel;
@@ -47,9 +48,12 @@ namespace Bid501_Server
         {
             ws.Close();
         }
+        public void AdminOpen()
+        {
+            adOpen();
+        }
 
-
-        public void handleEvents(State state, String args)
+            public void handleEvents(State state, String args)
         {
             switch (state)
             {
@@ -83,8 +87,9 @@ namespace Bid501_Server
 
         }
 
-        public void InitializeDelegates(AddProduct add, ResyncDel resync)
+        public void InitializeDelegates(AddProduct add, ResyncDel resync, AdminOpen ao)
         {
+            adOpen = ao;    
             addProductViewOpen = add;
             resyncDel = resync;
         }

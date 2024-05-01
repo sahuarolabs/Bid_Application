@@ -28,7 +28,13 @@ namespace Bid501_Server
             activeProductList.DataSource = products;
             AccountModel am = new AccountModel();
         }
-        public void Resync()
+        public void AdminOpen()
+        {
+            this.ShowDialog();
+            activeProductList.DataSource = null;
+            activeProductList.DataSource = products;
+        }
+            public void Resync()
         {
             products = model.Sync();
             activeProductList.DataSource = null;

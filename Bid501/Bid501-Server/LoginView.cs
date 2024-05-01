@@ -13,15 +13,16 @@ namespace Bid501_Server
 {
     public partial class LoginView : Form
     {
-
+        private AdminOpen adOpen;
         public LoginDel handleLogin { get; set; }
         //  public LoginRequest loginRequest { get; set; }
         List<Account> accounts;
         AccountModel am;
         bool admin = false;
-        public LoginView(AccountModel acc)
+        public LoginView(AdminOpen ao, AccountModel acc)
         {
             InitializeComponent();
+            this.adOpen = ao;
             this.am = acc;
             accounts = am.AccountSync();
         }
@@ -43,23 +44,21 @@ namespace Bid501_Server
                     userTextPrompt.Text = "Validating Credentials...";
                     break;
                 case Bid501_Shared.State.DECLINED:
-                    //Invoke this code since it will only ever be run on a separate thread.
-                    this.Invoke(new Action(() =>
-                    {
                         usernameText.Text = "";
                         passwordText.Text = "";
-                        userTextPrompt.Text = "Sorry, you do not have Admin privledges";
-                    }));
+                        userTextPrompt.Text = "Sorry, you do not have Admin privledges, try again";
+                       //  UxLoginBtn. = false;   
                     break;
                 case Bid501_Shared.State.SUCCESS:
                     //will need to change the sucess state to close login form and open a new admin view
                     //Invoke this code since it will only ever be run on a separate thread.
-                    this.Invoke(new Action(() =>
-                    {
+              
                         usernameText.Text = "";
                         passwordText.Text = "";
                         userTextPrompt.Text = "Congrats! You are Logged In.";
-                    }));
+                    this.Hide();
+                    adOpen();
+                        
                     break;
                 default:
                     userTextPrompt.Text = "Invalid State";
@@ -76,7 +75,9 @@ namespace Bid501_Server
             admin = validateLogins(username, password);
             if(admin == true)
             {
+                
                 DisplayState(Bid501_Shared.State.SUCCESS);
+                
             }
             else
             {
@@ -99,21 +100,18 @@ namespace Bid501_Server
             return false;
         }
 
-        protected override void OnShown(EventArgs e)
-        {
-            base.OnShown(e);
-        }
-
         
         private void tbUserName_TextChanged(object sender, EventArgs e)
         {
             passwordText.Enabled = true;
+            DisplayState(Bid501_Shared.State.GOTUSERNAME);
         }
 
 
         private void tbPassword_TextChanged(object sender, EventArgs e)
         {
             loginButton.Enabled = true;
+            DisplayState(Bid501_Shared.State.GOTPASSWORD);
         }
     }
 }
