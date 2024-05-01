@@ -73,6 +73,9 @@ namespace Bid501_Server
             products.Add(computer);
             products.Add(iphone);
             products.Add(coffeeMug);
+
+
+
             StringBuilder stringBuilder = new StringBuilder();
             foreach (Product p in products)
             {
