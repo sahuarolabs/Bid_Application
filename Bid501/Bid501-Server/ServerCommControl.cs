@@ -23,10 +23,7 @@ namespace Bid501_Server
         /// <summary>
         /// Empty constructor
         /// </summary>
-        public ServerCommControl()
-        {
-
-        }
+        public ServerCommControl() { }
 
         public ServerCommControl(WebSocket ws)
         {
@@ -45,19 +42,15 @@ namespace Bid501_Server
                 string username = msgs[1];
                 string password = msgs[2];
                 //send the username and passwords to the controller to handle
+                //NEED TO WORK ON DELEGATES
             }
             else
             {
                 string msg = msgs[1];
                 Product product = JsonSerializer.Deserialize<Product>(msg);
                 //send product to controller to validate bid and then send updates afterwards.
+                //NEED TO WORK ON DELEGATES
             }
-            //deserialize the data to the appropriate object or string.
-            //then send it to the controller for validation after deserialize.
-
-
-            //Send("Shared: " + msg);
-            //MessageBox.Show("Shared: " + msg);
         }
         /// <summary>
         /// Method to use when the server wants to send over the list of products.
@@ -65,15 +58,13 @@ namespace Bid501_Server
         /// <param name="cred">The list sent to the client using JSON.</param>
         public void SendProductList(List<Product> products)
         {
-            //send data in form of what the object is then append it onto the message.
-            //Serialize objects before sending too.
-            //string msg = "Success:" + msg;
-
             string msg = JsonSerializer.Serialize<List<Product>>(products);
             msg = "Success:" + msg;
             ws.Send(msg);
         }
-
+        /// <summary>
+        /// Method to use when the user has invalid login information.
+        /// </summary>
         public void InvalidLogin()
         {
             string msg = "DECLINED";
