@@ -17,13 +17,22 @@ namespace Bid501_Server
     {
         private AddProduct addProduct;
         private ProductModel model;
+        private BidEnded bidChanged;
         List<Product> products = new List<Product>();
-        public AdminView( AddProduct ap, ProductModel pm)
+        public AdminView( BidEnded be, AddProduct ap, ProductModel pm)
         {
             InitializeComponent();
+            this.bidChanged = be;   
             this.addProduct = ap;   
             this.model = pm;
             products = model.Sync();
+            activeProductList.DataSource = null;
+            activeProductList.DataSource = products;
+            AccountModel am = new AccountModel();
+        }
+        public void AdminOpen()
+        {
+            this.ShowDialog();
             activeProductList.DataSource = null;
             activeProductList.DataSource = products;
         }
@@ -41,6 +50,13 @@ namespace Bid501_Server
         private void addProductButton_Click(object sender, EventArgs e)
         {
             addProduct();
+        }
+
+        private void uxEndBidBtn_Click(object sender, EventArgs e)
+        {
+           Product changeBid = (Product)activeProductList.SelectedItem;
+            bidChanged(changeBid);  
+
         }
     }
 }

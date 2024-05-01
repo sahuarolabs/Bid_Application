@@ -8,13 +8,19 @@ using WebSocketSharp;
 
 namespace Bid501_Client
 {
+    public delegate void ViewUpdateListDel(List<Product_Proxy> p);
     public class Controller
     {
-        private Product_Proxie proxie;
+        private List<Product_Proxy> productList;
         public LoginDel handleLogin { get; set; } //added
         public UpdateState UpdateLoginState { get; set; }
+        public ViewUpdateListDel updateList { get; set; }
         public Controller()
         {
+        }
+        public void UpdateList(List<IProduct> list)
+        {
+
         }
         public void Send(string message)
         {

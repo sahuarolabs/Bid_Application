@@ -9,7 +9,7 @@ using System.Drawing;
 
 namespace Bid501_Server
 {
-    public class Product
+    public class Product : IProduct
     {
         public string Name { get; set; }
         public int ID { get; set; }
@@ -19,7 +19,7 @@ namespace Bid501_Server
         public bool Status { get; set; }
 
         public double Price { get; set; }   
-        public List<Product> Products { get; set; }
+       // public List<Product> Products { get; set; }
 
         public Product(string productName, int productID, TimeSpan timeLeft, double p, bool currentStatus)
         {

@@ -11,8 +11,7 @@ using WebSocket = WebSocketSharp.WebSocket;
 using System.Windows.Forms;
 
 namespace Bid501_Server
-{
-
+{ 
     public enum State
     {
         NOTINIT = -1,
@@ -27,17 +26,19 @@ namespace Bid501_Server
     public class Controller
     {
         private AddProduct addProductViewOpen;
+        private AdminOpen adOpen;
         private ProductModel product;
+        private AccountModel account;
         private ResyncDel resyncDel;
+        private BidEnded bidChanged;
         public displayState displayState { get; set; } //added
-       
-        LoginView view;
 
         WebSocket ws;
      
 
-        public Controller(ProductModel p)
+        public Controller(ProductModel p, AccountModel am)
         {
+            this.account = am;
             this.product = p;
             ws = new WebSocket("ws://127.0.0.1:8001/login");
             ws.OnMessage += OnMessage;
@@ -48,9 +49,12 @@ namespace Bid501_Server
         {
             ws.Close();
         }
+        public void AdminOpen()
+        {
+            adOpen();
+        }
 
-
-        public void handleEvents(State state, String args)
+            public void handleEvents(State state, String args)
         {
             switch (state)
             {
@@ -84,8 +88,10 @@ namespace Bid501_Server
 
         }
 
-        public void InitializeDelegates(AddProduct add, ResyncDel resync)
+        public void InitializeDelegates(AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b)
         {
+            bidChanged = b; 
+            adOpen = ao;    
             addProductViewOpen = add;
             resyncDel = resync;
         }
@@ -99,6 +105,11 @@ namespace Bid501_Server
         {
             addProductViewOpen();
             resyncDel();
+        }
+
+        public void BidEnded(Product p)
+        {
+            bidChanged(p);
         }
     }
 }
