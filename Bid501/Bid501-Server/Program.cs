@@ -26,7 +26,7 @@ namespace Bid501_Server
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            var wss = new WebSocketServer(8001);
+            WebSocketServer wss = new WebSocketServer(8001);
 
             wss.AddWebSocketService<ServerCommControl>("/shared");
 

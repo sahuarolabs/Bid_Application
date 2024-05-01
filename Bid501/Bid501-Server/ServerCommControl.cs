@@ -8,6 +8,7 @@ using WebSocketSharp.Server;
 using System.Windows.Forms;
 using Bid501_Shared;
 using System.Text.Json;
+using System.Net.Configuration;
 
 namespace Bid501_Server
 {
@@ -18,6 +19,14 @@ namespace Bid501_Server
         /// The private websocket used to send information.
         /// </summary>
         private WebSocket ws;
+
+        /// <summary>
+        /// Empty constructor
+        /// </summary>
+        public ServerCommControl()
+        {
+
+        }
 
         public ServerCommControl(WebSocket ws)
         {
@@ -41,7 +50,7 @@ namespace Bid501_Server
             {
                 string msg = msgs[1];
                 Product product = JsonSerializer.Deserialize<Product>(msg);
-                //send product to the controller to be handled.
+                //send product to controller to validate bid and then send updates afterwards.
             }
             //deserialize the data to the appropriate object or string.
             //then send it to the controller for validation after deserialize.
@@ -58,15 +67,37 @@ namespace Bid501_Server
         {
             //send data in form of what the object is then append it onto the message.
             //Serialize objects before sending too.
-            //string msg = "Proxy:" + msg;
+            //string msg = "Success:" + msg;
+
+            string msg = JsonSerializer.Serialize<List<Product>>(products);
+            msg = "Success:" + msg;
+            ws.Send(msg);
+        }
+
+        public void InvalidLogin()
+        {
+            string msg = "DECLINED";
+            ws.Send(msg);
         }
         /// <summary>
         /// Method to send a product to the client when a product needs to be updated.
         /// </summary>
         /// <param name="product">The product that needs to be updated.</param>
-        public void SendProduct(Product product)
+        public void UpdateProduct(Product product)
         {
-
+           string msg = JsonSerializer.Serialize<Product>(product);
+            msg = "Update:" + msg;
+            ws.Send(msg);
+        }
+        /// <summary>
+        /// Method to notify all users that a new product has been added to the auction.
+        /// </summary>
+        /// <param name="product">The new product</param>
+        public void NewProduct(Product product)
+        {
+            string msg = JsonSerializer.Serialize<Product>(product);
+            msg = "New:" + msg;
+            ws.Send(msg);
         }
         /// <summary>S
         /// Method to send a message to all users that a bid has ended.
@@ -74,7 +105,9 @@ namespace Bid501_Server
         /// <param name="product">The product that the bid ended on.</param>
         public void BidEnded(Product product)
         {
-
+            string msg = JsonSerializer.Serialize<Product>(product);
+            msg = "BidEnded:" + msg;
+            ws.Send(msg);
         }
 
     }
