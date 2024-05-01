@@ -16,6 +16,7 @@ namespace Bid501_Client
     {
         private WebSocket ws;
         public UpdateLoginStatus updateLoginStatus { get; set; }
+        public UpdateListDel updateList { get; set; }
         public ClientCommControl(WebSocket ws)
         {
             this.ws = ws;
@@ -35,27 +36,39 @@ namespace Bid501_Client
         protected override void OnMessage(MessageEventArgs e)
         {
             string[] split = e.ToString().Split(':');
-            if (split[0] == "login stuff")
+            switch (split[0])
             {
-                switch (split[1])
-                {
-                    case "SUCCESS":
-                        UpdateLoginStatus(Bid501_Shared.State.SUCCESS);
-                        break;
-                    case "DECLINED":
-                        UpdateLoginStatus(Bid501_Shared.State.DECLINED);
-                        break;
-                }
-            }
-            else if (split[0] == "proxy")
-            {
-                MakeTheCereal(split[1]);
+                case "Success":
+                    List<IProduct> productList = DeserializeProductList(split[1]);
+                    updateList(productList);
+                    UpdateLoginStatus(Bid501_Shared.State.SUCCESS);
+                    break;
+                case "DECLINED":
+                    UpdateLoginStatus(Bid501_Shared.State.DECLINED);
+                    break;
+                case "Update":
+                    IProduct productUpdate = DeserializeProduct(split[1]);
+                    break;
+                case "New":
+                    IProduct productNew = DeserializeProduct(split[1]);
+                    break;
+                case "BidEnded":
+                    IProduct productEnded = DeserializeProduct(split[1]);
+                    break;
             }
         }
 
-        private void MakeTheCereal(string s)
+        private List<IProduct> DeserializeProductList(string s)
         {
-            Product_Proxy product_Proxy = JsonSerializer.Deserialize<Product_Proxy>(s);
+            List<IProduct> product_Proxy = JsonSerializer.Deserialize<List<IProduct>>(s);
+            return product_Proxy;
+            //send the proxy and also make a new view.
+        }
+
+        private IProduct DeserializeProduct(string s)
+        {
+            IProduct product_Proxy = JsonSerializer.Deserialize<IProduct>(s);
+            return product_Proxy;
             //send the proxy and also make a new view.
         }
     }

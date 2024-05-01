@@ -14,5 +14,6 @@ namespace Bid501_Shared
         DateTime Time { get; set; }
 
         bool Status { get; set; }
+        List<double> bidHistory { get; set; }
     }
 }
