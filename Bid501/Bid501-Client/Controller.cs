@@ -8,7 +8,7 @@ using WebSocketSharp;
 
 namespace Bid501_Client
 {
-    public delegate void ViewUpdateListDel(List<IProduct> p);
+    public delegate void ViewUpdateListDel(List<Product_Proxy> p);
     public class Controller
     {
         private List<Product_Proxy> productList;

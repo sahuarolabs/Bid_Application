@@ -13,13 +13,12 @@ namespace Bid501_Client
 {
     public partial class ClientView : Form
     {
-        private List<IProduct> listOfProducts;
+        private List<Product_Proxy> listOfProducts;
         public ClientView()
         {
-            PopulateView();
             InitializeComponent();
         }
-        private void PopulateView()
+        public void PopulateView()
         {
             UxItemName.Text = listOfProducts[0].Name;
             UxTimeLeft.Text = listOfProducts[0].Time.ToString();
@@ -35,7 +34,7 @@ namespace Bid501_Client
             UxAmountBids.Text = listOfProducts[0].bidHistory.Count.ToString();
             UxMinBid.Text = "Minimum bid $" + listOfProducts[0].bidHistory[listOfProducts[0].bidHistory.Count - 1].ToString();
         }
-        public void UpdateList(List<IProduct> pList)
+        public void UpdateList(List<Product_Proxy> pList)
         {
             listOfProducts = pList;
             foreach(Product_Proxy p in pList)
