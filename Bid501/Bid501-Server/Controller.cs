@@ -30,6 +30,7 @@ namespace Bid501_Server
         private ProductModel product;
         private AccountModel account;
         private ResyncDel resyncDel;
+        private BidEnded bidChanged;
         public displayState displayState { get; set; } //added
 
         WebSocket ws;
@@ -87,8 +88,9 @@ namespace Bid501_Server
 
         }
 
-        public void InitializeDelegates(AddProduct add, ResyncDel resync, AdminOpen ao)
+        public void InitializeDelegates(AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b)
         {
+            bidChanged = b; 
             adOpen = ao;    
             addProductViewOpen = add;
             resyncDel = resync;
@@ -103,6 +105,11 @@ namespace Bid501_Server
         {
             addProductViewOpen();
             resyncDel();
+        }
+
+        public void BidEnded(Product p)
+        {
+            bidChanged(p);
         }
     }
 }

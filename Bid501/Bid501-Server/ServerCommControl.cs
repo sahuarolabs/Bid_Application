@@ -100,6 +100,5 @@ namespace Bid501_Server
             msg = "BidEnded:" + msg;
             ws.Send(msg);
         }
-
     }
 }

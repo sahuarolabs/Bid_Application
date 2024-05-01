@@ -41,8 +41,6 @@ namespace Bid501_Server
            
            this.Close();
         }
-     
-
 
         private void productList_SelectedIndexChanged(object sender, EventArgs e)
         {
