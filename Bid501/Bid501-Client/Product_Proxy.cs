@@ -8,44 +8,12 @@ using WebSocketSharp;
 
 namespace Bid501_Client
 {
-    public class Product_Proxy : IProductDB
+    public class Product_Proxy : IProduct
     {
-        private WebSocket ws;
-        public List<IProduct> ProductList { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public void SetWebsocket(WebSocket ws)
-        {
-            this.ws = ws;
-        }
-        public List<double> GetBidList() 
-        {
-
-            throw new NotImplementedException();
-        }
-
-        public Bid501_Shared.Status GetCurStatus()
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetItemName()
-        {
-            throw new NotImplementedException();
-        }
-
-        public double GetMinBid()
-        {
-            throw new NotImplementedException();
-        }
-
-        public DateTime GetTimeLeft()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ServerUpdate(List<IProductDB> listProduct)
-        {
-            throw new NotImplementedException();
-        }
+        public string Name { get; set; }
+        public int ID { get; set; }
+        public DateTime Time { get; set; }
+        public bool Status { get; set; }
+        public List<double> bidHistory { get; set; }
     }
 }
