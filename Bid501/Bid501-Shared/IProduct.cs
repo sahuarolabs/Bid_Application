@@ -11,9 +11,11 @@ namespace Bid501_Shared
         string Name { get; set; }
         int ID { get; set; }
 
-        DateTime Time { get; set; }
+        TimeSpan Time { get; set; }
+      
+        double Price { get; set; }  
 
         bool Status { get; set; }
-        List<double> bidHistory { get; set; }
+        //List<double> bidHistory { get; set; }
     }
 }
