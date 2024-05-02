@@ -47,7 +47,7 @@ namespace Bid501_Server
             AddProductView addProduct = new AddProductView(controller.SendServerProduct , pm);
        //     controller.displayState = view.DisplayState; //added
             view.handleLogin = controller.handleEvents; //added
-            controller.InitializeDelegates(addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, sc.BidEnded, sc.SendServerProduct, sc.ClientLogin);
+            controller.InitializeDelegates(addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, sc.BidEnded, sc.SendServerProduct, controller.ClientLogin);
             Application.Run(view);
             
             controller.Close();
