@@ -18,7 +18,7 @@ namespace Bid501_Server
         /// <summary>
         /// The private websocket used to send information.
         /// </summary>
-        private WebSocket ws;
+        private WebSocketServer ws;
 
         /// <summary>
         /// Empty constructor
@@ -30,7 +30,7 @@ namespace Bid501_Server
         private Update update;
 
         
-        public ServerCommControl( ClientLogin clientlog,Update u,ProductModel p, WebSocket ws)
+        public ServerCommControl( ClientLogin clientlog,Update u,ProductModel p, WebSocketServer ws)
         {
             this.login = clientlog;
             this.products = p;
@@ -64,12 +64,12 @@ namespace Bid501_Server
                     List<Product> productList = products.SyncHardcoded();
                     string msg = JsonSerializer.Serialize<List<Product>>(productList);
                     msg = "Success:" + msg;
-                    ws.Send(msg);
+                    Send(msg);
                 }
                 else
                 {
                     string msg = "DECLINED";
-                    ws.Send(msg);
+                    Send(msg);
                 }
             }
             else
@@ -107,7 +107,7 @@ namespace Bid501_Server
         {
            string msg = JsonSerializer.Serialize<Product>(product);
             msg = "Update:" + msg;
-            ws.Send(msg);
+            Send(msg);
         }
         /// <summary>
         /// Method to notify all users that a new product has been added to the auction.
@@ -117,7 +117,7 @@ namespace Bid501_Server
         {
             string msg = JsonSerializer.Serialize<Product>(product);
             msg = "New:" + msg;
-            ws.Send(msg);
+            Send(msg);
         }
        
         /// <summary>S
@@ -128,7 +128,7 @@ namespace Bid501_Server
         {
             string msg = JsonSerializer.Serialize<Product>(product);
             msg = "BidEnded:" + msg;
-            ws.Send(msg);
+            Send(msg);
         }
     }
 }
