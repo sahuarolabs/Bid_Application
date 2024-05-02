@@ -116,7 +116,7 @@ namespace Bid501_Server
 
         public void SendServerProduct(Product p)
         {
-            ssp(p);   
+            ssp(p);
         }
 
         public void BidEnded(Product p)
