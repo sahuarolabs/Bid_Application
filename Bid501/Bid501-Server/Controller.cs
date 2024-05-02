@@ -71,7 +71,7 @@ namespace Bid501_Server
                     break;
                 case State.GOTPASSWORD:
                     displayState(State.GOTPASSWORD); //changed
-                    validateCredentials(args);
+               //     validateCredentials(args);
                     break;
                 default:
                     break;
@@ -79,7 +79,7 @@ namespace Bid501_Server
         }
 
         //method to validate login
-        private bool ClientLogin(string username, string password)
+        public bool ClientLogin(string username, string password)
         {
             foreach (Account account in accounts)
             {
@@ -95,8 +95,9 @@ namespace Bid501_Server
         }
 
 
-        public void InitializeDelegates(AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b, SendServerProduct s)
+        public void InitializeDelegates(AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b, SendServerProduct s, ClientLogin cllog)
         {
+            cl = cllog; 
             ssp = s;
             bidChanged = b;
             adOpen = ao;

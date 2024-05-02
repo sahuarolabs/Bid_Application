@@ -43,11 +43,11 @@ namespace Bid501_Server
 
             ServerCommControl sc = new ServerCommControl(controller.ClientLogin, wss);
 
-            AdminView adminView = new AdminView(controller.BidEnded, controller.AddProduct, pm);
+            AdminView adminView = new AdminView(controller.BidEnded, controller.AddProduct, pm, am);
             AddProductView addProduct = new AddProductView(controller.SendServerProduct , pm);
        //     controller.displayState = view.DisplayState; //added
             view.handleLogin = controller.handleEvents; //added
-            controller.InitializeDelegates(addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, sc.BidEnded, sc.SendServerProduct);
+            controller.InitializeDelegates(addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, sc.BidEnded, sc.SendServerProduct, sc.ClientLogin);
             Application.Run(view);
             
             controller.Close();

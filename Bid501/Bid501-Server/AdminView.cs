@@ -19,7 +19,8 @@ namespace Bid501_Server
         private ProductModel model;
         private BidEnded bidChanged;
         List<Product> products = new List<Product>();
-        public AdminView( BidEnded be, AddProduct ap, ProductModel pm)
+        List<Account> actives = new List<Account>();
+        public AdminView( BidEnded be, AddProduct ap, ProductModel pm, AccountModel am)
         {
             InitializeComponent();
             this.bidChanged = be;   
@@ -28,7 +29,7 @@ namespace Bid501_Server
             products = model.Sync();
             activeProductList.DataSource = null;
             activeProductList.DataSource = products;
-            AccountModel am = new AccountModel();
+            
         }
         public void AdminOpen()
         {

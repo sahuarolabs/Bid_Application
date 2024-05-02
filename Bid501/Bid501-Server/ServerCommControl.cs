@@ -26,7 +26,7 @@ namespace Bid501_Server
         public ServerCommControl() { }
         private ClientLogin cl;
         
-        public ServerCommControl( ClientLogin clientlog, WebSocket ws)
+        public ServerCommControl(ClientLogin clientlog, WebSocket ws)
         {
             this.cl = clientlog;    
             this.ws = ws;
