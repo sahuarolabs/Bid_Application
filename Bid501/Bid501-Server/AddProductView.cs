@@ -18,8 +18,9 @@ namespace Bid501_Server
         ProductModel model;
         SendServerProduct ssp;
         List<Product> products = new List<Product>();
-        public AddProductView(ProductModel m)
+        public AddProductView(SendServerProduct p, ProductModel m)
         {
+            this.ssp = p;   
             this.model = m;
             InitializeComponent();
             products = model.SyncHardcoded();

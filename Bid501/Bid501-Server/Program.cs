@@ -43,7 +43,7 @@ namespace Bid501_Server
             ServerCommControl sc = new ServerCommControl();
 
             AdminView adminView = new AdminView(controller.BidEnded, controller.AddProduct, pm);
-            AddProductView addProduct = new AddProductView(pm);
+            AddProductView addProduct = new AddProductView(controller.SendServerProduct , pm);
        //     controller.displayState = view.DisplayState; //added
             view.handleLogin = controller.handleEvents; //added
             controller.InitializeDelegates(addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, sc.BidEnded, sc.SendServerProduct);
