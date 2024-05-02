@@ -10,6 +10,9 @@ using WebSocketSharp;
 using WebSocket = WebSocketSharp.WebSocket;
 using System.Windows.Forms;
 
+
+//TBD remeber which user has the highest bid for when we end the bid
+//have to send out message alerting users who won the bid.
 namespace Bid501_Server
 { 
     public enum State
@@ -29,8 +32,12 @@ namespace Bid501_Server
         private AddProduct addProductViewOpen;
         private SendServerProduct ssp;
         private AdminOpen adOpen;
+
+        private UpdateProductDel updateProduct;
+
         private ProductModel product;
         private AccountModel account;
+
         private ResyncDel resyncDel;
         private BidEnded bidChanged;
         List<Account> activeClients;
@@ -71,7 +78,11 @@ namespace Bid501_Server
                     break;
                 case State.GOTPASSWORD:
                     displayState(State.GOTPASSWORD); //changed
+<<<<<<< HEAD
                //     validateCredentials(args);
+=======
+                    ValidateCredentials(args);
+>>>>>>> Dylan
                     break;
                 default:
                     break;
@@ -95,9 +106,15 @@ namespace Bid501_Server
         }
 
 
+<<<<<<< HEAD
         public void InitializeDelegates(AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b, SendServerProduct s, ClientLogin cllog)
         {
             cl = cllog; 
+=======
+        public void InitializeDelegates(UpdateProductDel up,AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b, SendServerProduct s)
+        {             
+            updateProduct = up;
+>>>>>>> Dylan
             ssp = s;
             bidChanged = b;
             adOpen = ao;
@@ -109,6 +126,22 @@ namespace Bid501_Server
         {
             ws.Send(cred);
         }
+
+        public void UpdateProducts(Product p)
+        {
+            foreach(Product prod in product.SyncHardcoded())
+            {
+                if(prod.ID == p.ID)
+                {
+                    if(p.Price > prod.Price)
+                    {
+                        prod.Price = p.Price;
+                        updateProduct(prod);
+                    }
+                }
+            }
+        }
+
 
         public void AddProduct()
         {

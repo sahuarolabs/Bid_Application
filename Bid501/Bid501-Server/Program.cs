@@ -13,8 +13,14 @@ namespace Bid501_Server
     public delegate void SendServerProduct(Product p);
     public delegate void AddProduct();
     public delegate void AdminOpen();
+
+
     public delegate bool ClientLogin(string username, string password);
+    public delegate void Update(Product p);
     public delegate void BidEnded(Product p);
+
+    public delegate void NewProductDel(Product p);
+    public delegate void UpdateProductDel(Product p);
 
     public delegate void displayState(State state); //added
     public delegate void LoginDel(State state, String args); //added
@@ -41,13 +47,13 @@ namespace Bid501_Server
         
             LoginView view = new LoginView(controller.AdminOpen, am);
 
-            ServerCommControl sc = new ServerCommControl(controller.ClientLogin, wss);
+            ServerCommControl sc = new ServerCommControl(controller.ClientLogin,controller.UpdateProducts,pm, wss);
 
             AdminView adminView = new AdminView(controller.BidEnded, controller.AddProduct, pm, am);
             AddProductView addProduct = new AddProductView(controller.SendServerProduct , pm);
        //     controller.displayState = view.DisplayState; //added
             view.handleLogin = controller.handleEvents; //added
-            controller.InitializeDelegates(addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, sc.BidEnded, sc.SendServerProduct, controller.ClientLogin);
+            controller.InitializeDelegates(sc.UpdateProduct,addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, sc.BidEnded, sc.SendServerProduct);
             Application.Run(view);
             
             controller.Close();
