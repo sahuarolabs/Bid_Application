@@ -22,27 +22,30 @@ namespace Bid501_Server
         DECLINED,
         EXIT
     }
-  
+
     public class Controller
     {
         private AddProduct addProductViewOpen;
+        private SendServerProduct ssp;
         private AdminOpen adOpen;
         private ProductModel product;
         private AccountModel account;
         private ResyncDel resyncDel;
         private BidEnded bidChanged;
+        List<Account> activeClients;
+        List<Account> accounts;
         public displayState displayState { get; set; } //added
 
         WebSocket ws;
-     
+
 
         public Controller(ProductModel p, AccountModel am)
         {
             this.account = am;
             this.product = p;
             ws = new WebSocket("ws://127.0.0.1:8001/login");
-            ws.OnMessage += OnMessage;
             ws.Connect();
+            activeClients = am.AccountSync();
         }
 
         public void Close()
@@ -54,7 +57,7 @@ namespace Bid501_Server
             adOpen();
         }
 
-            public void handleEvents(State state, String args)
+        public void handleEvents(State state, String args)
         {
             switch (state)
             {
@@ -74,24 +77,28 @@ namespace Bid501_Server
             }
         }
 
-        public void OnMessage(object sender, MessageEventArgs e)
+        //method to validate login
+        private bool validateLogin(string username, string password)
         {
-            MessageBox.Show("Recieved");
-            if (e.Data.Equals("VALID"))
+            foreach (Account account in accounts)
             {
-                displayState(State.SUCCESS); //changed
+                if (username == account.Username && password == account.Password)
+                {
+                    if (!account.IsAdmin)
+                    {
+                        return true;
+                    }
+                }
             }
-            else
-            {
-                displayState(State.DECLINED); //changed
-            }
-
+            return false;
         }
 
-        public void InitializeDelegates(AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b)
+
+        public void InitializeDelegates(AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b, SendServerProduct s)
         {
-            bidChanged = b; 
-            adOpen = ao;    
+            ssp = s;
+            bidChanged = b;
+            adOpen = ao;
             addProductViewOpen = add;
             resyncDel = resync;
         }
@@ -107,8 +114,13 @@ namespace Bid501_Server
             resyncDel();
         }
 
-        public void BidEnded(Product p)
+        public void SendServerProduct(Product p)
         {
+            ssp(p);   
+        }
+
+        public void BidEnded(Product p)
+        { 
             bidChanged(p);
         }
     }

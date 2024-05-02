@@ -11,7 +11,7 @@ using System.Text.Json;
 using System.Net.Configuration;
 
 namespace Bid501_Server
-{
+{  
     // A behavior
     public class ServerCommControl : WebSocketBehavior//, ILogin
     {
@@ -84,12 +84,13 @@ namespace Bid501_Server
         /// Method to notify all users that a new product has been added to the auction.
         /// </summary>
         /// <param name="product">The new product</param>
-        public void NewProduct(Product product)
+        public void SendServerProduct(Product product)
         {
             string msg = JsonSerializer.Serialize<Product>(product);
             msg = "New:" + msg;
             ws.Send(msg);
         }
+       
         /// <summary>S
         /// Method to send a message to all users that a bid has ended.
         /// </summary>

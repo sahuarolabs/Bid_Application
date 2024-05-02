@@ -16,6 +16,7 @@ namespace Bid501_Server
     public partial class AddProductView : Form
     {
         ProductModel model;
+        SendServerProduct ssp;
         List<Product> products = new List<Product>();
         public AddProductView(ProductModel m)
         {
@@ -38,7 +39,7 @@ namespace Bid501_Server
         {
            model.ProductModelAdd((Product)productList.SelectedItem);
            model.RemoveHardcoded((Product)productList.SelectedItem);
-           
+            ssp((Product)productList.SelectedItem);
            this.Close();
         }
 
