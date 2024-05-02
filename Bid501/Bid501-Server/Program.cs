@@ -13,6 +13,7 @@ namespace Bid501_Server
     public delegate void SendServerProduct(Product p);
     public delegate void AddProduct();
     public delegate void AdminOpen();
+    public delegate bool ClientLogin(string username, string password);
     public delegate void BidEnded(Product p);
 
     public delegate void displayState(State state); //added
@@ -40,7 +41,7 @@ namespace Bid501_Server
         
             LoginView view = new LoginView(controller.AdminOpen, am);
 
-            ServerCommControl sc = new ServerCommControl();
+            ServerCommControl sc = new ServerCommControl(controller.ClientLogin, wss);
 
             AdminView adminView = new AdminView(controller.BidEnded, controller.AddProduct, pm);
             AddProductView addProduct = new AddProductView(controller.SendServerProduct , pm);

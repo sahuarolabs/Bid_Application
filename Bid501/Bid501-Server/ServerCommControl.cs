@@ -24,9 +24,11 @@ namespace Bid501_Server
         /// Empty constructor
         /// </summary>
         public ServerCommControl() { }
-
-        public ServerCommControl(WebSocket ws)
+        private ClientLogin cl;
+        
+        public ServerCommControl( ClientLogin clientlog, WebSocket ws)
         {
+            this.cl = clientlog;    
             this.ws = ws;
         }
 
@@ -50,6 +52,7 @@ namespace Bid501_Server
                 string password = msgs[2];
                 //send the username and passwords to the controller to handle
                 //NEED TO WORK ON DELEGATES
+                cl(username, password); 
             }
             else
             {
