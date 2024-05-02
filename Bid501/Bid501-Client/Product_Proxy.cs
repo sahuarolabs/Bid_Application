@@ -15,5 +15,7 @@ namespace Bid501_Client
         public DateTime Time { get; set; }
         public bool Status { get; set; }
         public List<double> bidHistory { get; set; }
+        public double Price { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        TimeSpan IProduct.Time { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

@@ -27,7 +27,7 @@ namespace Bid501_Client
 
 
             //Websocket testing.
-            var ws = new WebSocket("ws://10.130.160.108:8001/shared");//change last 3 digits of IP address by using ipconfig in command prompt to connect to server everytime we swap computers.
+            var ws = new WebSocket("ws://10.130.160.99:8001/shared");//change last 3 digits of IP address by using ipconfig in command prompt to connect to server everytime we swap computers.
             ws.Connect();
             //ws.OnMessage += (sender, e) => Console.WriteLine("Received: " + e.Data);
 
@@ -37,12 +37,18 @@ namespace Bid501_Client
             //Console.ReadKey(true);
             ClientCommControl ccm = new ClientCommControl(ws);
             Controller controller = new Controller();
+            ccm.addProduct = controller.NewProduct;
+            ccm.updateProduct = controller.UpdateProduct;
+            controller.sendBid = ccm.SendBidItem;
             ccm.updateList = controller.UpdateList;
             ccm.updateLoginStatus = controller.UpdateLoginView;
             controller.handleLogin = ccm.SendLoginCredentials;
             LoginView loginView = new LoginView();
             ClientView clientView = new ClientView();
-            controller.updateList = clientView.UpdateList;
+            controller.populateListView = clientView.PopulateView;
+            controller.listUpdateToServer = ccm.SendBidItem;
+            clientView.sendBid = controller.CheckMinBid;
+            //controller.updateList = clientView.UpdateList;
             controller.UpdateLoginState = loginView.DisplayState;
             loginView.handleLogin = controller.LogInHandler;
             Application.Run(loginView);

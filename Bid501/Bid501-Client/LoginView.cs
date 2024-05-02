@@ -93,7 +93,6 @@ namespace Bid501_Client
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
-            handleLogin(""); //changed
         }
 
         /// <summary>
