@@ -78,11 +78,8 @@ namespace Bid501_Server
                     break;
                 case State.GOTPASSWORD:
                     displayState(State.GOTPASSWORD); //changed
-<<<<<<< HEAD
-               //     validateCredentials(args);
-=======
                     ValidateCredentials(args);
->>>>>>> Dylan
+
                     break;
                 default:
                     break;
@@ -106,15 +103,10 @@ namespace Bid501_Server
         }
 
 
-<<<<<<< HEAD
-        public void InitializeDelegates(AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b, SendServerProduct s, ClientLogin cllog)
-        {
-            cl = cllog; 
-=======
+
         public void InitializeDelegates(UpdateProductDel up,AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b, SendServerProduct s)
         {             
             updateProduct = up;
->>>>>>> Dylan
             ssp = s;
             bidChanged = b;
             adOpen = ao;
@@ -150,13 +142,9 @@ namespace Bid501_Server
         }
 
         public void SendServerProduct(Product p)
-        {
-<<<<<<< HEAD
+        { 
             ssp(p);
-=======
-            ssp(p);   
 
->>>>>>> 17461821af724f27364c191a5d66bc2de215b964
         }
 
         public void BidEnded(Product p)
