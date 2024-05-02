@@ -25,6 +25,7 @@ namespace Bid501_Server
 
     public class Controller
     {
+        private ClientLogin cl;
         private AddProduct addProductViewOpen;
         private SendServerProduct ssp;
         private AdminOpen adOpen;
@@ -78,7 +79,7 @@ namespace Bid501_Server
         }
 
         //method to validate login
-        private bool validateLogin(string username, string password)
+        private bool ClientLogin(string username, string password)
         {
             foreach (Account account in accounts)
             {
@@ -103,7 +104,7 @@ namespace Bid501_Server
             resyncDel = resync;
         }
 
-        private void validateCredentials(String cred)
+        private void ValidateCredentials(String cred)
         {
             ws.Send(cred);
         }
@@ -116,7 +117,12 @@ namespace Bid501_Server
 
         public void SendServerProduct(Product p)
         {
+<<<<<<< HEAD
             ssp(p);
+=======
+            ssp(p);   
+
+>>>>>>> 17461821af724f27364c191a5d66bc2de215b964
         }
 
         public void BidEnded(Product p)
