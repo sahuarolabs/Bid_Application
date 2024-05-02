@@ -12,11 +12,15 @@ using System.Text.Json;
 namespace Bid501_Client
 {
     public delegate void UpdateLoginStatus(State s);
+    public delegate void UpdateProduct(IProduct product);
+    public delegate void AddProduct(IProduct product);
     public class ClientCommControl : WebSocketBehavior
     {
         private WebSocket ws;
         public UpdateLoginStatus updateLoginStatus { get; set; }
         public UpdateListDel updateList { get; set; }
+        public UpdateProduct updateProduct { get; set; }
+        public AddProduct addProduct { get; set; }
         public ClientCommControl(WebSocket ws)
         {
             this.ws = ws;
@@ -24,7 +28,12 @@ namespace Bid501_Client
 
         public void SendLoginCredentials(string cred)
         {
-            ws.Send(cred);
+            ws.Send("Login:" + cred);
+        }
+
+        public void SendBidItem(IProduct product)
+        {
+            ws.Send("Bid:" + JsonSerializer.Serialize<IProduct>(product));
         }
 
         private void UpdateLoginStatus(State s)
@@ -48,12 +57,15 @@ namespace Bid501_Client
                     break;
                 case "Update":
                     IProduct productUpdate = DeserializeProduct(split[1]);
+                    updateProduct(productUpdate);
                     break;
                 case "New":
                     IProduct productNew = DeserializeProduct(split[1]);
+                    addProduct(productNew);
                     break;
                 case "BidEnded":
                     IProduct productEnded = DeserializeProduct(split[1]);
+                    updateProduct(productEnded);
                     break;
             }
         }

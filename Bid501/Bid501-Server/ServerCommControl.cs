@@ -29,13 +29,20 @@ namespace Bid501_Server
         {
             this.ws = ws;
         }
+
+        protected override void OnOpen()
+        {
+            base.OnOpen();
+            Console.WriteLine("NEW CLIENT CONNECTED");
+        }
+
         /// <summary>
         /// Method for when the server receives messages from the client using JSON.
         /// </summary>
         /// <param name="e">The message that is sent through the websocket using JSON.</param>
         protected override void OnMessage(MessageEventArgs e)
         {
-            string[] msgs = e.ToString().Split(':');
+            string[] msgs = e.Data.ToString().Split(':');
 
             if (msgs.Length == 3)
             {
