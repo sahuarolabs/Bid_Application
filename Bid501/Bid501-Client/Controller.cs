@@ -14,6 +14,7 @@ namespace Bid501_Client
     public delegate void ListUpdate();
     public delegate void ListUpdateToServer(IProduct product);
     public delegate void PopulateListView();
+    public delegate void LogoutUserDel(string cred);
     public class Controller
     {
         private List<IProduct> productList;
@@ -25,6 +26,8 @@ namespace Bid501_Client
         public ListUpdate listUpdate { get; set; }
         public ListUpdateToServer listUpdateToServer { get; set; }
         public PopulateListView populateListView { get; set; }
+        public LogoutUserDel logoutUser { get; set; }
+        private string cred;
         public void UpdateList(List<IProduct> list)
         {
             productList = list;
@@ -42,6 +45,7 @@ namespace Bid501_Client
 
         public void LogInHandler(string cred)
         {
+            this.cred = cred;
             handleLogin(cred);
         }
 
@@ -98,6 +102,11 @@ namespace Bid501_Client
         {
             productList.Add(product);
             ProductListUpdated();
+        }
+
+        public void Logout()
+        {
+            logoutUser(cred);
         }
     }
 }

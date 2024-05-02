@@ -36,6 +36,11 @@ namespace Bid501_Client
             ws.Send("Bid:" + JsonSerializer.Serialize<IProduct>(product));
         }
 
+        public void LogoutUser(string cred)
+        {
+            ws.Send("Logout:" + cred);
+        }
+
         private void UpdateLoginStatus(State s)
         {
             //delegate to show if the username and password was valid.
@@ -82,6 +87,11 @@ namespace Bid501_Client
             IProduct product_Proxy = JsonSerializer.Deserialize<IProduct>(s);
             return product_Proxy;
             //send the proxy and also make a new view.
+        }
+
+        private void Test()
+        {
+
         }
     }
 }
