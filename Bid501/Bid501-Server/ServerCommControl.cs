@@ -24,11 +24,17 @@ namespace Bid501_Server
         /// Empty constructor
         /// </summary>
         public ServerCommControl() { }
-        private ClientLogin cl;
+
+        private ProductModel products;
+        private ClientLogin login;
+        private Update update;
+
         
-        public ServerCommControl( ClientLogin clientlog, WebSocket ws)
+        public ServerCommControl( ClientLogin clientlog,Update u,ProductModel p, WebSocket ws)
         {
-            this.cl = clientlog;    
+            this.login = clientlog;
+            this.products = p;
+            this.update = u;
             this.ws = ws;
         }
 
@@ -52,34 +58,47 @@ namespace Bid501_Server
                 string password = msgs[2];
                 //send the username and passwords to the controller to handle
                 //NEED TO WORK ON DELEGATES
-                cl(username, password); 
+              bool valid = login(username, password); 
+                if (valid)
+                {
+                    List<Product> productList = products.SyncHardcoded();
+                    string msg = JsonSerializer.Serialize<List<Product>>(productList);
+                    msg = "Success:" + msg;
+                    ws.Send(msg);
+                }
+                else
+                {
+                    string msg = "DECLINED";
+                    ws.Send(msg);
+                }
             }
             else
             {
                 string msg = msgs[1];
                 Product product = JsonSerializer.Deserialize<Product>(msg);
+                update(product);
                 //send product to controller to validate bid and then send updates afterwards.
                 //NEED TO WORK ON DELEGATES
             }
         }
-        /// <summary>
-        /// Method to use when the server wants to send over the list of products.
-        /// </summary>
-        /// <param name="cred">The list sent to the client using JSON.</param>
-        public void SendProductList(List<Product> products)
-        {
-            string msg = JsonSerializer.Serialize<List<Product>>(products);
-            msg = "Success:" + msg;
-            ws.Send(msg);
-        }
-        /// <summary>
-        /// Method to use when the user has invalid login information.
-        /// </summary>
-        public void InvalidLogin()
-        {
-            string msg = "DECLINED";
-            ws.Send(msg);
-        }
+        ///// <summary>
+        ///// Method to use when the server wants to send over the list of products.
+        ///// </summary>
+        ///// <param name="cred">The list sent to the client using JSON.</param>
+        //public void SendProductList(List<Product> products)
+        //{
+        //    string msg = JsonSerializer.Serialize<List<Product>>(products);
+        //    msg = "Success:" + msg;
+        //    ws.Send(msg);
+        //}
+        ///// <summary>
+        ///// Method to use when the user has invalid login information.
+        ///// </summary>
+        //public void InvalidLogin()
+        //{
+        //    string msg = "DECLINED";
+        //    ws.Send(msg);
+        //}
         /// <summary>
         /// Method to send a product to the client when a product needs to be updated.
         /// </summary>
