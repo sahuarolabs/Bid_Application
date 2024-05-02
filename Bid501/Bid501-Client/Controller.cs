@@ -18,6 +18,7 @@ namespace Bid501_Client
     public class Controller
     {
         private List<IProduct> productList;
+        public Product_ProxyDB product_ProxyDB { get; set; }
         public LoginDel handleLogin { get; set; } //added
         public LoginRequest loginRequest { get; set; }
         public UpdateState UpdateLoginState { get; set; }
@@ -30,7 +31,7 @@ namespace Bid501_Client
         private string cred;
         public void UpdateList(List<IProduct> list)
         {
-            productList = list;
+            product_ProxyDB.ProductList = list;
             populateListView();
         }
         public void Send(string message)
@@ -62,7 +63,7 @@ namespace Bid501_Client
         public void CheckMinBid(IProduct product, double bid)
         {
             int i = 0;
-            foreach (Product_Proxy p in productList)
+            foreach (Product_Proxy p in product_ProxyDB.ProductList)
             {
                 if (p.ID == product.ID && bid > product.bidHistory[product.bidHistory.Count - 1]) productList[i].bidHistory.Add(bid);
                 sendBid(p);
@@ -73,7 +74,7 @@ namespace Bid501_Client
         public void UpdateProduct(IProduct product)
         {
             int ind = 0;
-            foreach(IProduct p in productList)
+            foreach(Product_Proxy p in product_ProxyDB.ProductList)
             {
                 if (p.ID == product.ID)
                 {
@@ -100,7 +101,7 @@ namespace Bid501_Client
         /// <param name="product"></param>
         public void NewProduct(IProduct product)
         {
-            productList.Add(product);
+            product_ProxyDB.ProductList.Add(product);
             ProductListUpdated();
         }
 

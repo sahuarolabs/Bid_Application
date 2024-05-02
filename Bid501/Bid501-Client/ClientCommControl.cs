@@ -17,6 +17,7 @@ namespace Bid501_Client
     public class ClientCommControl : WebSocketBehavior
     {
         private WebSocket ws;
+        public Product_ProxyDB ppd { get; set; }
         public UpdateLoginStatus updateLoginStatus { get; set; }
         public UpdateListDel updateList { get; set; }
         public UpdateProduct updateProduct { get; set; }

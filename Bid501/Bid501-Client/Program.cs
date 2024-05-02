@@ -35,8 +35,11 @@ namespace Bid501_Client
             //ws.Send("Data from client");
 
             //Console.ReadKey(true);
+            Product_ProxyDB ppd = new Product_ProxyDB();
             ClientCommControl ccm = new ClientCommControl(ws);
+            ccm.ppd = ppd;
             Controller controller = new Controller();
+            controller.product_ProxyDB = ppd;
             controller.logoutUser = ccm.LogoutUser;
             ccm.addProduct = controller.NewProduct;
             ccm.updateProduct = controller.UpdateProduct;
