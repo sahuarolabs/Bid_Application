@@ -12,10 +12,12 @@ using Bid501_Shared;
 namespace Bid501_Client
 {
     public delegate void SendBidToController(IProduct product, double bid);
+    public delegate void logoutUserViewDel();
     public partial class ClientView : Form
     {
         private List<IProduct> listOfProducts;
         public SendBidToController sendBid { get; set; }
+        public logoutUserViewDel logoutUser { get; set; }
         public ClientView()
         {
             InitializeComponent();
@@ -51,6 +53,11 @@ namespace Bid501_Client
             {
                 sendBid(listOfProducts[UxListView.Items.IndexOf(UxListView.SelectedItems[0])], Convert.ToDouble(UxBidAmt));
             }
+        }
+
+        private void ClientView_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            logoutUser();
         }
     }
 }

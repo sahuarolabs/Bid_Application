@@ -158,6 +158,7 @@
             this.Controls.Add(this.UxItemName);
             this.Name = "ClientView";
             this.Text = "ClientView";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ClientView_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
