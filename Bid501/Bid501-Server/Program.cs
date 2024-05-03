@@ -65,7 +65,7 @@ namespace Bid501_Server
             IPAddress localIP;
             using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
             {
-                socket.Connect("10.130.160.110", port);
+                socket.Connect("10.130.160.111", port);
                 IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
                 localIP = endPoint.Address;
             }

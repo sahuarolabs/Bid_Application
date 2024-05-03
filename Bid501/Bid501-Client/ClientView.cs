@@ -69,7 +69,6 @@ namespace Bid501_Client
                 //}));
 
             }
-            PopulateView(curIndex);
         }
 
         private void button1_Click(object sender, EventArgs e)
