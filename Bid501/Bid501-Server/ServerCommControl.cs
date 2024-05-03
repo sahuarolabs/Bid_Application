@@ -128,7 +128,15 @@ namespace Bid501_Server
         {
             string msg = JsonSerializer.Serialize<Product>(product);
             msg = "BidEnded|" + msg;
-            Send(msg);
+            try
+            {
+                Send(msg);
+            }
+            catch
+            {
+                MessageBox.Show("No one connected");
+            }
+            
         }
     }
 }
