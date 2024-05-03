@@ -27,13 +27,13 @@ namespace Bid501_Client
             this.Visible = false;
             this.pdb = pdb;
         }
-        public void PopulateView(int ind)
+        public void PopulateView()
         {
             listOfProducts = pdb.PL;
            
-            UxItemName.Text = listOfProducts[ind].Name;
-            UxTimeLeft.Text = listOfProducts[ind].Time.ToString();
-            switch (listOfProducts[ind].Status.ToString())
+            UxItemName.Text = listOfProducts[curIndex].Name;
+            UxTimeLeft.Text = listOfProducts[curIndex].Time.ToString();
+            switch (listOfProducts[curIndex].Status.ToString())
             {
                 case "Available":
                     UxStatus.BackColor = Color.Blue;
@@ -43,15 +43,26 @@ namespace Bid501_Client
                     break;
             }
             //UxAmountBids.Text = listOfProducts[ind]
-            UxAmountBids.Text = "(x bids)";
-            UxMinBid.Text = "Minimum bid $" + listOfProducts[ind].Price.ToString();
+            //UxAmountBids.Text = "(x bids)";
+            UxMinBid.Text = "Minimum bid $" + listOfProducts[curIndex].Price.ToString();
             UpdateList();
        
         }
         public void UpdateList()
         {
-            UxListView.ClearSelected();
-            foreach(Product_Proxy p in listOfProducts)
+            if (UxListView.InvokeRequired)
+            {
+                UxListView.Invoke((MethodInvoker)delegate ()
+                {
+                    UxListView.Items.Clear();
+                });
+            }
+            else
+            {
+                UxListView.Items.Clear();
+            }
+
+            foreach (Product_Proxy p in pdb.PL)
             {
                 //UxListView.Items.Add(p.Name);
                 if (UxListView.InvokeRequired)
@@ -63,6 +74,11 @@ namespace Bid501_Client
                         //UxListView.EnsureVisible(UxListView.Items.Count - 1);
                     });
                 }
+                else
+                {
+                    UxListView.Items.Add(p.Name);
+                }
+
 
                 //this.Invoke(new Action(() =>
                 //{
@@ -95,7 +111,7 @@ namespace Bid501_Client
         private void UxListView_SelectedIndexChanged(object sender, EventArgs e)
         {
             curIndex = UxListView.SelectedIndex;
-            PopulateView(UxListView.SelectedIndex);
+            PopulateView();
         }
 
         private void ClientView_FormClosing_1(object sender, FormClosingEventArgs e)

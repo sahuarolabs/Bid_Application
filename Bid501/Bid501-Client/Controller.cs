@@ -13,7 +13,7 @@ namespace Bid501_Client
     public delegate void SendBid(Product_Proxy p);
     public delegate void ListUpdate();
     public delegate void ListUpdateToServer(Product_Proxy product);
-    public delegate void PopulateListView(int ind);
+    public delegate void PopulateListView();
     public delegate void LogoutUserDel(string cred);
     public delegate void ReplaceProduct();
     public class Controller
@@ -36,12 +36,13 @@ namespace Bid501_Client
         public void UpdateList(List<Product_Proxy> list)
         {
             product_ProxyDB.PL = list;
-            populateListView(0);
+            populateListView();
             if (lockForm)
             {
                 updateLogin(State.SUCCESS);
                 lockForm = false;
             }
+            
         }
 
         public List<IProductDB> LogOutHandler(string username)
@@ -57,16 +58,12 @@ namespace Bid501_Client
 
         public void CheckMinBid(Product_Proxy product, double bid)
         {
-            //foreach (Product_Proxy p in product_ProxyDB.ProductList)
-            //{
-            //    if (p.ID == product.ID && bid > product.bidHistory[product.bidHistory.Count - 1]) productList[i].bidHistory.Add(bid);
-            //    sendBid(p);
-            //    i++;
-            //}
             if (product.Price < bid)
             {
                 product.Price = bid;
+                UpdateProduct(product);
                 sendBid(product);
+                populateListView();
             }
         }
 
