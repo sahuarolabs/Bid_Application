@@ -16,8 +16,8 @@ using System.IO;
 namespace Bid501_Client
 {
     public delegate void UpdateLoginStatus(Bid501_Shared.State s);
-    public delegate void UpdateProduct(IProduct product);
-    public delegate void AddProduct(IProduct product);
+    public delegate void UpdateProduct(Product_Proxy product);
+    public delegate void AddProduct(Product_Proxy product);
     public class ClientCommControl : WebSocketBehavior
     {
         private static WebSocket ws = new WebSocket("ws://10.130.160.110:8001/shared");
@@ -42,9 +42,9 @@ namespace Bid501_Client
             ws.Send("Login:" + cred);
         }
 
-        public void SendBidItem(IProduct product)
+        public void SendBidItem(Product_Proxy product)
         {
-            ws.Send("Bid:" + JsonConvert.SerializeObject(product));
+            ws.Send(JsonConvert.SerializeObject(product));
         }
 
         public void LogoutUser(string cred)
@@ -72,15 +72,15 @@ namespace Bid501_Client
                     UpdateLoginStatus(Bid501_Shared.State.DECLINED);
                     break;
                 case "Update":
-                    IProduct productUpdate = DeserializeProduct(split[1]);
+                    Product_Proxy productUpdate = DeserializeProduct(split[1]);
                     updateProduct(productUpdate);
                     break;
                 case "New":
-                    IProduct productNew = DeserializeProduct(split[1]);
+                    Product_Proxy productNew = DeserializeProduct(split[1]);
                     addProduct(productNew);
                     break;
                 case "BidEnded":
-                    IProduct productEnded = DeserializeProduct(split[1]);
+                    Product_Proxy productEnded = DeserializeProduct(split[1]);
                     updateProduct(productEnded);
                     break;
             }
@@ -100,15 +100,15 @@ namespace Bid501_Client
                     UpdateLoginStatus(Bid501_Shared.State.DECLINED);
                     break;
                 case "Update":
-                    IProduct productUpdate = DeserializeProduct(split[1]);
+                    Product_Proxy productUpdate = DeserializeProduct(split[1]);
                     updateProduct(productUpdate);
                     break;
                 case "New":
-                    IProduct productNew = DeserializeProduct(split[1]);
+                    Product_Proxy productNew = DeserializeProduct(split[1]);
                     addProduct(productNew);
                     break;
                 case "BidEnded":
-                    IProduct productEnded = DeserializeProduct(split[1]);
+                    Product_Proxy productEnded = DeserializeProduct(split[1]);
                     updateProduct(productEnded);
                     break;
             }
@@ -122,9 +122,9 @@ namespace Bid501_Client
             //send the proxy and also make a new view.
         }
 
-        private IProduct DeserializeProduct(string s)
+        private Product_Proxy DeserializeProduct(string s)
         {
-            IProduct product_Proxy = JsonConvert.DeserializeObject<IProduct>(s);
+            Product_Proxy product_Proxy = JsonConvert.DeserializeObject<Product_Proxy>(s);
             return product_Proxy;
             //send the proxy and also make a new view.
         }

@@ -12,12 +12,12 @@ namespace Bid501_Client
     public delegate void ViewUpdateListDel();
     public delegate void SendBid(Product_Proxy p);
     public delegate void ListUpdate();
-    public delegate void ListUpdateToServer(IProduct product);
+    public delegate void ListUpdateToServer(Product_Proxy product);
     public delegate void PopulateListView(int ind);
     public delegate void LogoutUserDel(string cred);
     public class Controller
     {
-        private List<IProduct> productList;
+        private List<Product_Proxy> productList;
         public Product_ProxyDB product_ProxyDB { get; set; }
         public LoginDel handleLogin { get; set; } //added
         public LoginRequest loginRequest { get; set; }
@@ -59,11 +59,12 @@ namespace Bid501_Client
             //}
             if (product.Price < bid)
             {
+                product.Price = bid;
                 sendBid(product);
             }
         }
 
-        public void UpdateProduct(IProduct product)
+        public void UpdateProduct(Product_Proxy product)
         {
             int ind = 0;
             foreach(Product_Proxy p in product_ProxyDB.ProductList)
@@ -82,7 +83,7 @@ namespace Bid501_Client
             listUpdate();
         }
 
-        private void ProductListUpdateToServer(IProduct product)
+        private void ProductListUpdateToServer(Product_Proxy product)
         {
             listUpdateToServer(product);
         }
