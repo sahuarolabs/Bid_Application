@@ -7,6 +7,8 @@ using static System.Windows.Forms.AxHost;
 using WebSocketSharp.Server;
 using WebSocketSharp;
 using System.Runtime.CompilerServices;
+using System.Net.Sockets;
+using System.Net;
 
 namespace Bid501_Server
 {
@@ -14,8 +16,9 @@ namespace Bid501_Server
     public delegate void AddProduct();
     public delegate void AdminOpen();
 
-
-    public delegate bool ClientLogin(string username, string password);
+    public delegate void Success(List<Product> products);
+    public delegate void Invalid();
+    public delegate void ClientLogin(string username, string password);
     public delegate void Update(Product p);
     public delegate void BidEnded(Product p);
 
@@ -36,27 +39,52 @@ namespace Bid501_Server
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            WebSocketServer wss = new WebSocketServer(8001);
-
-            wss.AddWebSocketService<ServerCommControl>("/shared");
-
-            wss.Start();
+            
             AccountModel am = new AccountModel();
             ProductModel pm = new ProductModel();
             Controller controller = new Controller(pm, am);
         
             LoginView view = new LoginView(controller.AdminOpen, am);
+            //WebSocketServer wss = new WebSocketServer("ws://10.7.172.110:8001");
+            //wss.ReuseAddress = true;
+            //wss.Start();
+            
+            //ServerCommControl sc = new ServerCommControl();
+            //sc.SetInit(controller.ClientLogin, controller.UpdateProducts, pm, wss);
+            //wss.AddWebSocketService<ServerCommControl>("/shared", s => s.SetInit(controller.ClientLogin, controller.UpdateProducts, pm, wss));
+            //sc.SetInit(controller.ClientLogin, controller.UpdateProducts, pm, wss);
+            //wss.Start();
 
-            ServerCommControl sc = new ServerCommControl(controller.ClientLogin,controller.UpdateProducts,pm, wss);
-
-            AdminView adminView = new AdminView(controller.BidEnded, controller.AddProduct, pm, am);
+            //AdminView adminView = new AdminView(controller.BidEnded, controller.AddProduct, pm, am);
             AddProductView addProduct = new AddProductView(controller.SendServerProduct , pm);
        //     controller.displayState = view.DisplayState; //added
             view.handleLogin = controller.handleEvents; //added
-            controller.InitializeDelegates(sc.UpdateProduct,addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, sc.BidEnded, sc.SendServerProduct);
-            Application.Run(view);
             
-            controller.Close();
+
+            int port = 8001;
+            IPAddress localIP;
+            using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
+            {
+                socket.Connect("10.130.160.110", port);
+                IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
+                localIP = endPoint.Address;
+            }
+            var wssv = new WebSocketServer(localIP, port);
+            AdminView adminView = new AdminView(controller.BidEnded, controller.AddProduct, pm, am);
+            wssv.AddWebSocketService("/shared", () =>
+            {
+                ServerCommControl scc = new ServerCommControl();
+                scc.SetInit(controller.ClientLogin, controller.UpdateProducts, pm, wssv);
+                controller.InitializeDelegates(scc.SendProductList, scc.InvalidLogin, scc.UpdateProduct, addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, scc.BidEnded, scc.SendServerProduct);
+                return scc;
+            });
+            wssv.Start();
+
+            //controller.InitializeDelegates(sc.SendProductList, sc.InvalidLogin, sc.UpdateProduct, addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, sc.BidEnded, sc.SendServerProduct);
+
+            Application.Run(view);
+            //wss.Stop();
+            //controller.Close();
 
             
 

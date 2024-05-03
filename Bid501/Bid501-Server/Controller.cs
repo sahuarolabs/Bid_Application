@@ -28,11 +28,13 @@ namespace Bid501_Server
 
     public class Controller
     {
-        private ClientLogin cl;
+       
         private AddProduct addProductViewOpen;
         private SendServerProduct ssp;
         private AdminOpen adOpen;
 
+        private Success goodLogin;
+        private Invalid badLogin;
         private UpdateProductDel updateProduct;
 
         private ProductModel product;
@@ -51,7 +53,7 @@ namespace Bid501_Server
         {
             this.account = am;
             this.product = p;
-            ws = new WebSocket("ws://127.0.0.1:8001/login");
+            ws = new WebSocket("ws://127.0.0.1:8001/shared");
             ws.Connect();
             activeClients = am.AccountSync();
         }
@@ -87,25 +89,29 @@ namespace Bid501_Server
         }
 
         //method to validate login
-        public bool ClientLogin(string username, string password)
+        public void ClientLogin(string username, string password)
         {
-            foreach (Account account in accounts)
+            accounts = account.AccountSync();
+            foreach (Account accou in accounts)
             {
-                if (username == account.Username && password == account.Password)
+                if (username == accou.Username && password == accou.Password)
                 {
-                    if (!account.IsAdmin)
+                    if (!accou.IsAdmin)
                     {
-                        return true;
+                        goodLogin(product.SyncHardcoded());
+                        break;
                     }
                 }
             }
-            return false;
+            //badLogin();
         }
 
 
 
-        public void InitializeDelegates(UpdateProductDel up,AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b, SendServerProduct s)
-        {             
+        public void InitializeDelegates(Success su, Invalid i, UpdateProductDel up,AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b, SendServerProduct s)
+        {
+            goodLogin = su;
+            badLogin = i;
             updateProduct = up;
             ssp = s;
             bidChanged = b;

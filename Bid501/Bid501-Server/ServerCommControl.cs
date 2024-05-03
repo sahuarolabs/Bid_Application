@@ -20,28 +20,31 @@ namespace Bid501_Server
         /// </summary>
         private WebSocketServer ws;
 
+        private List<string> listClients = new List<string>();
+
         /// <summary>
         /// Empty constructor
         /// </summary>
-        public ServerCommControl() { }
 
         private ProductModel products;
-        private ClientLogin login;
+        private ClientLogin clientLogin;
         private Update update;
 
         
-        public ServerCommControl( ClientLogin clientlog,Update u,ProductModel p, WebSocketServer ws)
-        {
-            login = clientlog;
-            this.products = p;
-            this.update = u;
-            this.ws = ws;
-        }
+        //public ServerCommControl(ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws)
+        //{
+        //    this.clientLogin = clientlog;
+        //    products = p;
+        //    update = u;
+        //    this.ws = ws;
+        //}
 
-        protected override void OnOpen()
+        public void SetInit(ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws)
         {
-            base.OnOpen();
-            Console.WriteLine("NEW CLIENT CONNECTED");
+            this.clientLogin = clientlog;
+            products = p;
+            update = u;
+            this.ws = ws;
         }
 
         /// <summary>
@@ -51,26 +54,15 @@ namespace Bid501_Server
         protected override void OnMessage(MessageEventArgs e)
         {
             string[] msgs = e.Data.ToString().Split(':');
-
+            
             if (msgs.Length == 3)
             {
                 string username = msgs[1];
                 string password = msgs[2];
                 //send the username and passwords to the controller to handle
                 //NEED TO WORK ON DELEGATES
-              bool valid = login(username, password); 
-                if (valid)
-                {
-                    List<Product> productList = products.SyncHardcoded();
-                    string msg = JsonSerializer.Serialize<List<Product>>(productList);
-                    msg = "Success:" + msg;
-                    Send(msg);
-                }
-                else
-                {
-                    string msg = "DECLINED";
-                    Send(msg);
-                }
+              clientLogin(username, password); 
+      
             }
             else
             {
@@ -81,24 +73,32 @@ namespace Bid501_Server
                 //NEED TO WORK ON DELEGATES
             }
         }
-        ///// <summary>
-        ///// Method to use when the server wants to send over the list of products.
-        ///// </summary>
-        ///// <param name="cred">The list sent to the client using JSON.</param>
-        //public void SendProductList(List<Product> products)
-        //{
-        //    string msg = JsonSerializer.Serialize<List<Product>>(products);
-        //    msg = "Success:" + msg;
-        //    ws.Send(msg);
-        //}
-        ///// <summary>
-        ///// Method to use when the user has invalid login information.
-        ///// </summary>
-        //public void InvalidLogin()
-        //{
-        //    string msg = "DECLINED";
-        //    ws.Send(msg);
-        //}
+
+        protected override void OnOpen()
+        {
+            base.OnOpen();
+            listClients.Add(ID);
+        }
+
+        /// <summary>
+        /// Method to use when the server wants to send over the list of products.
+        /// </summary>
+        /// <param name="cred">The list sent to the client using JSON.</param>
+        public void SendProductList(List<Product> products)
+        {
+            string msg = JsonSerializer.Serialize<List<Product>>(products);
+            msg = "Success|" + msg;
+            Send(msg);
+            
+        }
+        /// <summary>
+        /// Method to use when the user has invalid login information.
+        /// </summary>
+        public void InvalidLogin()
+        {
+            string msg = "DECLINED|";
+            Send(msg);
+        }
         /// <summary>
         /// Method to send a product to the client when a product needs to be updated.
         /// </summary>
@@ -106,7 +106,7 @@ namespace Bid501_Server
         public void UpdateProduct(Product product)
         {
            string msg = JsonSerializer.Serialize<Product>(product);
-            msg = "Update:" + msg;
+            msg = "Update|" + msg;
             Send(msg);
         }
         /// <summary>
@@ -116,7 +116,7 @@ namespace Bid501_Server
         public void SendServerProduct(Product product)
         {
             string msg = JsonSerializer.Serialize<Product>(product);
-            msg = "New:" + msg;
+            msg = "New|" + msg;
             Send(msg);
         }
        
@@ -127,7 +127,7 @@ namespace Bid501_Server
         public void BidEnded(Product product)
         {
             string msg = JsonSerializer.Serialize<Product>(product);
-            msg = "BidEnded:" + msg;
+            msg = "BidEnded|" + msg;
             Send(msg);
         }
     }
