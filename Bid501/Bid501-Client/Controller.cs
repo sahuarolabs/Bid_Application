@@ -28,10 +28,11 @@ namespace Bid501_Client
         public ListUpdateToServer listUpdateToServer { get; set; }
         public PopulateListView populateListView { get; set; }
         public LogoutUserDel logoutUser { get; set; }
+        public TurnClientViewOn turnClientViewOn { get; set; }
         private string cred;
-        public void UpdateList(List<IProduct> list)
+        public void UpdateList(List<Product_Proxy> list)
         {
-            product_ProxyDB.ProductList = list;
+            product_ProxyDB.PL = list;
             populateListView();
         }
         public void Send(string message)
@@ -108,6 +109,11 @@ namespace Bid501_Client
         public void Logout()
         {
             logoutUser(cred);
+        }
+
+        public void TurnViewOnClient()
+        {
+            turnClientViewOn();
         }
     }
 }

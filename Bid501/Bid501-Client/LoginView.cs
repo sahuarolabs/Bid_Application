@@ -12,12 +12,14 @@ using Bid501_Shared;
 
 namespace Bid501_Client
 {
+    public delegate void TurnClientViewOn();
     public partial class LoginView : Form
     {
-
+        //public OpenClient oc;
         
         public LoginDel handleLogin { get; set; }
         public LoginRequest loginRequest { get; set; }
+        public TurnClientViewOn turnClientViewOn { get; set; }
 
         public LoginView()
         {
@@ -63,6 +65,9 @@ namespace Bid501_Client
                         usernameText.Text = "";
                         passwordText.Text = "";
                         userTextPrompt.Text = "Congrats! You are Logged In.";
+                        this.Visible = false;
+                        //delegate to turn on the Client View.
+                        turnClientViewOn();
                     }));
                     break;
                 default:

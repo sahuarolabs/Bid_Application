@@ -8,10 +8,14 @@ using System.Deployment.Application;
 using Bid501_Shared;
 using WebSocketSharp.Server;
 using System.Text.Json;
+using Bid501_Server;
+//using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace Bid501_Client
 {
-    public delegate void UpdateLoginStatus(State s);
+    public delegate void UpdateLoginStatus(Bid501_Shared.State s);
     public delegate void UpdateProduct(IProduct product);
     public delegate void AddProduct(IProduct product);
     public class ClientCommControl : WebSocketBehavior
@@ -40,7 +44,7 @@ namespace Bid501_Client
 
         public void SendBidItem(IProduct product)
         {
-            ws.Send("Bid:" + JsonSerializer.Serialize<IProduct>(product));
+            ws.Send("Bid:" + JsonConvert.SerializeObject(product));
         }
 
         public void LogoutUser(string cred)
@@ -48,7 +52,7 @@ namespace Bid501_Client
             ws.Send("Logout:" + cred);
         }
 
-        private void UpdateLoginStatus(State s)
+        private void UpdateLoginStatus(Bid501_Shared.State s)
         {
             //delegate to show if the username and password was valid.
             updateLoginStatus(s);
@@ -60,7 +64,7 @@ namespace Bid501_Client
             switch (split[0])
             {
                 case "Success":
-                    List<IProduct> productList = DeserializeProductList(split[1]);
+                    List<Product_Proxy> productList = DeserializeProductList(split[1]);
                     updateList(productList);
                     UpdateLoginStatus(Bid501_Shared.State.SUCCESS);
                     break;
@@ -88,7 +92,7 @@ namespace Bid501_Client
             switch (split[0])
             {
                 case "Success":
-                    List<IProduct> productList = DeserializeProductList(split[1]);
+                    List<Product_Proxy> productList = DeserializeProductList(split[1]);
                     updateList(productList);
                     UpdateLoginStatus(Bid501_Shared.State.SUCCESS);
                     break;
@@ -110,16 +114,17 @@ namespace Bid501_Client
             }
         }
 
-        private List<IProduct> DeserializeProductList(string s)
+        private List<Product_Proxy> DeserializeProductList(string s)
         {
-            List<IProduct> product_Proxy = JsonSerializer.Deserialize<List<IProduct>>(s);
+           //  List<IProduct> product_Proxy = JsonSerializer.Deserialize<List<IProduct>>(s);
+            List<Product_Proxy> product_Proxy = JsonConvert.DeserializeObject<List<Product_Proxy>>(s);
             return product_Proxy;
             //send the proxy and also make a new view.
         }
 
         private IProduct DeserializeProduct(string s)
         {
-            IProduct product_Proxy = JsonSerializer.Deserialize<IProduct>(s);
+            IProduct product_Proxy = JsonConvert.DeserializeObject<IProduct>(s);
             return product_Proxy;
             //send the proxy and also make a new view.
         }
