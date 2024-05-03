@@ -27,7 +27,7 @@ namespace Bid501_Client
 
 
             //Websocket testing.
-            var ws = new WebSocket("ws://10.7.172.177:8001/shared");//change last 3 digits of IP address by using ipconfig in command prompt to connect to server everytime we swap computers.
+            WebSocket ws = new WebSocket("ws://10.7.172.177:8001");//change last 3 digits of IP address by using ipconfig in command prompt to connect to server everytime we swap computers.
             ws.Connect();
             //ws.OnMessage += (sender, e) => Console.WriteLine("Received: " + e.Data);
 

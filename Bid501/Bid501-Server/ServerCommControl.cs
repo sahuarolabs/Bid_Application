@@ -20,28 +20,31 @@ namespace Bid501_Server
         /// </summary>
         private WebSocketServer ws;
 
+        private List<string> listClients = new List<string>();
+
         /// <summary>
         /// Empty constructor
         /// </summary>
-        public ServerCommControl() { }
 
         private ProductModel products;
-        private ClientLogin login;
+        private ClientLogin clientLogin;
         private Update update;
 
         
-        public ServerCommControl( ClientLogin clientlog,Update u,ProductModel p, WebSocketServer ws)
+        //public ServerCommControl(ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws)
+        //{
+        //    this.clientLogin = clientlog;
+        //    products = p;
+        //    update = u;
+        //    this.ws = ws;
+        //}
+
+        public void SetInit(ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws)
         {
-            login = clientlog;
+            this.clientLogin = clientlog;
             products = p;
             update = u;
             this.ws = ws;
-        }
-
-        protected override void OnOpen()
-        {
-            base.OnOpen();
-            Console.WriteLine("NEW CLIENT CONNECTED");
         }
 
         /// <summary>
@@ -51,14 +54,14 @@ namespace Bid501_Server
         protected override void OnMessage(MessageEventArgs e)
         {
             string[] msgs = e.Data.ToString().Split(':');
-
+            
             if (msgs.Length == 3)
             {
                 string username = msgs[1];
                 string password = msgs[2];
                 //send the username and passwords to the controller to handle
                 //NEED TO WORK ON DELEGATES
-              login(username, password); 
+              clientLogin(username, password); 
       
             }
             else
@@ -70,6 +73,13 @@ namespace Bid501_Server
                 //NEED TO WORK ON DELEGATES
             }
         }
+
+        protected override void OnOpen()
+        {
+            base.OnOpen();
+            listClients.Add(ID);
+        }
+
         /// <summary>
         /// Method to use when the server wants to send over the list of products.
         /// </summary>
@@ -79,6 +89,7 @@ namespace Bid501_Server
             string msg = JsonSerializer.Serialize<List<Product>>(products);
             msg = "Success:" + msg;
             Send(msg);
+            
         }
         /// <summary>
         /// Method to use when the user has invalid login information.
