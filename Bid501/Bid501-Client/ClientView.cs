@@ -57,7 +57,15 @@ namespace Bid501_Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            sendBid(listOfProducts[curIndex], Convert.ToDouble(UxBidAmt.Text));
+            try
+            {
+                sendBid(listOfProducts[curIndex], Convert.ToDouble(UxBidAmt.Text));
+            }
+            catch
+            {
+                MessageBox.Show("Invalid Bid Price");
+            }
+            
         }
 
         private void ClientView_FormClosing(object sender, FormClosingEventArgs e)
