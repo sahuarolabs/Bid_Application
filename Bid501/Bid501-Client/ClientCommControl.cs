@@ -10,7 +10,6 @@ using WebSocketSharp.Server;
 using System.Text.Json;
 using Bid501_Server;
 //using System.Text.Json.Serialization;
-using Newtonsoft.Json;
 using System.IO;
 
 namespace Bid501_Client
@@ -44,7 +43,7 @@ namespace Bid501_Client
 
         public void SendBidItem(IProduct product)
         {
-            ws.Send("Bid:" + JsonConvert.SerializeObject(product));
+            ws.Send("Bid:" + JsonSerializer.Serialize<IProduct>(product));
         }
 
         public void LogoutUser(string cred)
@@ -115,15 +114,16 @@ namespace Bid501_Client
         }
         private List<Product_Proxy> DeserializeProductList(string s)
         {
-           //  List<IProduct> product_Proxy = JsonSerializer.Deserialize<List<IProduct>>(s);
-            List<Product_Proxy> product_Proxy = JsonConvert.DeserializeObject<List<Product_Proxy>>(s);
+            List<Product_Proxy> product_Proxy = JsonSerializer.Deserialize<List<Product_Proxy>>(s);
+            //List<Product_Proxy> product_Proxy = JsonConvert.DeserializeObject<List<Product_Proxy>>(s);
             return product_Proxy;
             //send the proxy and also make a new view.
         }
 
         private Product_Proxy DeserializeProduct(string s)
         {
-            Product_Proxy product_Proxy = JsonConvert.DeserializeObject<Product_Proxy>(s);
+            Product_Proxy product_Proxy = JsonSerializer.Deserialize<Product_Proxy>(s);
+            //Product_Proxy product_Proxy = JsonConvert.DeserializeObject<Product_Proxy>(s);
             return product_Proxy;
             //send the proxy and also make a new view.
         }

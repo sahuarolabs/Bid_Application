@@ -32,7 +32,7 @@ namespace Bid501_Server
         private ClientLogin clientLogin;
         private Update update;
 
-
+        
         //public ServerCommControl(ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws)
         //{
         //    this.clientLogin = clientlog;
