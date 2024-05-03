@@ -22,6 +22,8 @@ namespace Bid501_Server
 
         private List<string> listClients = new List<string>();
 
+        public static event EventHandler<NewMessageEventArgs> OnNewMessage;
+
         /// <summary>
         /// Empty constructor
         /// </summary>
@@ -30,7 +32,7 @@ namespace Bid501_Server
         private ClientLogin clientLogin;
         private Update update;
 
-        
+
         //public ServerCommControl(ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws)
         //{
         //    this.clientLogin = clientlog;
@@ -38,6 +40,11 @@ namespace Bid501_Server
         //    update = u;
         //    this.ws = ws;
         //}
+
+        private void RaiseOnNewMessage(string username)
+        {
+            OnNewMessage?.Invoke(null, new NewMessageEventArgs { Username = username });
+        }
 
         public void SetInit(ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws)
         {
@@ -59,9 +66,10 @@ namespace Bid501_Server
             {
                 string username = msgs[1];
                 string password = msgs[2];
+                RaiseOnNewMessage(username);
                 //send the username and passwords to the controller to handle
                 //NEED TO WORK ON DELEGATES
-              clientLogin(username, password); 
+                clientLogin(username, password); 
       
             }
             else

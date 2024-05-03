@@ -20,7 +20,7 @@ namespace Bid501_Client
     public delegate void AddProduct(IProduct product);
     public class ClientCommControl : WebSocketBehavior
     {
-        private static WebSocket ws = new WebSocket("ws://10.130.160.110:8001/shared");
+        private static WebSocket ws = new WebSocket("ws://10.130.160.109:8001/shared");
         public Product_ProxyDB ppd { get; set; }
         public UpdateLoginStatus updateLoginStatus { get; set; }
         public UpdateListDel updateList { get; set; }
@@ -113,7 +113,6 @@ namespace Bid501_Client
                     break;
             }
         }
-
         private List<Product_Proxy> DeserializeProductList(string s)
         {
            //  List<IProduct> product_Proxy = JsonSerializer.Deserialize<List<IProduct>>(s);
@@ -122,9 +121,9 @@ namespace Bid501_Client
             //send the proxy and also make a new view.
         }
 
-        private IProduct DeserializeProduct(string s)
+        private Product_Proxy DeserializeProduct(string s)
         {
-            IProduct product_Proxy = JsonConvert.DeserializeObject<IProduct>(s);
+            Product_Proxy product_Proxy = JsonConvert.DeserializeObject<Product_Proxy>(s);
             return product_Proxy;
             //send the proxy and also make a new view.
         }
