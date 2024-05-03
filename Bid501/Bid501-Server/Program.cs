@@ -65,13 +65,12 @@ namespace Bid501_Server
             IPAddress localIP;
             using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
             {
-                socket.Connect("10.130.160.110", port);
+                socket.Connect("10.150.28.10", port);
                 IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
                 localIP = endPoint.Address;
             }
             WebSocketServer wssv = new WebSocketServer(localIP, port);
             AdminView adminView = new AdminView(controller.BidEnded, controller.AddProduct, pm, am);
-            wssv.AddWebSocketService<ServerCommControl>("/shared");
             wssv.AddWebSocketService("/shared", () =>
             {
                 ServerCommControl scc = new ServerCommControl();
