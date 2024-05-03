@@ -25,6 +25,8 @@ namespace Bid501_Server
             this.adOpen = ao;
             this.am = acc;
             accounts = am.AccountSync();
+            passwordText.Enabled = false;
+            loginButton.Enabled = false;
         }
 
         public void DisplayState(Bid501_Shared.State state)
@@ -33,8 +35,6 @@ namespace Bid501_Server
             {
                 case Bid501_Shared.State.START:
                     userTextPrompt.Text = "Please Enter Username";
-                    passwordText.Enabled = false;
-                    loginButton.Enabled = false;
                     break;
                 case Bid501_Shared.State.GOTUSERNAME:
                     userTextPrompt.Text = "Please Enter Password";
