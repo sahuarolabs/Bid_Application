@@ -27,8 +27,8 @@ namespace Bid501_Client
 
 
             //Websocket testing.
-            WebSocket ws = new WebSocket("ws://10.7.172.177:8001");//change last 3 digits of IP address by using ipconfig in command prompt to connect to server everytime we swap computers.
-            ws.Connect();
+            //WebSocket ws = new WebSocket("ws://10.130.160.110:8001");//change last 3 digits of IP address by using ipconfig in command prompt to connect to server everytime we swap computers.
+            //ws.Connect();
             //ws.OnMessage += (sender, e) => Console.WriteLine("Received: " + e.Data);
 
 
@@ -36,7 +36,7 @@ namespace Bid501_Client
 
             //Console.ReadKey(true);
             Product_ProxyDB ppd = new Product_ProxyDB();
-            ClientCommControl ccm = new ClientCommControl(ws);
+            ClientCommControl ccm = new ClientCommControl();
             ccm.ppd = ppd;
             Controller controller = new Controller();
             controller.product_ProxyDB = ppd;

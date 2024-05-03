@@ -87,7 +87,7 @@ namespace Bid501_Server
         public void SendProductList(List<Product> products)
         {
             string msg = JsonSerializer.Serialize<List<Product>>(products);
-            msg = "Success:" + msg;
+            msg = "Success|" + msg;
             Send(msg);
             
         }
@@ -96,7 +96,7 @@ namespace Bid501_Server
         /// </summary>
         public void InvalidLogin()
         {
-            string msg = "DECLINED";
+            string msg = "DECLINED|";
             Send(msg);
         }
         /// <summary>
@@ -106,7 +106,7 @@ namespace Bid501_Server
         public void UpdateProduct(Product product)
         {
            string msg = JsonSerializer.Serialize<Product>(product);
-            msg = "Update:" + msg;
+            msg = "Update|" + msg;
             Send(msg);
         }
         /// <summary>
@@ -116,7 +116,7 @@ namespace Bid501_Server
         public void SendServerProduct(Product product)
         {
             string msg = JsonSerializer.Serialize<Product>(product);
-            msg = "New:" + msg;
+            msg = "New|" + msg;
             Send(msg);
         }
        
@@ -127,7 +127,7 @@ namespace Bid501_Server
         public void BidEnded(Product product)
         {
             string msg = JsonSerializer.Serialize<Product>(product);
-            msg = "BidEnded:" + msg;
+            msg = "BidEnded|" + msg;
             Send(msg);
         }
     }
