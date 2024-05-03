@@ -11,7 +11,7 @@ using Bid501_Shared;
 
 namespace Bid501_Client
 {
-    public delegate void SendBidToController(IProduct product, double bid);
+    public delegate void SendBidToController(Product_Proxy product, double bid);
     public delegate void logoutUserViewDel();
     public partial class ClientView : Form
     {
@@ -19,19 +19,21 @@ namespace Bid501_Client
         public SendBidToController sendBid { get; set; }
         public logoutUserViewDel logoutUser { get; set; }
         Product_ProxyDB pdb;
+        private int curIndex = 0;
         public ClientView(Product_ProxyDB pdb)
         {
             InitializeComponent();
             this.Visible = false;
             this.pdb = pdb;
         }
-        public void PopulateView()
+        public void PopulateView(int ind)
         {
+            UxListView.Items.Clear();
             listOfProducts = pdb.PL;
            
-            UxItemName.Text = listOfProducts[0].Name;
-            UxTimeLeft.Text = listOfProducts[0].Time.ToString();
-            switch (listOfProducts[0].Status.ToString())
+            UxItemName.Text = listOfProducts[ind].Name;
+            UxTimeLeft.Text = listOfProducts[ind].Time.ToString();
+            switch (listOfProducts[ind].Status.ToString())
             {
                 case "Available":
                     UxStatus.BackColor = Color.Blue;
@@ -41,7 +43,8 @@ namespace Bid501_Client
                     break;
             }
           //  UxAmountBids.Text = listOfProducts[0].bidHistory.Count.ToString();
-            UxMinBid.Text = "Minimum bid $" + listOfProducts[0].Price.ToString();
+            UxMinBid.Text = "Minimum bid $" + listOfProducts[ind].Price.ToString();
+            UpdateList();
        
         }
         public void UpdateList()
@@ -50,15 +53,11 @@ namespace Bid501_Client
             {
                 UxListView.Items.Add(p.Name);
             }
-            this.Visible = true;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(UxListView.SelectedItems.Count == 1)
-            {
-                sendBid(listOfProducts[UxListView.Items.IndexOf(UxListView.SelectedItems[0])], Convert.ToDouble(UxBidAmt));
-            }
+            sendBid(listOfProducts[curIndex], Convert.ToDouble(UxBidAmt.Text));
         }
 
         private void ClientView_FormClosing(object sender, FormClosingEventArgs e)
@@ -70,6 +69,12 @@ namespace Bid501_Client
         {
             if (this.Visible == true) this.Visible = false;
             else this.Visible = true;
+        }
+
+        private void UxListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            curIndex = UxListView.SelectedIndex;
+            PopulateView(UxListView.SelectedIndex);
         }
     }
 }

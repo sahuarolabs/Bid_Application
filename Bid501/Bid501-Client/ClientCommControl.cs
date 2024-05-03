@@ -66,7 +66,7 @@ namespace Bid501_Client
                 case "Success":
                     List<Product_Proxy> productList = DeserializeProductList(split[1]);
                     updateList(productList);
-                    UpdateLoginStatus(Bid501_Shared.State.SUCCESS);
+                    //UpdateLoginStatus(Bid501_Shared.State.SUCCESS);
                     break;
                 case "DECLINED":
                     UpdateLoginStatus(Bid501_Shared.State.DECLINED);

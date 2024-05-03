@@ -13,7 +13,7 @@ namespace Bid501_Client
     public delegate void SendBid(Product_Proxy p);
     public delegate void ListUpdate();
     public delegate void ListUpdateToServer(IProduct product);
-    public delegate void PopulateListView();
+    public delegate void PopulateListView(int ind);
     public delegate void LogoutUserDel(string cred);
     public class Controller
     {
@@ -21,7 +21,6 @@ namespace Bid501_Client
         public Product_ProxyDB product_ProxyDB { get; set; }
         public LoginDel handleLogin { get; set; } //added
         public LoginRequest loginRequest { get; set; }
-        public UpdateState UpdateLoginState { get; set; }
         //public ViewUpdateListDel updateList { get; set; }
         public SendBid sendBid { get; set; }
         public ListUpdate listUpdate { get; set; }
@@ -29,15 +28,13 @@ namespace Bid501_Client
         public PopulateListView populateListView { get; set; }
         public LogoutUserDel logoutUser { get; set; }
         public TurnClientViewOn turnClientViewOn { get; set; }
+        public UpdateLoginStatus updateLogin { get; set; }
         private string cred;
         public void UpdateList(List<Product_Proxy> list)
         {
             product_ProxyDB.PL = list;
-            populateListView();
-        }
-        public void Send(string message)
-        {
-
+            populateListView(0);
+            updateLogin(State.SUCCESS);
         }
 
         public List<IProductDB> LogOutHandler(string username)
@@ -51,24 +48,18 @@ namespace Bid501_Client
             handleLogin(cred);
         }
 
-        public void LogInStatusHandler(State LoginState)
-        {
-            UpdateLoginState(LoginState);
-        }
-
-        public void UpdateLoginView(State s)
-        {
-            UpdateLoginState(s);
-        }
-
-        public void CheckMinBid(IProduct product, double bid)
+        public void CheckMinBid(Product_Proxy product, double bid)
         {
             int i = 0;
-            foreach (Product_Proxy p in product_ProxyDB.ProductList)
+            //foreach (Product_Proxy p in product_ProxyDB.ProductList)
+            //{
+            //    if (p.ID == product.ID && bid > product.bidHistory[product.bidHistory.Count - 1]) productList[i].bidHistory.Add(bid);
+            //    sendBid(p);
+            //    i++;
+            //}
+            if (product.Price < bid)
             {
-                if (p.ID == product.ID && bid > product.bidHistory[product.bidHistory.Count - 1]) productList[i].bidHistory.Add(bid);
-                sendBid(p);
-                i++;
+                sendBid(product);
             }
         }
 

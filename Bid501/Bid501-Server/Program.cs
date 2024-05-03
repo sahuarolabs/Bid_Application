@@ -71,12 +71,14 @@ namespace Bid501_Server
             }
             var wssv = new WebSocketServer(localIP, port);
             AdminView adminView = new AdminView(controller.BidEnded, controller.AddProduct, pm, am);
-            wssv.AddWebSocketService("/shared", () =>
+            ServerCommControl scc = new ServerCommControl();
+            controller.InitializeDelegates(scc.SendProductList, scc.InvalidLogin, scc.UpdateProduct, addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, scc.BidEnded, scc.SendServerProduct);
+            wssv.AddWebSocketService<ServerCommControl>("/shared", () =>
             {
-                ServerCommControl scc = new ServerCommControl();
+                //ServerCommControl scc = new ServerCommControl();
                 scc.SetInit(controller.ClientLogin, controller.UpdateProducts, pm, wssv);
-                controller.InitializeDelegates(scc.SendProductList, scc.InvalidLogin, scc.UpdateProduct, addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, scc.BidEnded, scc.SendServerProduct);
                 return scc;
+                //controller.InitializeDelegates(scc.SendProductList, scc.InvalidLogin, scc.UpdateProduct, addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, scc.BidEnded, scc.SendServerProduct);
             });
             wssv.Start();
 

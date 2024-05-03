@@ -12,7 +12,6 @@ namespace Bid501_Client
 {
     public delegate void LoginDel(string cred);
     public delegate void LoginRequest(string username, string password);
-    public delegate void UpdateState(Bid501_Shared.State s);
     public delegate void UpdateListDel(List<Product_Proxy> list);
     public static class Program
     {
@@ -45,10 +44,11 @@ namespace Bid501_Client
             ccm.updateProduct = controller.UpdateProduct;
             controller.sendBid = ccm.SendBidItem;
             ccm.updateList = controller.UpdateList;
-            ccm.updateLoginStatus = controller.UpdateLoginView;
             controller.handleLogin = ccm.SendLoginCredentials;
             LoginView loginView = new LoginView();
             ClientView clientView = new ClientView(controller.product_ProxyDB);
+            controller.updateLogin = loginView.DisplayState;
+            controller.listUpdate = clientView.ChangeVisibility;
             controller.turnClientViewOn = clientView.ChangeVisibility;
             loginView.turnClientViewOn = controller.TurnViewOnClient;
             clientView.logoutUser = controller.Logout;
@@ -56,7 +56,7 @@ namespace Bid501_Client
             controller.listUpdateToServer = ccm.SendBidItem;
             clientView.sendBid = controller.CheckMinBid;
             //controller.updateList = clientView.UpdateList;
-            controller.UpdateLoginState = loginView.DisplayState;
+            //controller.UpdateLoginState = loginView.DisplayState;
             loginView.handleLogin = controller.LogInHandler;
             Application.Run(loginView);
             Application.Run(clientView);

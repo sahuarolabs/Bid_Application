@@ -36,8 +36,8 @@
             this.UxAmountBids = new System.Windows.Forms.TextBox();
             this.UxMinBid = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.UxListView = new System.Windows.Forms.ListView();
             this.ProductLabel = new System.Windows.Forms.TextBox();
+            this.UxListView = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // UxItemName
@@ -121,33 +121,34 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // UxListView
-            // 
-            this.UxListView.HideSelection = false;
-            this.UxListView.Location = new System.Drawing.Point(399, 80);
-            this.UxListView.Name = "UxListView";
-            this.UxListView.Size = new System.Drawing.Size(209, 301);
-            this.UxListView.TabIndex = 8;
-            this.UxListView.UseCompatibleStateImageBehavior = false;
-            // 
             // ProductLabel
             // 
             this.ProductLabel.BackColor = System.Drawing.SystemColors.Control;
             this.ProductLabel.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ProductLabel.Enabled = false;
-            this.ProductLabel.Location = new System.Drawing.Point(476, 54);
+            this.ProductLabel.Location = new System.Drawing.Point(494, 62);
             this.ProductLabel.Name = "ProductLabel";
             this.ProductLabel.Size = new System.Drawing.Size(50, 13);
             this.ProductLabel.TabIndex = 9;
             this.ProductLabel.Text = "Products";
+            // 
+            // UxListView
+            // 
+            this.UxListView.FormattingEnabled = true;
+            this.UxListView.Location = new System.Drawing.Point(409, 80);
+            this.UxListView.Margin = new System.Windows.Forms.Padding(2);
+            this.UxListView.Name = "UxListView";
+            this.UxListView.Size = new System.Drawing.Size(214, 355);
+            this.UxListView.TabIndex = 10;
+            this.UxListView.SelectedIndexChanged += new System.EventHandler(this.UxListView_SelectedIndexChanged);
             // 
             // ClientView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(634, 450);
-            this.Controls.Add(this.ProductLabel);
             this.Controls.Add(this.UxListView);
+            this.Controls.Add(this.ProductLabel);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.UxMinBid);
             this.Controls.Add(this.UxAmountBids);
@@ -174,7 +175,7 @@
         private System.Windows.Forms.TextBox UxAmountBids;
         private System.Windows.Forms.TextBox UxMinBid;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ListView UxListView;
         private System.Windows.Forms.TextBox ProductLabel;
+        private System.Windows.Forms.ListBox UxListView;
     }
 }
