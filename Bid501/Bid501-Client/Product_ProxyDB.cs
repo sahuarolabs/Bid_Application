@@ -10,5 +10,6 @@ namespace Bid501_Client
     public class Product_ProxyDB : IProductDB
     {
         public List<IProduct> ProductList { get; set; }
+        public List<Product_Proxy> PL{ get; set; }
     }
 }

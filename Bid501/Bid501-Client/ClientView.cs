@@ -15,15 +15,19 @@ namespace Bid501_Client
     public delegate void logoutUserViewDel();
     public partial class ClientView : Form
     {
-        private List<IProduct> listOfProducts;
+        private List<Product_Proxy> listOfProducts;
         public SendBidToController sendBid { get; set; }
         public logoutUserViewDel logoutUser { get; set; }
-        public ClientView()
+        Product_ProxyDB pdb;
+        public ClientView(Product_ProxyDB pdb)
         {
             InitializeComponent();
+            this.pdb = pdb;
         }
         public void PopulateView()
         {
+            listOfProducts = pdb.PL;
+           
             UxItemName.Text = listOfProducts[0].Name;
             UxTimeLeft.Text = listOfProducts[0].Time.ToString();
             switch (listOfProducts[0].Status.ToString())
@@ -35,8 +39,9 @@ namespace Bid501_Client
                     UxStatus.BackColor = Color.Red;
                     break;
             }
-            UxAmountBids.Text = listOfProducts[0].bidHistory.Count.ToString();
-            UxMinBid.Text = "Minimum bid $" + listOfProducts[0].bidHistory[listOfProducts[0].bidHistory.Count - 1].ToString();
+          //  UxAmountBids.Text = listOfProducts[0].bidHistory.Count.ToString();
+            UxMinBid.Text = "Minimum bid $" + listOfProducts[0].Price.ToString();
+       
         }
         public void UpdateList()
         {

@@ -14,7 +14,7 @@ namespace Bid501_Client
 {
     public partial class LoginView : Form
     {
-
+        //public OpenClient oc;
         
         public LoginDel handleLogin { get; set; }
         public LoginRequest loginRequest { get; set; }
