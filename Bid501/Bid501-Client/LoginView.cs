@@ -9,20 +9,23 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.AxHost;
 using Bid501_Shared;
+using System.Security.AccessControl;
 
 namespace Bid501_Client
 {
+    public delegate void TurnClientViewOn();
     public partial class LoginView : Form
     {
-
+        //public OpenClient oc;
         
         public LoginDel handleLogin { get; set; }
         public LoginRequest loginRequest { get; set; }
+        public TurnClientViewOn turnClientViewOn { get; set; }
 
         public LoginView()
         {
             InitializeComponent();
-
+            this.Visible = true;
         }
 
         /// <summary>
@@ -60,10 +63,9 @@ namespace Bid501_Client
                     //Invoke this code since it will only ever be run on a separate thread.
                     this.Invoke(new Action(() =>
                     {
-                        usernameText.Text = "";
-                        passwordText.Text = "";
-                        userTextPrompt.Text = "Congrats! You are Logged In.";
+                        this.Close();
                     }));
+                    
                     break;
                 default:
                     userTextPrompt.Text = "Invalid State";
@@ -93,7 +95,6 @@ namespace Bid501_Client
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
-            handleLogin(""); //changed
         }
 
         /// <summary>

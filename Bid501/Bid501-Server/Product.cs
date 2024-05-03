@@ -9,7 +9,7 @@ using System.Drawing;
 
 namespace Bid501_Server
 {
-    public class Product : IProduct
+    public class Product //: //IProduct
     {
         public string Name { get; set; }
         public int ID { get; set; }

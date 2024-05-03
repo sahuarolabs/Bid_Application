@@ -10,6 +10,9 @@ using WebSocketSharp;
 using WebSocket = WebSocketSharp.WebSocket;
 using System.Windows.Forms;
 
+
+//TBD remeber which user has the highest bid for when we end the bid
+//have to send out message alerting users who won the bid.
 namespace Bid501_Server
 { 
     public enum State
@@ -22,27 +25,37 @@ namespace Bid501_Server
         DECLINED,
         EXIT
     }
-  
+
     public class Controller
     {
+       
         private AddProduct addProductViewOpen;
+        private SendServerProduct ssp;
         private AdminOpen adOpen;
+
+        private Success goodLogin;
+        private Invalid badLogin;
+        private UpdateProductDel updateProduct;
+
         private ProductModel product;
         private AccountModel account;
+
         private ResyncDel resyncDel;
         private BidEnded bidChanged;
+        List<Account> activeClients;
+        List<Account> accounts;
         public displayState displayState { get; set; } //added
 
         WebSocket ws;
-     
+
 
         public Controller(ProductModel p, AccountModel am)
         {
             this.account = am;
             this.product = p;
-            ws = new WebSocket("ws://127.0.0.1:8001/login");
-            ws.OnMessage += OnMessage;
+            ws = new WebSocket("ws://127.0.0.1:8001/shared");
             ws.Connect();
+            activeClients = am.AccountSync();
         }
 
         public void Close()
@@ -54,7 +67,7 @@ namespace Bid501_Server
             adOpen();
         }
 
-            public void handleEvents(State state, String args)
+        public void handleEvents(State state, String args)
         {
             switch (state)
             {
@@ -67,39 +80,66 @@ namespace Bid501_Server
                     break;
                 case State.GOTPASSWORD:
                     displayState(State.GOTPASSWORD); //changed
-                    validateCredentials(args);
+                    ValidateCredentials(args);
+
                     break;
                 default:
                     break;
             }
         }
 
-        public void OnMessage(object sender, MessageEventArgs e)
+        //method to validate login
+        public void ClientLogin(string username, string password)
         {
-            MessageBox.Show("Recieved");
-            if (e.Data.Equals("VALID"))
+            accounts = account.AccountSync();
+            foreach (Account accou in accounts)
             {
-                displayState(State.SUCCESS); //changed
+                if (username == accou.Username && password == accou.Password)
+                {
+                    if (!accou.IsAdmin)
+                    {
+                        goodLogin(product.SyncHardcoded());
+                        break;
+                    }
+                }
             }
-            else
-            {
-                displayState(State.DECLINED); //changed
-            }
-
+            //badLogin();
         }
 
-        public void InitializeDelegates(AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b)
+
+
+        public void InitializeDelegates(Success su, Invalid i, UpdateProductDel up,AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b, SendServerProduct s)
         {
-            bidChanged = b; 
-            adOpen = ao;    
+            goodLogin = su;
+            badLogin = i;
+            updateProduct = up;
+            ssp = s;
+            bidChanged = b;
+            adOpen = ao;
             addProductViewOpen = add;
             resyncDel = resync;
         }
 
-        private void validateCredentials(String cred)
+        private void ValidateCredentials(String cred)
         {
             ws.Send(cred);
         }
+
+        public void UpdateProducts(Product p)
+        {
+            foreach(Product prod in product.products)
+            {
+                if(prod.ID == p.ID)
+                {
+                    if(p.Price > prod.Price)
+                    {
+                        prod.Price = p.Price;
+                        updateProduct(prod);
+                    }
+                }
+            }
+        }
+
 
         public void AddProduct()
         {
@@ -107,8 +147,14 @@ namespace Bid501_Server
             resyncDel();
         }
 
+        public void SendServerProduct(Product p)
+        { 
+            ssp(p);
+
+        }
+
         public void BidEnded(Product p)
-        {
+        { 
             bidChanged(p);
         }
     }

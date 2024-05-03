@@ -14,13 +14,13 @@ namespace Bid501_Server
     public class ProductModel
     {
 
-        private List<Product> products;
+        public List<Product> products;
         public List<Product> hardcoded;
         public ProductModel()
         {
-            products = new List<Product>();
+            products = OnOpen();
             hardcoded = new List<Product>();
-            OnOpen();
+           
             TimeSpan ts1 = new TimeSpan(2, 14, 18);
             TimeSpan ts2 = new TimeSpan(10, 22, 11);
             TimeSpan ts3 = new TimeSpan(5, 21, 15);
@@ -35,7 +35,7 @@ namespace Bid501_Server
             hardcoded.Add(ps4);
         }
 
-        public void OnOpen()
+        public List<Product> OnOpen()
         {
             List<Product> templist = new List<Product>();
             if (File.Exists("..\\..\\products.txt"))
@@ -46,10 +46,11 @@ namespace Bid501_Server
                     string currentproduct = streamReader.ReadLine();
                     Product p = JsonConvert.DeserializeObject<Product>(currentproduct);            
                     templist.Add(p);
-                    ProductModelAdd(p);
+                   // ProductModelAdd(p);
                 }
                 streamReader.Close();
             }
+            return templist;
         }
 
         public List<Product> SyncHardcoded() { return this.hardcoded; }

@@ -7,68 +7,103 @@ using WebSocketSharp;
 using WebSocketSharp.Server;
 using System.Windows.Forms;
 using Bid501_Shared;
-using System.Text.Json;
+//using System.Text.Json;
+using Newtonsoft.Json;
 using System.Net.Configuration;
 
 namespace Bid501_Server
-{
+{  
     // A behavior
     public class ServerCommControl : WebSocketBehavior//, ILogin
     {
         /// <summary>
         /// The private websocket used to send information.
         /// </summary>
-        private WebSocket ws;
+        private WebSocketServer ws;
+
+        private List<string> listClients = new List<string>();
 
         /// <summary>
         /// Empty constructor
         /// </summary>
-        public ServerCommControl() { }
 
-        public ServerCommControl(WebSocket ws)
+        private ProductModel products;
+        private ClientLogin clientLogin;
+        private Update update;
+        private List<Product> modProd;
+
+        
+        //public ServerCommControl(ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws)
+        //{
+        //    this.clientLogin = clientlog;
+        //    products = p;
+        //    update = u;
+        //    this.ws = ws;
+        //}
+
+        public void SetInit(ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws)
         {
+            this.clientLogin = clientlog;
+            products = p;
+            update = u;
             this.ws = ws;
+            modProd = p.products;
         }
+
         /// <summary>
         /// Method for when the server receives messages from the client using JSON.
         /// </summary>
         /// <param name="e">The message that is sent through the websocket using JSON.</param>
         protected override void OnMessage(MessageEventArgs e)
         {
-            string[] msgs = e.ToString().Split(':');
-
-            if (msgs.Length == 3)
+            string[] msgs = e.Data.ToString().Split('|');
+            string[] msgs2 = e.Data.ToString().Split(':');
+            if (msgs2.Length == 3)
             {
-                string username = msgs[1];
-                string password = msgs[2];
+                string username = msgs2[1];
+                string password = msgs2[2];
                 //send the username and passwords to the controller to handle
                 //NEED TO WORK ON DELEGATES
+              clientLogin(username, password); 
+      
             }
             else
             {
-                string msg = msgs[1];
-                Product product = JsonSerializer.Deserialize<Product>(msg);
+                string msg = msgs[0];
+                Product product = JsonConvert.DeserializeObject<Product>(msg);
+                //Product product = JsonSerializer.Deserialize<Product>(msg);
+                update(product);
                 //send product to controller to validate bid and then send updates afterwards.
                 //NEED TO WORK ON DELEGATES
             }
         }
+
+        protected override void OnOpen()
+        {
+            base.OnOpen();
+            listClients.Add(ID);
+        }
+
         /// <summary>
         /// Method to use when the server wants to send over the list of products.
         /// </summary>
         /// <param name="cred">The list sent to the client using JSON.</param>
-        public void SendProductList(List<Product> products)
+        public void SendProductList(List<Product> prods)
         {
-            string msg = JsonSerializer.Serialize<List<Product>>(products);
-            msg = "Success:" + msg;
-            ws.Send(msg);
+            prods = products.Sync();
+            string msg = JsonConvert.SerializeObject(prods);
+            //string msg = JsonSerializer.Serialize<List<Product>>(modProd);
+            msg = "Success|" + msg;
+            Send(msg);
+            
         }
         /// <summary>
         /// Method to use when the user has invalid login information.
         /// </summary>
         public void InvalidLogin()
         {
-            string msg = "DECLINED";
-            ws.Send(msg);
+            string msg = "DECLINED|";
+            Send(msg);
         }
         /// <summary>
         /// Method to send a product to the client when a product needs to be updated.
@@ -76,29 +111,41 @@ namespace Bid501_Server
         /// <param name="product">The product that needs to be updated.</param>
         public void UpdateProduct(Product product)
         {
-           string msg = JsonSerializer.Serialize<Product>(product);
-            msg = "Update:" + msg;
-            ws.Send(msg);
+            string msg = JsonConvert.SerializeObject(product);
+           //string msg = JsonSerializer.Serialize<Product>(product);
+            msg = "Update|" + msg;
+            Send(msg);
         }
         /// <summary>
         /// Method to notify all users that a new product has been added to the auction.
         /// </summary>
         /// <param name="product">The new product</param>
-        public void NewProduct(Product product)
+        public void SendServerProduct(Product product)
         {
-            string msg = JsonSerializer.Serialize<Product>(product);
-            msg = "New:" + msg;
-            ws.Send(msg);
+            string msg = JsonConvert.SerializeObject(product);
+            //string msg = JsonSerializer.Serialize<Product>(product);
+            msg = "New|" + msg;
+            Send(msg);
         }
+       
         /// <summary>S
         /// Method to send a message to all users that a bid has ended.
         /// </summary>
         /// <param name="product">The product that the bid ended on.</param>
         public void BidEnded(Product product)
         {
-            string msg = JsonSerializer.Serialize<Product>(product);
-            msg = "BidEnded:" + msg;
-            ws.Send(msg);
+            string msg = JsonConvert.SerializeObject(product);
+            //string msg = JsonSerializer.Serialize<Product>(product);
+            msg = "BidEnded|" + msg;
+            try
+            {
+                Send(msg);
+            }
+            catch
+            {
+                MessageBox.Show("No one connected");
+            }
+            
         }
     }
 }
