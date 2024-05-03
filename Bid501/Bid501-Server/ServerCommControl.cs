@@ -32,9 +32,9 @@ namespace Bid501_Server
         
         public ServerCommControl( ClientLogin clientlog,Update u,ProductModel p, WebSocketServer ws)
         {
-            this.login = clientlog;
-            this.products = p;
-            this.update = u;
+            login = clientlog;
+            products = p;
+            update = u;
             this.ws = ws;
         }
 
@@ -58,19 +58,8 @@ namespace Bid501_Server
                 string password = msgs[2];
                 //send the username and passwords to the controller to handle
                 //NEED TO WORK ON DELEGATES
-              bool valid = login(username, password); 
-                if (valid)
-                {
-                    List<Product> productList = products.SyncHardcoded();
-                    string msg = JsonSerializer.Serialize<List<Product>>(productList);
-                    msg = "Success:" + msg;
-                    Send(msg);
-                }
-                else
-                {
-                    string msg = "DECLINED";
-                    Send(msg);
-                }
+              login(username, password); 
+      
             }
             else
             {
@@ -81,24 +70,24 @@ namespace Bid501_Server
                 //NEED TO WORK ON DELEGATES
             }
         }
-        ///// <summary>
-        ///// Method to use when the server wants to send over the list of products.
-        ///// </summary>
-        ///// <param name="cred">The list sent to the client using JSON.</param>
-        //public void SendProductList(List<Product> products)
-        //{
-        //    string msg = JsonSerializer.Serialize<List<Product>>(products);
-        //    msg = "Success:" + msg;
-        //    ws.Send(msg);
-        //}
-        ///// <summary>
-        ///// Method to use when the user has invalid login information.
-        ///// </summary>
-        //public void InvalidLogin()
-        //{
-        //    string msg = "DECLINED";
-        //    ws.Send(msg);
-        //}
+        /// <summary>
+        /// Method to use when the server wants to send over the list of products.
+        /// </summary>
+        /// <param name="cred">The list sent to the client using JSON.</param>
+        public void SendProductList(List<Product> products)
+        {
+            string msg = JsonSerializer.Serialize<List<Product>>(products);
+            msg = "Success:" + msg;
+            Send(msg);
+        }
+        /// <summary>
+        /// Method to use when the user has invalid login information.
+        /// </summary>
+        public void InvalidLogin()
+        {
+            string msg = "DECLINED";
+            Send(msg);
+        }
         /// <summary>
         /// Method to send a product to the client when a product needs to be updated.
         /// </summary>

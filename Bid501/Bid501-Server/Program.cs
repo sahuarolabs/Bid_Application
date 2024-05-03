@@ -14,8 +14,9 @@ namespace Bid501_Server
     public delegate void AddProduct();
     public delegate void AdminOpen();
 
-
-    public delegate bool ClientLogin(string username, string password);
+    public delegate void Success(List<Product> products);
+    public delegate void Invalid();
+    public delegate void ClientLogin(string username, string password);
     public delegate void Update(Product p);
     public delegate void BidEnded(Product p);
 
@@ -53,7 +54,7 @@ namespace Bid501_Server
             AddProductView addProduct = new AddProductView(controller.SendServerProduct , pm);
        //     controller.displayState = view.DisplayState; //added
             view.handleLogin = controller.handleEvents; //added
-            controller.InitializeDelegates(sc.UpdateProduct,addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, sc.BidEnded, sc.SendServerProduct);
+            controller.InitializeDelegates(sc.SendProductList,sc.InvalidLogin,sc.UpdateProduct,addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, sc.BidEnded, sc.SendServerProduct);
             Application.Run(view);
             
             controller.Close();

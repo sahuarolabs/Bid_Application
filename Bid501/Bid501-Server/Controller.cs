@@ -28,11 +28,13 @@ namespace Bid501_Server
 
     public class Controller
     {
-        private ClientLogin cl;
+       
         private AddProduct addProductViewOpen;
         private SendServerProduct ssp;
         private AdminOpen adOpen;
 
+        private Success goodLogin;
+        private Invalid badLogin;
         private UpdateProductDel updateProduct;
 
         private ProductModel product;
@@ -87,7 +89,7 @@ namespace Bid501_Server
         }
 
         //method to validate login
-        public bool ClientLogin(string username, string password)
+        public void ClientLogin(string username, string password)
         {
             foreach (Account account in accounts)
             {
@@ -95,17 +97,19 @@ namespace Bid501_Server
                 {
                     if (!account.IsAdmin)
                     {
-                        return true;
+                        goodLogin(product.SyncHardcoded());
                     }
                 }
             }
-            return false;
+            badLogin();
         }
 
 
 
-        public void InitializeDelegates(UpdateProductDel up,AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b, SendServerProduct s)
-        {             
+        public void InitializeDelegates(Success su, Invalid i, UpdateProductDel up,AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b, SendServerProduct s)
+        {
+            goodLogin = su;
+            badLogin = i;
             updateProduct = up;
             ssp = s;
             bidChanged = b;
