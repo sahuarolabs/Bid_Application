@@ -49,6 +49,8 @@ namespace Bid501_Client
             controller.handleLogin = ccm.SendLoginCredentials;
             LoginView loginView = new LoginView();
             ClientView clientView = new ClientView(controller.product_ProxyDB);
+            controller.turnClientViewOn = clientView.ChangeVisibility;
+            loginView.turnClientViewOn = controller.TurnViewOnClient;
             clientView.logoutUser = controller.Logout;
             controller.populateListView = clientView.PopulateView;
             controller.listUpdateToServer = ccm.SendBidItem;
@@ -57,6 +59,7 @@ namespace Bid501_Client
             controller.UpdateLoginState = loginView.DisplayState;
             loginView.handleLogin = controller.LogInHandler;
             Application.Run(loginView);
+            Application.Run(clientView);
 
             //ws.Close();
 

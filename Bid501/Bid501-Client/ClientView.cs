@@ -22,6 +22,7 @@ namespace Bid501_Client
         public ClientView(Product_ProxyDB pdb)
         {
             InitializeComponent();
+            this.Visible = false;
             this.pdb = pdb;
         }
         public void PopulateView()
@@ -63,6 +64,12 @@ namespace Bid501_Client
         private void ClientView_FormClosing(object sender, FormClosingEventArgs e)
         {
             logoutUser();
+        }
+
+        public void ChangeVisibility()
+        {
+            if (this.Visible == true) this.Visible = false;
+            else this.Visible = true;
         }
     }
 }
