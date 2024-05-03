@@ -42,33 +42,35 @@ namespace Bid501_Client
                     UxStatus.BackColor = Color.Red;
                     break;
             }
-            //UxAmountBids.Text = listOfProducts[ind].
+            //UxAmountBids.Text = listOfProducts[ind]
             UxAmountBids.Text = "(x bids)";
-            //UxMinBid.Text = "Minimum bid $" + listOfProducts[ind].Price.ToString();
+            UxMinBid.Text = "Minimum bid $" + listOfProducts[ind].Price.ToString();
             UpdateList();
        
         }
         public void UpdateList()
         {
+            UxListView.ClearSelected();
             foreach(Product_Proxy p in listOfProducts)
             {
-                UxListView.Items.Add(p.Name);
-                //if (UxListView.InvokeRequired)
-                //{
-                //    UxListView.Invoke((MethodInvoker)delegate ()
-                //    {
-                //        ListViewItem item = new ListViewItem(p.Name);
-                //        UxListView.Items.Add(item);
-                //        //UxListView.EnsureVisible(UxListView.Items.Count - 1);
-                //    });
-                //}
-                
+                //UxListView.Items.Add(p.Name);
+                if (UxListView.InvokeRequired)
+                {
+                    UxListView.Invoke((MethodInvoker)delegate ()
+                    {
+                        ListViewItem item = new ListViewItem(p.Name);
+                        UxListView.Items.Add(item.Text.ToString());
+                        //UxListView.EnsureVisible(UxListView.Items.Count - 1);
+                    });
+                }
+
                 //this.Invoke(new Action(() =>
                 //{
                 //    UxListView.Items.Add(p.Name);
                 //}));
 
             }
+            //PopulateView(curIndex);
         }
 
         private void button1_Click(object sender, EventArgs e)
