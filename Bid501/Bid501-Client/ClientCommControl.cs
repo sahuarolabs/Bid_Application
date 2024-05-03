@@ -65,6 +65,7 @@ namespace Bid501_Client
             {
                 case "Success":
                     List<Product_Proxy> productList = DeserializeProductList(split[1]);
+                    //ppd.PL = productList;
                     updateList(productList);
                     //UpdateLoginStatus(Bid501_Shared.State.SUCCESS);
                     break;
@@ -88,7 +89,7 @@ namespace Bid501_Client
 
         protected override void OnMessage(MessageEventArgs e)
         {
-            string[] split = e.ToString().Split(':');
+            string[] split = e.ToString().Split('|');
             switch (split[0])
             {
                 case "Success":

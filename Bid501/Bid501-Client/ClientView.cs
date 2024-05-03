@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Bid501_Shared;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Bid501_Client
 {
@@ -28,7 +29,6 @@ namespace Bid501_Client
         }
         public void PopulateView(int ind)
         {
-            UxListView.Items.Clear();
             listOfProducts = pdb.PL;
            
             UxItemName.Text = listOfProducts[ind].Name;
@@ -42,8 +42,9 @@ namespace Bid501_Client
                     UxStatus.BackColor = Color.Red;
                     break;
             }
-          //  UxAmountBids.Text = listOfProducts[0].bidHistory.Count.ToString();
-            UxMinBid.Text = "Minimum bid $" + listOfProducts[ind].Price.ToString();
+            //UxAmountBids.Text = listOfProducts[ind].
+            UxAmountBids.Text = "(x bids)";
+            //UxMinBid.Text = "Minimum bid $" + listOfProducts[ind].Price.ToString();
             UpdateList();
        
         }
@@ -52,7 +53,23 @@ namespace Bid501_Client
             foreach(Product_Proxy p in listOfProducts)
             {
                 UxListView.Items.Add(p.Name);
+                //if (UxListView.InvokeRequired)
+                //{
+                //    UxListView.Invoke((MethodInvoker)delegate ()
+                //    {
+                //        ListViewItem item = new ListViewItem(p.Name);
+                //        UxListView.Items.Add(item);
+                //        //UxListView.EnsureVisible(UxListView.Items.Count - 1);
+                //    });
+                //}
+                
+                //this.Invoke(new Action(() =>
+                //{
+                //    UxListView.Items.Add(p.Name);
+                //}));
+
             }
+            PopulateView(curIndex);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -68,11 +85,6 @@ namespace Bid501_Client
             
         }
 
-        private void ClientView_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            logoutUser();
-        }
-
         public void ChangeVisibility()
         {
             if (this.Visible == true) this.Visible = false;
@@ -83,6 +95,11 @@ namespace Bid501_Client
         {
             curIndex = UxListView.SelectedIndex;
             PopulateView(UxListView.SelectedIndex);
+        }
+
+        private void ClientView_FormClosing_1(object sender, FormClosingEventArgs e)
+        {
+            logoutUser();
         }
     }
 }

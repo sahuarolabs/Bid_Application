@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Bid501_Client
 {
-    public class Product_ProxyDB : IProductDB
+    public class Product_ProxyDB
     {
-        public List<IProduct> ProductList { get; set; }
         public List<Product_Proxy> PL{ get; set; }
     }
 }

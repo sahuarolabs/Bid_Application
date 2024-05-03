@@ -43,72 +43,72 @@
             // UxItemName
             // 
             this.UxItemName.BackColor = System.Drawing.SystemColors.Control;
-            this.UxItemName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.UxItemName.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.UxItemName.Enabled = false;
             this.UxItemName.Location = new System.Drawing.Point(60, 80);
             this.UxItemName.Name = "UxItemName";
-            this.UxItemName.Size = new System.Drawing.Size(333, 20);
+            this.UxItemName.Size = new System.Drawing.Size(333, 13);
             this.UxItemName.TabIndex = 0;
             this.UxItemName.Text = "ItemName";
             // 
             // UxTimeLeft
             // 
             this.UxTimeLeft.BackColor = System.Drawing.SystemColors.Control;
-            this.UxTimeLeft.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.UxTimeLeft.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.UxTimeLeft.Enabled = false;
             this.UxTimeLeft.Location = new System.Drawing.Point(60, 118);
             this.UxTimeLeft.Name = "UxTimeLeft";
-            this.UxTimeLeft.Size = new System.Drawing.Size(178, 20);
+            this.UxTimeLeft.Size = new System.Drawing.Size(178, 13);
             this.UxTimeLeft.TabIndex = 1;
             // 
             // StatusLabel
             // 
             this.StatusLabel.BackColor = System.Drawing.SystemColors.Control;
-            this.StatusLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.StatusLabel.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.StatusLabel.Enabled = false;
             this.StatusLabel.Location = new System.Drawing.Point(60, 155);
             this.StatusLabel.Name = "StatusLabel";
-            this.StatusLabel.Size = new System.Drawing.Size(39, 20);
+            this.StatusLabel.Size = new System.Drawing.Size(39, 13);
             this.StatusLabel.TabIndex = 2;
             this.StatusLabel.Text = "Status:";
             // 
             // UxStatus
             // 
             this.UxStatus.BackColor = System.Drawing.SystemColors.Control;
-            this.UxStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.UxStatus.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.UxStatus.Enabled = false;
             this.UxStatus.Location = new System.Drawing.Point(105, 155);
             this.UxStatus.Name = "UxStatus";
-            this.UxStatus.Size = new System.Drawing.Size(20, 20);
+            this.UxStatus.Size = new System.Drawing.Size(20, 13);
             this.UxStatus.TabIndex = 3;
             // 
             // UxBidAmt
             // 
             this.UxBidAmt.BackColor = System.Drawing.SystemColors.Control;
-            this.UxBidAmt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.UxBidAmt.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.UxBidAmt.Location = new System.Drawing.Point(88, 206);
             this.UxBidAmt.Name = "UxBidAmt";
-            this.UxBidAmt.Size = new System.Drawing.Size(102, 20);
+            this.UxBidAmt.Size = new System.Drawing.Size(102, 13);
             this.UxBidAmt.TabIndex = 4;
             // 
             // UxAmountBids
             // 
             this.UxAmountBids.BackColor = System.Drawing.SystemColors.Control;
-            this.UxAmountBids.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.UxAmountBids.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.UxAmountBids.Enabled = false;
             this.UxAmountBids.Location = new System.Drawing.Point(196, 206);
             this.UxAmountBids.Name = "UxAmountBids";
-            this.UxAmountBids.Size = new System.Drawing.Size(70, 20);
+            this.UxAmountBids.Size = new System.Drawing.Size(70, 13);
             this.UxAmountBids.TabIndex = 5;
             // 
             // UxMinBid
             // 
             this.UxMinBid.BackColor = System.Drawing.SystemColors.Control;
-            this.UxMinBid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.UxMinBid.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.UxMinBid.Enabled = false;
             this.UxMinBid.Location = new System.Drawing.Point(60, 245);
             this.UxMinBid.Name = "UxMinBid";
-            this.UxMinBid.Size = new System.Drawing.Size(206, 20);
+            this.UxMinBid.Size = new System.Drawing.Size(206, 13);
             this.UxMinBid.TabIndex = 6;
             // 
             // button1
@@ -159,7 +159,7 @@
             this.Controls.Add(this.UxItemName);
             this.Name = "ClientView";
             this.Text = "ClientView";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ClientView_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ClientView_FormClosing_1);
             this.ResumeLayout(false);
             this.PerformLayout();
 
