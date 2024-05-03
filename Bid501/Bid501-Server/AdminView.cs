@@ -64,7 +64,7 @@ namespace Bid501_Server
 
         private void uxEndBidBtn_Click(object sender, EventArgs e)
         {
-           Product changeBid = (Product)activeProductList.SelectedItem;
+            Product changeBid = (Product)activeProductList.SelectedItem;
             bidChanged(changeBid);  
 
         }

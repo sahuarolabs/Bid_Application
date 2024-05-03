@@ -113,7 +113,7 @@ namespace Bid501_Server
         /// <param name="product">The product that needs to be updated.</param>
         public void UpdateProduct(Product product)
         {
-           string msg = JsonSerializer.Serialize<Product>(product);
+            string msg = JsonSerializer.Serialize<Product>(product);
             msg = "Update|" + msg;
             Send(msg);
         }
