@@ -53,7 +53,7 @@ namespace Bid501_Server
         {
             this.account = am;
             this.product = p;
-            ws = new WebSocket("ws://127.0.0.1:8001/shared");
+            ws = new WebSocket("ws://10.150.28.10:8001/shared");
             ws.Connect();
             activeClients = am.AccountSync();
         }
@@ -91,6 +91,7 @@ namespace Bid501_Server
         //method to validate login
         public void ClientLogin(string username, string password)
         {
+            bool flag = false;
             accounts = account.AccountSync();
             foreach (Account accou in accounts)
             {
@@ -99,11 +100,15 @@ namespace Bid501_Server
                     if (!accou.IsAdmin)
                     {
                         goodLogin(product.SyncHardcoded());
-                        break;
+                        flag = true;
                     }
                 }
             }
-            //badLogin();
+            if (!flag)
+            {
+                badLogin();
+            }
+            
         }
 
 
