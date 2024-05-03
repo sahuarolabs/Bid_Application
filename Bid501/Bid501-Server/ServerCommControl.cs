@@ -30,7 +30,7 @@ namespace Bid501_Server
         private Update update;
 
         
-        public ServerCommControl( ClientLogin clientlog,Update u,ProductModel p, WebSocketServer ws)
+        public ServerCommControl(ClientLogin clientlog,Update u,ProductModel p, WebSocketServer ws)
         {
             login = clientlog;
             products = p;
