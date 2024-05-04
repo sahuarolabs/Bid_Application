@@ -36,7 +36,7 @@ namespace Bid501_Client
 
         public ClientCommControl()
         {
-            WebSocket ws1 = new WebSocket("ws://192.168.86.21:8001/shared");
+            WebSocket ws1 = new WebSocket("ws://10.130.160.111:8001/shared");
             this.ws = ws1;
             ws.Connect();
             OnOpen();
