@@ -22,7 +22,7 @@ namespace Bid501_Server
         private WebSocketServer ws;
 
         private List<string> listClients = new List<string>();
-        private static Dictionary<string, WebSocket> allActiveSockets = new Dictionary<string, WebSocket>();
+        private List<string> allActiveSockets = new List<string>();
 
         /// <summary>
         /// Empty constructor
@@ -71,8 +71,8 @@ namespace Bid501_Server
             }
             else if(msgs[0] == "Connection")
             {
-                KeyValuePair<string,WebSocket> user = JsonConvert.DeserializeObject<KeyValuePair<string, WebSocket>>(msgs[1]);
-                allActiveSockets.Add(user.Key, user.Value);
+                string user = msgs[1];
+                allActiveSockets.Add(user);
                 acID(allActiveSockets);
             }
             else

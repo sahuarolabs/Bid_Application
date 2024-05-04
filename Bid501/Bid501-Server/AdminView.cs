@@ -20,7 +20,7 @@ namespace Bid501_Server
         private ProductModel model;
         private AccountModel account;
         private BidEnded bidChanged;
-        Dictionary<string, WebSocket> accounts = new Dictionary<string, WebSocket>();
+        List<string> accounts = new List<string>();
         List<Product> products = new List<Product>();
         List<Account> actives = new List<Account>();
         public AdminView( BidEnded be, AddProduct ap, ProductModel pm, AccountModel am)
@@ -33,7 +33,21 @@ namespace Bid501_Server
             products = model.Sync();
             accounts = account.activeUsersList;
             activeClientList.DataSource = null;
-            activeClientList.DataSource = accounts.Keys;
+            if (accounts != null)
+            {
+                //activeClientList.DataSource = accounts;
+                foreach (string accountName in accounts)
+                {
+                    if (activeClientList.InvokeRequired)
+                    {
+                        activeClientList.Invoke((MethodInvoker)delegate ()
+                        {
+
+                            activeClientList.Items.Add(accountName);
+                        });
+                    }
+                }
+            }
             activeProductList.DataSource = null;
             activeProductList.DataSource = products;
             
@@ -42,15 +56,45 @@ namespace Bid501_Server
         {
             this.ShowDialog();
             activeClientList.DataSource = null;
-            activeClientList.DataSource = accounts.Keys;
+            accounts = account.activeUsersList;
+            if (accounts != null)
+            {
+                //activeClientList.DataSource = accounts;
+                foreach (string accountName in accounts)
+                {
+                    if (activeClientList.InvokeRequired)
+                    {
+                        activeClientList.Invoke((MethodInvoker)delegate ()
+                        {
+
+                            activeClientList.Items.Add(accountName);
+                        });
+                    }
+                }
+            }
             activeProductList.DataSource = null;
             activeProductList.DataSource = products;
         }
         public void Resync()
         {
             products = model.Sync();
+            accounts = account.activeUsersList;
             activeClientList.DataSource = null;
-            activeClientList.DataSource = accounts.Keys;
+            if (accounts != null)
+            {
+                //activeClientList.DataSource = accounts;
+                foreach (string accountName in accounts)
+                {
+                    if (activeClientList.InvokeRequired)
+                    {
+                        activeClientList.Invoke((MethodInvoker)delegate ()
+                        {
+
+                            activeClientList.Items.Add(accountName);
+                        });
+                    }
+                }
+            }
             activeProductList.DataSource = null;
             activeProductList.DataSource = products;
         }

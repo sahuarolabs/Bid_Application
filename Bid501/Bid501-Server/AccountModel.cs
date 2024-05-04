@@ -34,8 +34,8 @@ namespace Bid501_Server
             }
             return templist;
         }
-        private Dictionary<string,WebSocket> _acList;
-        public Dictionary<string,WebSocket> activeUsersList {
+        private List<string> _acList;
+        public List<string> activeUsersList {
             get
             {
                 return _acList;

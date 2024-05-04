@@ -45,7 +45,7 @@ namespace Bid501_Server
         private BidEnded bidChanged;
         List<Account> activeClients;
         List<Account> accounts;
-        protected Dictionary<string, WebSocket> activeUsers = new Dictionary<string, WebSocket>();
+        public List<string> activeUsers = new List<string>();
         public displayState displayState { get; set; } //added
 
 
@@ -104,6 +104,7 @@ namespace Bid501_Server
                     {
                         goodLogin(product.SyncHardcoded());
                         flag = true;
+                        resyncDel();
                     }
                 }
             }
@@ -115,10 +116,11 @@ namespace Bid501_Server
         }
 
 
-        public void ActiveUsers(Dictionary<string,WebSocket> dict)
+        public void ActiveUsers(List<string> dict)
         {
             activeUsers = dict;
             account.activeUsersList = activeUsers;
+            resyncDel();
         }
 
         public void InitializeDelegates(Success su, Invalid i, UpdateProductDel up,AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b, SendServerProduct s)
@@ -148,6 +150,7 @@ namespace Bid501_Server
                     {
                         prod.Price = p.Price;
                         updateProduct(prod);
+                        resyncDel();
                     }
                 }
             }
@@ -169,6 +172,7 @@ namespace Bid501_Server
         public void BidEnded(Product p)
         { 
             bidChanged(p);
+            resyncDel();
         }
     }
 }
