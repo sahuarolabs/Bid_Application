@@ -62,15 +62,13 @@ namespace Bid501_Server
 
 
             int port = 8001;
-            IPAddress localIP = null;
+            IPAddress localIP;
             IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (IPAddress ip in host.AddressList)
+            using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
             {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    localIP = ip;
-                    break;
-                }
+                socket.Connect("10.130.160.110", port);
+                IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
+                localIP = endPoint.Address;
             }
             var wssv = new WebSocketServer(localIP, port);
             AdminView adminView = new AdminView(controller.BidEnded, controller.AddProduct, pm, am);
