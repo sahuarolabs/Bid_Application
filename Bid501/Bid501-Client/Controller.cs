@@ -12,12 +12,13 @@ namespace Bid501_Client
     public delegate void ViewUpdateListDel();
     public delegate void SendBid(Product_Proxy p);
     public delegate void ListUpdate();
-    public delegate void ListUpdateToServer(IProduct product);
-    public delegate void PopulateListView(int ind);
+    public delegate void ListUpdateToServer(Product_Proxy product);
+    public delegate void PopulateListView();
     public delegate void LogoutUserDel(string cred);
+    public delegate void ReplaceProduct();
     public class Controller
     {
-        private List<IProduct> productList;
+        private List<Product_Proxy> productList;
         public Product_ProxyDB product_ProxyDB { get; set; }
         public LoginDel handleLogin { get; set; } //added
         public LoginRequest loginRequest { get; set; }
@@ -29,12 +30,19 @@ namespace Bid501_Client
         public LogoutUserDel logoutUser { get; set; }
         public TurnClientViewOn turnClientViewOn { get; set; }
         public UpdateLoginStatus updateLogin { get; set; }
+        public ReplaceProduct replaceProduct { get; set; }
         private string cred;
+        private bool lockForm = true;
         public void UpdateList(List<Product_Proxy> list)
         {
             product_ProxyDB.PL = list;
-            populateListView(0);
-            updateLogin(State.SUCCESS);
+            populateListView();
+            if (lockForm)
+            {
+                updateLogin(State.SUCCESS);
+                lockForm = false;
+            }
+            
         }
 
         public List<IProductDB> LogOutHandler(string username)
@@ -50,31 +58,35 @@ namespace Bid501_Client
 
         public void CheckMinBid(Product_Proxy product, double bid)
         {
-            int i = 0;
-            //foreach (Product_Proxy p in product_ProxyDB.ProductList)
-            //{
-            //    if (p.ID == product.ID && bid > product.bidHistory[product.bidHistory.Count - 1]) productList[i].bidHistory.Add(bid);
-            //    sendBid(p);
-            //    i++;
-            //}
             if (product.Price < bid)
             {
+                product.Price = bid;
+                UpdateProduct(product);
                 sendBid(product);
+                populateListView();
             }
         }
 
-        public void UpdateProduct(IProduct product)
+        public void UpdateProduct(Product_Proxy product)
         {
+            List<Product_Proxy> fakeProductList = product_ProxyDB.PL;
             int ind = 0;
-            foreach(Product_Proxy p in product_ProxyDB.ProductList)
+            foreach (Product_Proxy p in fakeProductList)
             {
                 if (p.ID == product.ID)
                 {
-                    productList[ind] = product;
-                    ProductListUpdated();
+                    product_ProxyDB.PL[ind].Price = product.Price;
+                    product_ProxyDB.PL[ind].Status = product.Status;
+                    product_ProxyDB.PL[ind].Bidders = product.Bidders;
+                    product_ProxyDB.PL[ind].HighestBidder = product.HighestBidder;
+
+                    //replaceProduct();
+
                 }
                 ind++;
             }
+            ProductListUpdated();
+
         }
 
         private void ProductListUpdated()
@@ -82,7 +94,7 @@ namespace Bid501_Client
             listUpdate();
         }
 
-        private void ProductListUpdateToServer(IProduct product)
+        private void ProductListUpdateToServer(Product_Proxy product)
         {
             listUpdateToServer(product);
         }
@@ -91,9 +103,9 @@ namespace Bid501_Client
         /// Adds/Sends that a new product has been added to the list to the view.
         /// </summary>
         /// <param name="product"></param>
-        public void NewProduct(IProduct product)
+        public void NewProduct(Product_Proxy product)
         {
-            product_ProxyDB.ProductList.Add(product);
+            product_ProxyDB.PL.Add(product);
             ProductListUpdated();
         }
 

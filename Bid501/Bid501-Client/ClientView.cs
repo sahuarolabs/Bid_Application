@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Bid501_Shared;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Bid501_Client
 {
@@ -26,43 +27,119 @@ namespace Bid501_Client
             this.Visible = false;
             this.pdb = pdb;
         }
-        public void PopulateView(int ind)
+        public void PopulateView()
         {
-            UxListView.Items.Clear();
             listOfProducts = pdb.PL;
            
-            UxItemName.Text = listOfProducts[ind].Name;
-            UxTimeLeft.Text = listOfProducts[ind].Time.ToString();
-            switch (listOfProducts[ind].Status.ToString())
+            UxItemName.Text = listOfProducts[curIndex].Name;
+            UxTimeLeft.Text = listOfProducts[curIndex].Time.ToString();
+            if (listOfProducts[curIndex].Status)
             {
-                case "Available":
-                    UxStatus.BackColor = Color.Blue;
-                    break;
-                case "Unavailable":
-                    UxStatus.BackColor = Color.Red;
-                    break;
+                UxStatus.BackColor = Color.Blue;
             }
-          //  UxAmountBids.Text = listOfProducts[0].bidHistory.Count.ToString();
-            UxMinBid.Text = "Minimum bid $" + listOfProducts[ind].Price.ToString();
+            else
+            {
+                UxStatus.BackColor = Color.Red;
+
+            }
+            //UxAmountBids.Text = listOfProducts[ind]
+            //UxAmountBids.Text = "(x bids)";
+            //UxStatus.BackColor = Color.Blue;
+            UxMinBid.Text = "Minimum bid $" + listOfProducts[curIndex].Price.ToString();
             UpdateList();
        
         }
+
         public void UpdateList()
         {
-            foreach(Product_Proxy p in listOfProducts)
+            if (UxListView.InvokeRequired)
             {
-                UxListView.Items.Add(p.Name);
+                UxListView.Invoke((MethodInvoker)delegate ()
+                {
+                    UxListView.Items.Clear();
+                });
             }
+            else
+            {
+                UxListView.Items.Clear();
+            }
+
+            foreach (Product_Proxy p in pdb.PL)
+            {
+                //UxListView.Items.Add(p.Name);
+                if (UxListView.InvokeRequired)
+                {
+                    UxListView.Invoke((MethodInvoker)delegate ()
+                    {
+                        ListViewItem item = new ListViewItem(p.Name);
+                        UxListView.Items.Add(item.Text.ToString());
+                        UxAmountBids.Text = listOfProducts[curIndex].Bidders.ToString();
+                        //UxListView.EnsureVisible(UxListView.Items.Count - 1);
+                    });
+                }
+                else
+                {
+                    UxListView.Items.Add(p.Name);
+                }
+
+
+                //this.Invoke(new Action(() =>
+                //{
+                //    UxListView.Items.Add(p.Name);
+                //}));
+
+            }
+            listOfProducts = pdb.PL;
+
+            UxItemName.Text = listOfProducts[curIndex].Name;
+            UxTimeLeft.Text = listOfProducts[curIndex].Time.ToString();
+            if (listOfProducts[curIndex].Status)
+            {
+                UxStatus.BackColor = Color.Blue;
+            }
+            else
+            {
+                if (UxListView.InvokeRequired)
+                {
+                    UxListView.Invoke((MethodInvoker)delegate ()
+                    {
+                        UxStatus.BackColor = Color.Red;
+                    });
+                }
+                else
+                {
+                    UxStatus.BackColor = Color.Red;
+                }
+
+            }
+
+            //UxAmountBids.Text = "(x bids)";
+            //UxStatus.BackColor = Color.Blue;
+            if (UxListView.InvokeRequired)
+            {
+                UxListView.Invoke((MethodInvoker)delegate ()
+                {
+                    UxMinBid.Text = "Minimum bid $" + listOfProducts[curIndex].Price.ToString();
+                });
+            }
+            else
+            {
+                UxMinBid.Text = "Minimum bid $" + listOfProducts[curIndex].Price.ToString();
+            }
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            sendBid(listOfProducts[curIndex], Convert.ToDouble(UxBidAmt.Text));
-        }
-
-        private void ClientView_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            logoutUser();
+            try
+            {
+                sendBid(listOfProducts[curIndex], Convert.ToDouble(UxBidAmt.Text));
+            }
+            catch
+            {
+                MessageBox.Show("Invalid Bid Price");
+            }
+            
         }
 
         public void ChangeVisibility()
@@ -74,7 +151,13 @@ namespace Bid501_Client
         private void UxListView_SelectedIndexChanged(object sender, EventArgs e)
         {
             curIndex = UxListView.SelectedIndex;
-            PopulateView(UxListView.SelectedIndex);
+            PopulateView();
         }
+
+        private void ClientView_FormClosing_1(object sender, FormClosingEventArgs e)
+        {
+            logoutUser();
+        }
+
     }
 }
