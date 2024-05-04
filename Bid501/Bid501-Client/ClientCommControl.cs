@@ -20,7 +20,7 @@ namespace Bid501_Client
     public delegate void AddProduct(Product_Proxy product);
     public class ClientCommControl : WebSocketBehavior
     {
-        private static WebSocket ws = new WebSocket("ws://10.130.160.111:8001/shared");
+        private static WebSocket ws = new WebSocket("ws://192.168.86.143:8001/shared");
         public Product_ProxyDB ppd { get; set; }
         public UpdateLoginStatus updateLoginStatus { get; set; }
         public UpdateListDel updateList { get; set; }
@@ -50,6 +50,7 @@ namespace Bid501_Client
         public void LogoutUser(string cred)
         {
             ws.Send("Logout:" + cred);
+            ws.Close();
         }
 
         private void UpdateLoginStatus(Bid501_Shared.State s)
@@ -113,6 +114,14 @@ namespace Bid501_Client
                     updateProduct(productEnded);
                     break;
             }
+        }
+
+        protected override void OnOpen()
+        {
+            base.OnOpen();
+            Dictionary<string, WebSocket> kvp = new Dictionary<string, WebSocket>();
+            kvp.Add(ID, ws);
+            ws.Send("Connection|" + JsonConvert.SerializeObject(kvp));
         }
 
         private List<Product_Proxy> DeserializeProductList(string s)

@@ -22,6 +22,7 @@ namespace Bid501_Server
         private WebSocketServer ws;
 
         private List<string> listClients = new List<string>();
+        private static Dictionary<string, WebSocket> allActiveSockets = new Dictionary<string, WebSocket>();
 
         /// <summary>
         /// Empty constructor
@@ -66,6 +67,10 @@ namespace Bid501_Server
                 //NEED TO WORK ON DELEGATES
               clientLogin(username, password); 
       
+            }
+            else if(msgs[0] == "Connection")
+            {
+                //store to the list.
             }
             else
             {
