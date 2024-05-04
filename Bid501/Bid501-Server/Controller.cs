@@ -170,7 +170,8 @@ namespace Bid501_Server
         }
 
         public void BidEnded(Product p)
-        { 
+        {
+            p.Status = false;
             bidChanged(p);
             resyncDel();
         }

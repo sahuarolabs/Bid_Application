@@ -23,6 +23,8 @@ namespace Bid501_Server
         List<string> accounts = new List<string>();
         List<Product> products = new List<Product>();
         List<Account> actives = new List<Account>();
+
+        private Product product;
         public AdminView( BidEnded be, AddProduct ap, ProductModel pm, AccountModel am)
         {
             InitializeComponent();
@@ -100,7 +102,7 @@ namespace Bid501_Server
         }
         private void activeProductList_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            product = (Product)activeProductList.SelectedItem;
         }
 
         private void addProductButton_Click(object sender, EventArgs e)
@@ -110,7 +112,7 @@ namespace Bid501_Server
 
         private void uxEndBidBtn_Click(object sender, EventArgs e)
         {
-           Product changeBid = (Product)activeProductList.SelectedItem;
+            Product changeBid = product;
             bidChanged(changeBid);  
 
         }
