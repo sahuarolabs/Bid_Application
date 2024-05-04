@@ -14,17 +14,18 @@ using System.Security.AccessControl;
 namespace Bid501_Client
 {
     public delegate void TurnClientViewOn();
+    public delegate void SendUsername(string username);
     public partial class LoginView : Form
     {
-        //public OpenClient oc;
-        
         public LoginDel handleLogin { get; set; }
-        public LoginRequest loginRequest { get; set; }
+        //public LoginRequest loginRequest { get; set; }
         public TurnClientViewOn turnClientViewOn { get; set; }
+        public SendUsername sendUsername { get; set; }
 
         public LoginView()
         {
             InitializeComponent();
+            DisplayState(Bid501_Shared.State.START);
             this.Visible = true;
         }
 
@@ -63,6 +64,7 @@ namespace Bid501_Client
                     //Invoke this code since it will only ever be run on a separate thread.
                     this.Invoke(new Action(() =>
                     {
+                        sendUsername(usernameText.Text);
                         this.Close();
                     }));
                     

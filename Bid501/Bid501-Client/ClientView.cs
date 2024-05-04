@@ -38,23 +38,19 @@ namespace Bid501_Client
                 if (listOfProducts[curIndex].Status)
                 {
                     UxStatus.BackColor = Color.Blue;
+                    UxBidAmt.Enabled = true;
                 }
                 else
                 {
                     UxStatus.BackColor = Color.Red;
-
+                    UxBidAmt.Enabled = false;
                 }
-                //UxAmountBids.Text = listOfProducts[ind]
-                //UxAmountBids.Text = "(x bids)";
-                //UxStatus.BackColor = Color.Blue;
                 UxMinBid.Text = "Minimum bid $" + listOfProducts[curIndex].Price.ToString();
             }
             catch
             {
                 MessageBox.Show("Invalid Selection");
-            }
-            //UpdateList();
-       
+            }       
         }
 
         public void UpdateList()
@@ -84,7 +80,9 @@ namespace Bid501_Client
                 }
                 else
                 {
-                    UxListView.Items.Add(p.Name);
+                    ListViewItem item = new ListViewItem(p.Name);
+                    UxListView.Items.Add(item.Text.ToString());
+                    UxAmountBids.Text = "(" + listOfProducts[curIndex].Bidders.ToString() + " bids)";
                 }
             }
             listOfProducts = pdb.PL;
@@ -111,7 +109,6 @@ namespace Bid501_Client
                     }
 
                 }
-                //UxAmountBids.Text = "(x bids)";
                 if (UxListView.InvokeRequired)
                 {
                     UxListView.Invoke((MethodInvoker)delegate ()
@@ -138,6 +135,7 @@ namespace Bid501_Client
             try
             {
                 sendBid(listOfProducts[curIndex], Convert.ToDouble(UxBidAmt.Text));
+                UxBidAmt.Text = "";
             }
             catch
             {

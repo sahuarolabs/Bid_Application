@@ -47,6 +47,7 @@ namespace Bid501_Client
             controller.handleLogin = ccm.SendLoginCredentials;
             LoginView loginView = new LoginView();
             ClientView clientView = new ClientView(controller.product_ProxyDB);
+            loginView.sendUsername = controller.SendUsername;
             controller.notifyBidEnded = clientView.NotifyBidEnded;
             controller.replaceProduct = clientView.UpdateList;
             controller.updateLogin = loginView.DisplayState;

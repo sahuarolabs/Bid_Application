@@ -30,10 +30,6 @@ namespace Bid501_Client
         public UpdateListDel updateList { get; set; }
         public UpdateProduct updateProduct { get; set; }
         public AddProduct addProduct { get; set; }
-        public ClientCommControl(WebSocket ws)
-        {
-            //this.ws = ws;
-        }
 
         public ClientCommControl()
         {
@@ -61,9 +57,14 @@ namespace Bid501_Client
             ws.Send("Login:" + cred);
         }
 
+        public void SendBidItem(Product_Proxy product, string username)
+        {
+            ws.Send(JsonConvert.SerializeObject(product) + "|" + username);
+        }
+
         public void SendBidItem(Product_Proxy product)
         {
-            ws.Send(JsonConvert.SerializeObject(product) + "|" + Dns.GetHostName());
+            ws.Send(JsonConvert.SerializeObject(product) + "|" + "");
         }
 
         public void LogoutUser(string cred)
@@ -92,9 +93,7 @@ namespace Bid501_Client
             {
                 case "Success":
                     List<Product_Proxy> productList = DeserializeProductList(split[1]);
-                    //ppd.PL = productList;
                     updateList(productList);
-                    //UpdateLoginStatus(Bid501_Shared.State.SUCCESS);
                     break;
                 case "DECLINED":
                     UpdateLoginStatus(Bid501_Shared.State.DECLINED);
@@ -151,9 +150,7 @@ namespace Bid501_Client
         private List<Product_Proxy> DeserializeProductList(string s)
         {
             List<Product_Proxy> product_Proxy = JsonConvert.DeserializeObject<List<Product_Proxy>>(s);
-            //List<Product_Proxy> product_Proxy = JsonConvert.DeserializeObject<List<Product_Proxy>>(s);
             return product_Proxy;
-            //send the proxy and also make a new view.
         }
 
         private Product_Proxy DeserializeProduct(string s)
@@ -162,11 +159,6 @@ namespace Bid501_Client
 
             return product_Proxy;
             //send the proxy and also make a new view.
-        }
-
-        private void Test()
-        {
-
         }
     }
 }

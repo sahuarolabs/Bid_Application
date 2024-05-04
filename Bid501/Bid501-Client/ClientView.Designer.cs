@@ -75,10 +75,10 @@
             // UxBidAmt
             // 
             this.UxBidAmt.BackColor = System.Drawing.SystemColors.Control;
-            this.UxBidAmt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.UxBidAmt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.UxBidAmt.Location = new System.Drawing.Point(60, 206);
             this.UxBidAmt.Name = "UxBidAmt";
-            this.UxBidAmt.Size = new System.Drawing.Size(54, 13);
+            this.UxBidAmt.Size = new System.Drawing.Size(54, 20);
             this.UxBidAmt.TabIndex = 4;
             // 
             // UxMinBid
@@ -127,7 +127,7 @@
             this.UxAmountBids.BackColor = System.Drawing.SystemColors.Control;
             this.UxAmountBids.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.UxAmountBids.Enabled = false;
-            this.UxAmountBids.Location = new System.Drawing.Point(120, 206);
+            this.UxAmountBids.Location = new System.Drawing.Point(120, 208);
             this.UxAmountBids.Name = "UxAmountBids";
             this.UxAmountBids.Size = new System.Drawing.Size(70, 13);
             this.UxAmountBids.TabIndex = 5;

@@ -10,7 +10,7 @@ using WebSocketSharp;
 namespace Bid501_Client
 {
     public delegate void ViewUpdateListDel();
-    public delegate void SendBid(Product_Proxy p);
+    public delegate void SendBid(Product_Proxy p, string username);
     public delegate void ListUpdate();
     public delegate void ListUpdateToServer(Product_Proxy product);
     public delegate void PopulateListView();
@@ -21,9 +21,7 @@ namespace Bid501_Client
     {
         private List<Product_Proxy> productList;
         public Product_ProxyDB product_ProxyDB { get; set; }
-        public LoginDel handleLogin { get; set; } //added
-        public LoginRequest loginRequest { get; set; }
-        //public ViewUpdateListDel updateList { get; set; }
+        public LoginDel handleLogin { get; set; }
         public SendBid sendBid { get; set; }
         public ListUpdate listUpdate { get; set; }
         public ListUpdateToServer listUpdateToServer { get; set; }
@@ -35,6 +33,7 @@ namespace Bid501_Client
         public NotifyBidEnded notifyBidEnded { get; set; }
         private string cred;
         private bool lockForm = true;
+        private string username;
         public void UpdateList(List<Product_Proxy> list)
         {
             product_ProxyDB.PL = list;
@@ -65,7 +64,7 @@ namespace Bid501_Client
             {
                 product.Price = bid;
                 UpdateProduct(product);
-                sendBid(product);
+                sendBid(product, username);
                 populateListView();
             }
         }
@@ -125,6 +124,10 @@ namespace Bid501_Client
         public void TurnViewOnClient()
         {
             turnClientViewOn();
+        }
+        public void SendUsername(string username)
+        {
+            this.username = username;
         }
     }
 }
