@@ -39,6 +39,7 @@ namespace Bid501_Client
         {
             product_ProxyDB.PL = list;
             populateListView();
+            listUpdate();
             if (lockForm)
             {
                 updateLogin(State.SUCCESS);

@@ -15,6 +15,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Net;
 using System.Net.Sockets;
+using System.Windows.Forms;
 
 namespace Bid501_Client
 {
@@ -67,8 +68,15 @@ namespace Bid501_Client
 
         public void LogoutUser(string cred)
         {
-            ws.Send("Logout:" + cred);
-            ws.Close(); //doesnt allow for same computer to connect more than once
+            try
+            {
+                ws.Send("Logout:" + cred);
+                ws.Close(); //doesnt allow for same computer to connect more than once
+            }
+            catch
+            {
+                MessageBox.Show("Connection Unstable!");
+            }
         }
 
         private void UpdateLoginStatus(Bid501_Shared.State s)
