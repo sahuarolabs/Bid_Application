@@ -42,7 +42,7 @@ namespace Bid501_Server
                     {
                         activeClientList.Invoke((MethodInvoker)delegate ()
                         {
-
+                            activeClientList.Items.Clear();
                             activeClientList.Items.Add(accountName);
                         });
                     }
@@ -66,7 +66,7 @@ namespace Bid501_Server
                     {
                         activeClientList.Invoke((MethodInvoker)delegate ()
                         {
-
+                            activeClientList.Items.Clear();
                             activeClientList.Items.Add(accountName);
                         });
                     }
@@ -89,7 +89,7 @@ namespace Bid501_Server
                     {
                         activeClientList.Invoke((MethodInvoker)delegate ()
                         {
-
+                            activeClientList.Items.Clear();
                             activeClientList.Items.Add(accountName);
                         });
                     }

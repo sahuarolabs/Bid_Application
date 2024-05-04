@@ -120,7 +120,7 @@ namespace Bid501_Server
         {
             activeUsers = dict;
             account.activeUsersList = activeUsers;
-            resyncDel();
+         
         }
 
         public void InitializeDelegates(Success su, Invalid i, UpdateProductDel up,AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b, SendServerProduct s)
