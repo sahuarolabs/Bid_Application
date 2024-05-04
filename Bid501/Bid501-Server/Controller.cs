@@ -15,6 +15,7 @@ using System.Windows.Forms;
 //have to send out message alerting users who won the bid.
 namespace Bid501_Server
 { 
+    
     public enum State
     {
         NOTINIT = -1,
@@ -28,7 +29,7 @@ namespace Bid501_Server
 
     public class Controller
     {
-       
+        
         private AddProduct addProductViewOpen;
         private SendServerProduct ssp;
         private AdminOpen adOpen;
@@ -44,7 +45,9 @@ namespace Bid501_Server
         private BidEnded bidChanged;
         List<Account> activeClients;
         List<Account> accounts;
+        protected Dictionary<string, WebSocket> activeUsers = new Dictionary<string, WebSocket>();
         public displayState displayState { get; set; } //added
+
 
         WebSocket ws;
 
@@ -112,6 +115,11 @@ namespace Bid501_Server
         }
 
 
+        public void ActiveUsers(Dictionary<string,WebSocket> dict)
+        {
+            activeUsers = dict;
+            account.activeUsersList = activeUsers;
+        }
 
         public void InitializeDelegates(Success su, Invalid i, UpdateProductDel up,AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b, SendServerProduct s)
         {

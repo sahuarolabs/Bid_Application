@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
+using WebSocketSharp;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -17,16 +18,22 @@ namespace Bid501_Server
     {
         private AddProduct addProduct;
         private ProductModel model;
+        private AccountModel account;
         private BidEnded bidChanged;
+        Dictionary<string, WebSocket> accounts = new Dictionary<string, WebSocket>();
         List<Product> products = new List<Product>();
         List<Account> actives = new List<Account>();
         public AdminView( BidEnded be, AddProduct ap, ProductModel pm, AccountModel am)
         {
             InitializeComponent();
             this.bidChanged = be;   
-            this.addProduct = ap;   
+            this.addProduct = ap;
+            account = am;
             this.model = pm;
             products = model.Sync();
+            accounts = account.activeUsersList;
+            activeClientList.DataSource = null;
+            activeClientList.DataSource = accounts.Keys;
             activeProductList.DataSource = null;
             activeProductList.DataSource = products;
             
@@ -34,12 +41,16 @@ namespace Bid501_Server
         public void AdminOpen()
         {
             this.ShowDialog();
+            activeClientList.DataSource = null;
+            activeClientList.DataSource = accounts.Keys;
             activeProductList.DataSource = null;
             activeProductList.DataSource = products;
         }
         public void Resync()
         {
             products = model.Sync();
+            activeClientList.DataSource = null;
+            activeClientList.DataSource = accounts.Keys;
             activeProductList.DataSource = null;
             activeProductList.DataSource = products;
         }

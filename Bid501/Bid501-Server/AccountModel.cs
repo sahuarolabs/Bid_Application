@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using WebSocketSharp;
 
 namespace Bid501_Server
 {
@@ -12,7 +13,7 @@ namespace Bid501_Server
     {
         public List<Account> accounts;
 
-        public AccountModel() 
+        public AccountModel()
         {
             accounts = LoadAccounts();
         }
@@ -33,7 +34,17 @@ namespace Bid501_Server
             }
             return templist;
         }
-
+        private Dictionary<string,WebSocket> _acList;
+        public Dictionary<string,WebSocket> activeUsersList {
+            get
+            {
+                return _acList;
+            }
+            set
+            {
+                _acList = value;
+            }
+        }
         public List<Account> AccountSync() { return this.accounts; }
     }
 }

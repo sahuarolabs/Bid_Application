@@ -27,7 +27,7 @@ namespace Bid501_Server
         /// <summary>
         /// Empty constructor
         /// </summary>
-
+        private AccountStarted acID;
         private ProductModel products;
         private ClientLogin clientLogin;
         private Update update;
@@ -42,8 +42,9 @@ namespace Bid501_Server
         //    this.ws = ws;
         //}
 
-        public void SetInit(ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws)
+        public void SetInit(AccountStarted a,ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws)
         {
+            acID = a;
             this.clientLogin = clientlog;
             products = p;
             update = u;
@@ -70,7 +71,9 @@ namespace Bid501_Server
             }
             else if(msgs[0] == "Connection")
             {
-                //store to the list.
+                KeyValuePair<string,WebSocket> user = JsonConvert.DeserializeObject<KeyValuePair<string, WebSocket>>(msgs[1]);
+                allActiveSockets.Add(user.Key, user.Value);
+                acID(allActiveSockets);
             }
             else
             {
