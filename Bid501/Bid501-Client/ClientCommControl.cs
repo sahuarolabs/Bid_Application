@@ -119,8 +119,8 @@ namespace Bid501_Client
         protected override void OnOpen()
         {
             base.OnOpen();
-            Dictionary<string, WebSocket> kvp = new Dictionary<string, WebSocket>();
-            kvp.Add(ID, ws);
+            KeyValuePair<string, WebSocket> kvp = new KeyValuePair<string, WebSocket>(ID, ws);
+
             ws.Send("Connection|" + JsonConvert.SerializeObject(kvp));
         }
 

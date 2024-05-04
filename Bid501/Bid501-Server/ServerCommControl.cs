@@ -65,7 +65,7 @@ namespace Bid501_Server
                 string password = msgs2[2];
                 //send the username and passwords to the controller to handle
                 //NEED TO WORK ON DELEGATES
-              clientLogin(username, password); 
+                clientLogin(username, password); 
       
             }
             else if(msgs[0] == "Connection")
