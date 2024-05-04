@@ -19,6 +19,10 @@ namespace Bid501_Server
         public bool Status { get; set; }
 
         public double Price { get; set; }   
+
+        public int Bidders { get; set; }
+
+        public string HighestBidder { get; set; }
        // public List<Product> Products { get; set; }
 
         public Product(string productName, int productID, TimeSpan timeLeft, double p, bool currentStatus)

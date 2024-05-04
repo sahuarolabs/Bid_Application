@@ -46,6 +46,7 @@ namespace Bid501_Server
         List<Account> activeClients;
         List<Account> accounts;
         public List<string> activeUsers = new List<string>();
+        private string highestBidder;
         public displayState displayState { get; set; } //added
 
 
@@ -115,7 +116,10 @@ namespace Bid501_Server
             
         }
 
-
+        public void HighestBidderCurrent(string high)
+        {
+            highestBidder = high;
+        }
         public void ActiveUsers(List<string> dict)
         {
             activeUsers = dict;
@@ -149,6 +153,8 @@ namespace Bid501_Server
                     if(p.Price > prod.Price)
                     {
                         prod.Price = p.Price;
+                        prod.Bidders++;
+                        prod.HighestBidder = highestBidder;
                         updateProduct(prod);
                         resyncDel();
                     }

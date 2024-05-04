@@ -22,6 +22,7 @@ namespace Bid501_Server
     public delegate void Update(Product p);
     public delegate void BidEnded(Product p);
     public delegate void AccountStarted(List<string> dict);
+    public delegate void HighestBidder(string high);
 
     public delegate void NewProductDel(Product p);
     public delegate void UpdateProductDel(Product p);
@@ -76,7 +77,7 @@ namespace Bid501_Server
             controller.InitializeDelegates(scc.SendProductList, scc.InvalidLogin, scc.UpdateProduct, addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, scc.BidEnded, scc.SendServerProduct);
             wssv.AddWebSocketService<ServerCommControl>("/shared", () =>
             {
-                scc.SetInit(controller.ActiveUsers,controller.ClientLogin, controller.UpdateProducts, pm, wssv);
+                scc.SetInit(controller.HighestBidderCurrent,controller.ActiveUsers,controller.ClientLogin, controller.UpdateProducts, pm, wssv);
                 return scc;
             });
             wssv.Start();

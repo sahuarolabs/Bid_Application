@@ -27,6 +27,7 @@ namespace Bid501_Server
         /// <summary>
         /// Empty constructor
         /// </summary>
+        private HighestBidder bidder;
         private AccountStarted acID;
         private ProductModel products;
         private ClientLogin clientLogin;
@@ -42,8 +43,9 @@ namespace Bid501_Server
         //    this.ws = ws;
         //}
 
-        public void SetInit(AccountStarted a,ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws)
+        public void SetInit(HighestBidder b,AccountStarted a,ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws)
         {
+            bidder = b;
             acID = a;
             this.clientLogin = clientlog;
             products = p;
@@ -78,8 +80,11 @@ namespace Bid501_Server
             else
             {
                 string msg = msgs[0];
+                string highestBidder = msgs[1];
                 Product product = JsonConvert.DeserializeObject<Product>(msg);
                 //Product product = JsonSerializer.Deserialize<Product>(msg);
+                //delegate to send the highest bidder.
+                bidder(highestBidder);
                 update(product);
                 //send product to controller to validate bid and then send updates afterwards.
                 //NEED TO WORK ON DELEGATES
