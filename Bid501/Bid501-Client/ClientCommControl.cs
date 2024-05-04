@@ -49,6 +49,7 @@ namespace Bid501_Client
             int port = 8001;
             string wsAddress = $"ws://{localIP}:{port}/shared";
             WebSocket ws1 = new WebSocket(wsAddress);
+
             this.ws = ws1;
             ws.Connect();
             OnOpen();
