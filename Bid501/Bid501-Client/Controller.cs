@@ -76,12 +76,17 @@ namespace Bid501_Client
                 if (p.ID == product.ID)
                 {
                     product_ProxyDB.PL[ind].Price = product.Price;
+                    product_ProxyDB.PL[ind].Status = product.Status;
+                    product_ProxyDB.PL[ind].Bidders = product.Bidders;
+                    product_ProxyDB.PL[ind].HighestBidder = product.HighestBidder;
+
                     //replaceProduct();
-                    
+
                 }
                 ind++;
             }
             ProductListUpdated();
+
         }
 
         private void ProductListUpdated()

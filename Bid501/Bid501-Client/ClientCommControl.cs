@@ -12,6 +12,9 @@ using Bid501_Server;
 //using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 using System.IO;
+using System.Security.Cryptography;
+using System.Net;
+using System.Net.Sockets;
 
 namespace Bid501_Client
 {
@@ -20,7 +23,7 @@ namespace Bid501_Client
     public delegate void AddProduct(Product_Proxy product);
     public class ClientCommControl : WebSocketBehavior
     {
-        private static WebSocket ws = new WebSocket("ws://192.168.86.143:8001/shared");
+        private WebSocket ws;
         public Product_ProxyDB ppd { get; set; }
         public UpdateLoginStatus updateLoginStatus { get; set; }
         public UpdateListDel updateList { get; set; }
@@ -33,7 +36,10 @@ namespace Bid501_Client
 
         public ClientCommControl()
         {
+            WebSocket ws1 = new WebSocket("ws://192.168.86.21:8001/shared");
+            this.ws = ws1;
             ws.Connect();
+            OnOpen();
             ws.OnMessage += (sender, e) => { handleCom(e.Data); };
         }
 
@@ -44,7 +50,7 @@ namespace Bid501_Client
 
         public void SendBidItem(Product_Proxy product)
         {
-            ws.Send(JsonConvert.SerializeObject(product));
+            ws.Send(JsonConvert.SerializeObject(product) + "|" + Dns.GetHostName());
         }
 
         public void LogoutUser(string cred)
@@ -119,9 +125,7 @@ namespace Bid501_Client
         protected override void OnOpen()
         {
             base.OnOpen();
-            KeyValuePair<string, WebSocket> kvp = new KeyValuePair<string, WebSocket>(ID, ws);
-
-            ws.Send("Connection|" + JsonConvert.SerializeObject(kvp));
+            ws.Send("Connection|" + Dns.GetHostName());
         }
 
         private List<Product_Proxy> DeserializeProductList(string s)

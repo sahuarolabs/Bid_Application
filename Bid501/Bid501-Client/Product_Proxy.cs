@@ -21,6 +21,10 @@ namespace Bid501_Client
         public double Price { get; set; }
         // public List<Product> Products { get; set; }
 
+        public int Bidders { get; set; }
+
+        public string HighestBidder { get; set; }
+
         public Product_Proxy(string productName, int productID, TimeSpan timeLeft, double p, bool currentStatus)
         {
             Price = p;
