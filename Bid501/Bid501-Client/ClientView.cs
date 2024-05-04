@@ -159,5 +159,9 @@ namespace Bid501_Client
             logoutUser();
         }
 
+        public void NotifyBidEnded(string name, string itemName, double price)
+        {
+            MessageBox.Show(name + " has won " + itemName + " at $" + price);
+        }
     }
 }

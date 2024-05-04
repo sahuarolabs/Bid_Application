@@ -16,6 +16,7 @@ namespace Bid501_Client
     public delegate void PopulateListView();
     public delegate void LogoutUserDel(string cred);
     public delegate void ReplaceProduct();
+    public delegate void NotifyBidEnded(string name, string item, double price);
     public class Controller
     {
         private List<Product_Proxy> productList;
@@ -31,6 +32,7 @@ namespace Bid501_Client
         public TurnClientViewOn turnClientViewOn { get; set; }
         public UpdateLoginStatus updateLogin { get; set; }
         public ReplaceProduct replaceProduct { get; set; }
+        public NotifyBidEnded notifyBidEnded { get; set; }
         private string cred;
         private bool lockForm = true;
         public void UpdateList(List<Product_Proxy> list)
@@ -75,6 +77,11 @@ namespace Bid501_Client
             {
                 if (p.ID == product.ID)
                 {
+                    if (product_ProxyDB.PL[ind].Status != product.Status && !product.Status)
+                    {
+                        //notify Client View with price and the status
+                        notifyBidEnded(product.HighestBidder, product.Name, product.Price);
+                    }
                     product_ProxyDB.PL[ind].Price = product.Price;
                     product_ProxyDB.PL[ind].Status = product.Status;
                     product_ProxyDB.PL[ind].Bidders = product.Bidders;
