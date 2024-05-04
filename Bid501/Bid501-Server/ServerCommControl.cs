@@ -22,14 +22,15 @@ namespace Bid501_Server
         private WebSocketServer ws;
 
         private List<string> listClients = new List<string>();
-        private static Dictionary<string, WebSocket> allActiveSockets = new Dictionary<string, WebSocket>();
+        private List<string> allActiveSockets = new List<string>();
 
         public static event EventHandler<NewMessageEventArgs> OnNewMessage;
 
         /// <summary>
         /// Empty constructor
         /// </summary>
-
+        private HighestBidder bidder;
+        private AccountStarted acID;
         private ProductModel products;
         private ClientLogin clientLogin;
         private Update update;
@@ -49,8 +50,10 @@ namespace Bid501_Server
             OnNewMessage?.Invoke(null, new NewMessageEventArgs { LogData = logdata, Username = username });
         }
 
-        public void SetInit(ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws, ResyncDel rs)
+        public void SetInit(HighestBidder b, AccountStarted a, ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws, ResyncDel rs)
         {
+            bidder = b;
+            acID = a;
             this.clientLogin = clientlog;
             products = p;
             update = u;
@@ -65,6 +68,7 @@ namespace Bid501_Server
         /// <param name="e">The message that is sent through the websocket using JSON.</param>
         protected override void OnMessage(MessageEventArgs e)
         {
+            
             string[] msgs = e.Data.ToString().Split('|');
             string[] msgs2 = e.Data.ToString().Split(':');
             if (msgs2.Length == 3)
@@ -82,13 +86,17 @@ namespace Bid501_Server
             }
             else if(msgs[0] == "Connection")
             {
-                //store to the list.
+                string user = msgs[1];
+                allActiveSockets.Add(user);
+                acID(allActiveSockets);
             }
             else
             {
                 string msg = msgs[0];
                 Product product = JsonConvert.DeserializeObject<Product>(msg);
                 //Product product = JsonSerializer.Deserialize<Product>(msg);
+                //delegate to send the highest bidder.
+                bidder(msgs[1]);
                 update(product);
                 //send product to controller to validate bid and then send updates afterwards.
                 //NEED TO WORK ON DELEGATES

@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
+using WebSocketSharp;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -17,16 +18,38 @@ namespace Bid501_Server
     {
         private AddProduct addProduct;
         private ProductModel model;
+        private AccountModel account;
         private BidEnded bidChanged;
+        List<string> accounts = new List<string>();
         List<Product> products = new List<Product>();
+
+        private Product product;
         List<string> actives = new List<string>();
         public AdminView( BidEnded be, AddProduct ap, ProductModel pm, AccountModel am)
         {
             InitializeComponent();
             this.bidChanged = be;   
-            this.addProduct = ap;   
+            this.addProduct = ap;
+            account = am;
             this.model = pm;
             products = model.Sync();
+            accounts = account.activeUsersList;
+            activeClientList.DataSource = null;
+            if (actives != null)
+            {
+                //activeClientList.DataSource = accounts;
+                foreach (string accountName in actives)
+                {
+                    if (activeClientList.InvokeRequired)
+                    {
+                        activeClientList.Invoke((MethodInvoker)delegate ()
+                        {
+                            activeClientList.Items.Clear();
+                            activeClientList.Items.Add(accountName);
+                        });
+                    }
+                }
+            }
             activeProductList.DataSource = null;
             activeClientList.DataSource = null;
 
@@ -44,10 +67,46 @@ namespace Bid501_Server
             //activeClientList.DataSource = actives;
 
             this.ShowDialog();
-            
+            activeClientList.DataSource = null;
+            accounts = account.activeUsersList;
+            if (actives != null)
+            {
+                //activeClientList.DataSource = accounts;
+                foreach (string accountName in actives)
+                {
+                    if (activeClientList.InvokeRequired)
+                    {
+                        activeClientList.Invoke((MethodInvoker)delegate ()
+                        {
+                            activeClientList.Items.Clear();
+                            activeClientList.Items.Add(accountName);
+                        });
+                    }
+                }
+            }
+            activeProductList.DataSource = null;
+            activeProductList.DataSource = products;
         }
         public void Resync()
         {
+            products = model.Sync();
+            accounts = account.activeUsersList;
+            activeClientList.DataSource = null;
+            if (actives != null)
+            {
+                //activeClientList.DataSource = accounts;
+                foreach (string accountName in actives)
+                {
+                    if (activeClientList.InvokeRequired)
+                    {
+                        activeClientList.Invoke((MethodInvoker)delegate ()
+                        {
+                            activeClientList.Items.Clear();
+                            activeClientList.Items.Add(accountName);
+                        });
+                    }
+                }
+            }
             activeProductList.DataSource = null;
             activeClientList.DataSource = null;
 
@@ -58,7 +117,15 @@ namespace Bid501_Server
         }
         private void activeProductList_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if(activeProductList.SelectedIndex != -1)
+            {
+                int index = activeProductList.SelectedIndex;
+                product = products[index];
+            }
+            else
+            {
+                product = (Product)activeProductList.Items[0];
+            }
         }
 
         private void addProductButton_Click(object sender, EventArgs e)
@@ -68,7 +135,7 @@ namespace Bid501_Server
 
         private void uxEndBidBtn_Click(object sender, EventArgs e)
         {
-            Product changeBid = (Product)activeProductList.SelectedItem;
+            Product changeBid = product;
             bidChanged(changeBid);  
         }
 

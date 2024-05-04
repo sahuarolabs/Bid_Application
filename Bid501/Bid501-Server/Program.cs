@@ -21,6 +21,8 @@ namespace Bid501_Server
     public delegate void ClientLogin(string username, string password);
     public delegate void Update(Product p);
     public delegate void BidEnded(Product p);
+    public delegate void AccountStarted(List<string> dict);
+    public delegate void HighestBidder(string high);
 
     public delegate void NewProductDel(Product p);
     public delegate void UpdateProductDel(Product p);
@@ -70,16 +72,14 @@ namespace Bid501_Server
                 IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
                 localIP = endPoint.Address;
             }
-
             WebSocketServer wssv = new WebSocketServer(localIP, port);
             AdminView adminView = new AdminView(controller.BidEnded, controller.AddProduct, pm, am);
-            ServerCommControl scc = new ServerCommControl();
-
+            ServerCommControl scc = new ServerCommControl();    
             controller.InitializeDelegates(scc.SendProductList, scc.InvalidLogin, scc.UpdateProduct, addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, scc.BidEnded, scc.SendServerProduct);
             wssv.AddWebSocketService<ServerCommControl>("/shared", () =>
             {
+                scc.SetInit(controller.HighestBidderCurrent,controller.ActiveUsers,controller.ClientLogin, controller.UpdateProducts, pm, wssv,adminView.Resync);
                 //ServerCommControl scc = new ServerCommControl();
-                scc.SetInit(controller.ClientLogin, controller.UpdateProducts, pm, wssv, adminView.Resync);
 
                 return scc;
             });

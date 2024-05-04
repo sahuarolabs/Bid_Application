@@ -15,6 +15,7 @@ using System.Windows.Forms;
 //have to send out message alerting users who won the bid.
 namespace Bid501_Server
 { 
+    
     public enum State
     {
         NOTINIT = -1,
@@ -28,7 +29,7 @@ namespace Bid501_Server
 
     public class Controller
     {
-       
+        
         private AddProduct addProductViewOpen;
         private SendServerProduct ssp;
         private AdminOpen adOpen;
@@ -44,7 +45,10 @@ namespace Bid501_Server
         private BidEnded bidChanged;
         List<Account> activeClients;
         List<Account> accounts;
+        public List<string> activeUsers = new List<string>();
+        List<string> bidders = new List<string>();
         public displayState displayState { get; set; } //added
+
 
         WebSocket ws;
 
@@ -53,7 +57,7 @@ namespace Bid501_Server
         {
             this.account = am;
             this.product = p;
-            ws = new WebSocket("ws://127.0.0.1:8001/shared");
+            ws = new WebSocket("ws://10.150.28.10:8001/shared");
             ws.Connect();
             activeClients = am.AccountSync();
         }
@@ -91,6 +95,7 @@ namespace Bid501_Server
         //method to validate login
         public void ClientLogin(string username, string password)
         {
+            bool flag = false;
             accounts = account.AccountSync();
             foreach (Account accou in accounts)
             {
@@ -99,14 +104,28 @@ namespace Bid501_Server
                     if (!accou.IsAdmin)
                     {
                         goodLogin(product.SyncHardcoded());
-                        break;
+                        flag = true;
+                        resyncDel();
                     }
                 }
             }
-            //badLogin();
+            if (!flag)
+            {
+                badLogin();
+            }
+            
         }
 
-
+        public void HighestBidderCurrent(string high)
+        {
+            bidders.Add(high);
+        }
+        public void ActiveUsers(List<string> dict)
+        {
+            activeUsers = dict;
+            account.activeUsersList = activeUsers;
+         
+        }
 
         public void InitializeDelegates(Success su, Invalid i, UpdateProductDel up,AddProduct add, ResyncDel resync, AdminOpen ao, BidEnded b, SendServerProduct s)
         {
@@ -131,10 +150,13 @@ namespace Bid501_Server
             {
                 if(prod.ID == p.ID)
                 {
-                    if(p.Price > prod.Price)
+                    if (p.Price > prod.Price && p.Status == true)
                     {
                         prod.Price = p.Price;
+                        prod.Bidders++;
+                        prod.HighestBidder = highestBidder;
                         updateProduct(prod);
+                        resyncDel();
                     }
                 }
             }
@@ -154,8 +176,10 @@ namespace Bid501_Server
         }
 
         public void BidEnded(Product p)
-        { 
+        {
+            p.Status = false;
             bidChanged(p);
+            resyncDel();
         }
     }
 }
