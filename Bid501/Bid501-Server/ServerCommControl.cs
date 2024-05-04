@@ -7,7 +7,8 @@ using WebSocketSharp;
 using WebSocketSharp.Server;
 using System.Windows.Forms;
 using Bid501_Shared;
-using System.Text.Json;
+//using System.Text.Json;
+using Newtonsoft.Json;
 using System.Net.Configuration;
 
 namespace Bid501_Server
@@ -21,6 +22,7 @@ namespace Bid501_Server
         private WebSocketServer ws;
 
         private List<string> listClients = new List<string>();
+        private static Dictionary<string, WebSocket> allActiveSockets = new Dictionary<string, WebSocket>();
 
         /// <summary>
         /// Empty constructor
@@ -29,6 +31,7 @@ namespace Bid501_Server
         private ProductModel products;
         private ClientLogin clientLogin;
         private Update update;
+        private List<Product> modProd;
 
         
         //public ServerCommControl(ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws)
@@ -45,6 +48,7 @@ namespace Bid501_Server
             products = p;
             update = u;
             this.ws = ws;
+            modProd = p.products;
         }
 
         /// <summary>
@@ -53,21 +57,26 @@ namespace Bid501_Server
         /// <param name="e">The message that is sent through the websocket using JSON.</param>
         protected override void OnMessage(MessageEventArgs e)
         {
-            string[] msgs = e.Data.ToString().Split(':');
-            
-            if (msgs.Length == 3)
+            string[] msgs = e.Data.ToString().Split('|');
+            string[] msgs2 = e.Data.ToString().Split(':');
+            if (msgs2.Length == 3)
             {
-                string username = msgs[1];
-                string password = msgs[2];
+                string username = msgs2[1];
+                string password = msgs2[2];
                 //send the username and passwords to the controller to handle
                 //NEED TO WORK ON DELEGATES
               clientLogin(username, password); 
       
             }
+            else if(msgs[0] == "Connection")
+            {
+                //store to the list.
+            }
             else
             {
-                string msg = msgs[1];
-                Product product = JsonSerializer.Deserialize<Product>(msg);
+                string msg = msgs[0];
+                Product product = JsonConvert.DeserializeObject<Product>(msg);
+                //Product product = JsonSerializer.Deserialize<Product>(msg);
                 update(product);
                 //send product to controller to validate bid and then send updates afterwards.
                 //NEED TO WORK ON DELEGATES
@@ -84,9 +93,11 @@ namespace Bid501_Server
         /// Method to use when the server wants to send over the list of products.
         /// </summary>
         /// <param name="cred">The list sent to the client using JSON.</param>
-        public void SendProductList(List<Product> products)
+        public void SendProductList(List<Product> prods)
         {
-            string msg = JsonSerializer.Serialize<List<Product>>(products);
+            prods = products.Sync();
+            string msg = JsonConvert.SerializeObject(prods);
+            //string msg = JsonSerializer.Serialize<List<Product>>(modProd);
             msg = "Success|" + msg;
             Send(msg);
             
@@ -105,7 +116,8 @@ namespace Bid501_Server
         /// <param name="product">The product that needs to be updated.</param>
         public void UpdateProduct(Product product)
         {
-           string msg = JsonSerializer.Serialize<Product>(product);
+            string msg = JsonConvert.SerializeObject(product);
+           //string msg = JsonSerializer.Serialize<Product>(product);
             msg = "Update|" + msg;
             Send(msg);
         }
@@ -115,7 +127,8 @@ namespace Bid501_Server
         /// <param name="product">The new product</param>
         public void SendServerProduct(Product product)
         {
-            string msg = JsonSerializer.Serialize<Product>(product);
+            string msg = JsonConvert.SerializeObject(product);
+            //string msg = JsonSerializer.Serialize<Product>(product);
             msg = "New|" + msg;
             Send(msg);
         }
@@ -126,9 +139,18 @@ namespace Bid501_Server
         /// <param name="product">The product that the bid ended on.</param>
         public void BidEnded(Product product)
         {
-            string msg = JsonSerializer.Serialize<Product>(product);
+            string msg = JsonConvert.SerializeObject(product);
+            //string msg = JsonSerializer.Serialize<Product>(product);
             msg = "BidEnded|" + msg;
-            Send(msg);
+            try
+            {
+                Send(msg);
+            }
+            catch
+            {
+                MessageBox.Show("No one connected");
+            }
+            
         }
     }
 }

@@ -16,6 +16,6 @@ namespace Bid501_Shared
         double Price { get; set; }  
 
         bool Status { get; set; }
-        List<double> bidHistory { get; set; }
+        //List<double> bidHistory { get; set; }
     }
 }

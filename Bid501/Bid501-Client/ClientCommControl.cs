@@ -16,11 +16,11 @@ using System.IO;
 namespace Bid501_Client
 {
     public delegate void UpdateLoginStatus(Bid501_Shared.State s);
-    public delegate void UpdateProduct(IProduct product);
-    public delegate void AddProduct(IProduct product);
+    public delegate void UpdateProduct(Product_Proxy product);
+    public delegate void AddProduct(Product_Proxy product);
     public class ClientCommControl : WebSocketBehavior
     {
-        private static WebSocket ws = new WebSocket("ws://10.130.160.110:8001/shared");
+        private static WebSocket ws = new WebSocket("ws://192.168.86.143:8001/shared");
         public Product_ProxyDB ppd { get; set; }
         public UpdateLoginStatus updateLoginStatus { get; set; }
         public UpdateListDel updateList { get; set; }
@@ -42,14 +42,15 @@ namespace Bid501_Client
             ws.Send("Login:" + cred);
         }
 
-        public void SendBidItem(IProduct product)
+        public void SendBidItem(Product_Proxy product)
         {
-            ws.Send("Bid:" + JsonConvert.SerializeObject(product));
+            ws.Send(JsonConvert.SerializeObject(product));
         }
 
         public void LogoutUser(string cred)
         {
             ws.Send("Logout:" + cred);
+            ws.Close();
         }
 
         private void UpdateLoginStatus(Bid501_Shared.State s)
@@ -65,22 +66,23 @@ namespace Bid501_Client
             {
                 case "Success":
                     List<Product_Proxy> productList = DeserializeProductList(split[1]);
+                    //ppd.PL = productList;
                     updateList(productList);
-                    UpdateLoginStatus(Bid501_Shared.State.SUCCESS);
+                    //UpdateLoginStatus(Bid501_Shared.State.SUCCESS);
                     break;
                 case "DECLINED":
                     UpdateLoginStatus(Bid501_Shared.State.DECLINED);
                     break;
                 case "Update":
-                    IProduct productUpdate = DeserializeProduct(split[1]);
+                    Product_Proxy productUpdate = DeserializeProduct(split[1]);
                     updateProduct(productUpdate);
                     break;
                 case "New":
-                    IProduct productNew = DeserializeProduct(split[1]);
+                    Product_Proxy productNew = DeserializeProduct(split[1]);
                     addProduct(productNew);
                     break;
                 case "BidEnded":
-                    IProduct productEnded = DeserializeProduct(split[1]);
+                    Product_Proxy productEnded = DeserializeProduct(split[1]);
                     updateProduct(productEnded);
                     break;
             }
@@ -88,7 +90,7 @@ namespace Bid501_Client
 
         protected override void OnMessage(MessageEventArgs e)
         {
-            string[] split = e.ToString().Split(':');
+            string[] split = e.ToString().Split('|');
             switch (split[0])
             {
                 case "Success":
@@ -100,18 +102,26 @@ namespace Bid501_Client
                     UpdateLoginStatus(Bid501_Shared.State.DECLINED);
                     break;
                 case "Update":
-                    IProduct productUpdate = DeserializeProduct(split[1]);
+                    Product_Proxy productUpdate = DeserializeProduct(split[1]);
                     updateProduct(productUpdate);
                     break;
                 case "New":
-                    IProduct productNew = DeserializeProduct(split[1]);
+                    Product_Proxy productNew = DeserializeProduct(split[1]);
                     addProduct(productNew);
                     break;
                 case "BidEnded":
-                    IProduct productEnded = DeserializeProduct(split[1]);
+                    Product_Proxy productEnded = DeserializeProduct(split[1]);
                     updateProduct(productEnded);
                     break;
             }
+        }
+
+        protected override void OnOpen()
+        {
+            base.OnOpen();
+            Dictionary<string, WebSocket> kvp = new Dictionary<string, WebSocket>();
+            kvp.Add(ID, ws);
+            ws.Send("Connection|" + JsonConvert.SerializeObject(kvp));
         }
 
         private List<Product_Proxy> DeserializeProductList(string s)
@@ -122,9 +132,9 @@ namespace Bid501_Client
             //send the proxy and also make a new view.
         }
 
-        private IProduct DeserializeProduct(string s)
+        private Product_Proxy DeserializeProduct(string s)
         {
-            IProduct product_Proxy = JsonConvert.DeserializeObject<IProduct>(s);
+            Product_Proxy product_Proxy = JsonConvert.DeserializeObject<Product_Proxy>(s);
             return product_Proxy;
             //send the proxy and also make a new view.
         }

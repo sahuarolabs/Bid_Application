@@ -11,11 +11,29 @@ namespace Bid501_Client
     public class Product_Proxy : IProduct
     {
         public string Name { get; set; }
+
         public int ID { get; set; }
-        public DateTime Time { get; set; }
+
+        public TimeSpan Time { get; set; }
+
         public bool Status { get; set; }
-        public List<double> bidHistory { get; set; }
+
         public double Price { get; set; }
-        TimeSpan IProduct.Time { get; set; }
+        // public List<Product> Products { get; set; }
+
+        public Product_Proxy(string productName, int productID, TimeSpan timeLeft, double p, bool currentStatus)
+        {
+            Price = p;
+            Name = productName;
+            ID = productID;
+            Time = timeLeft;
+            Status = currentStatus;
+            //to be implemented 
+        }
+
+        public override string ToString()
+        {
+            return Name.ToString();
+        }
     }
 }

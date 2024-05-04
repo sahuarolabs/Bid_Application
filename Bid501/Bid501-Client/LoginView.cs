@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.AxHost;
 using Bid501_Shared;
+using System.Security.AccessControl;
 
 namespace Bid501_Client
 {
@@ -24,7 +25,7 @@ namespace Bid501_Client
         public LoginView()
         {
             InitializeComponent();
-
+            this.Visible = true;
         }
 
         /// <summary>
@@ -62,13 +63,9 @@ namespace Bid501_Client
                     //Invoke this code since it will only ever be run on a separate thread.
                     this.Invoke(new Action(() =>
                     {
-                        usernameText.Text = "";
-                        passwordText.Text = "";
-                        userTextPrompt.Text = "Congrats! You are Logged In.";
-                        this.Visible = false;
-                        //delegate to turn on the Client View.
-                        turnClientViewOn();
+                        this.Close();
                     }));
+                    
                     break;
                 default:
                     userTextPrompt.Text = "Invalid State";

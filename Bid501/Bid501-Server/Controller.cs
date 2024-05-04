@@ -132,7 +132,7 @@ namespace Bid501_Server
 
         public void UpdateProducts(Product p)
         {
-            foreach(Product prod in product.SyncHardcoded())
+            foreach(Product prod in product.products)
             {
                 if(prod.ID == p.ID)
                 {
