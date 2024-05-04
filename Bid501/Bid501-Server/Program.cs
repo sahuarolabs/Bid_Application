@@ -83,6 +83,13 @@ namespace Bid501_Server
 
                 return scc;
             });
+            wssv.AddWebSocketService<ServerCommControl>("/client", () =>
+            {
+                scc.SetInit(controller.HighestBidderCurrent, controller.ActiveUsers, controller.ClientLogin, controller.UpdateProducts, pm, wssv, adminView.Resync);
+                //ServerCommControl scc = new ServerCommControl();
+
+                return scc;
+            });
             wssv.Start();
 
             //controller.InitializeDelegates(sc.SendProductList, sc.InvalidLogin, sc.UpdateProduct, addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, sc.BidEnded, sc.SendServerProduct);
