@@ -8,6 +8,7 @@ namespace Bid501_Server
 {
     public class NewMessageEventArgs : EventArgs
     {
+        public string LogData { get; set; }
         public string Username { get; set; }
     }
 }

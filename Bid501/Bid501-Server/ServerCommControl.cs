@@ -31,6 +31,7 @@ namespace Bid501_Server
         private ProductModel products;
         private ClientLogin clientLogin;
         private Update update;
+        private ResyncDel resyncDel;
 
         
         //public ServerCommControl(ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws)
@@ -41,17 +42,18 @@ namespace Bid501_Server
         //    this.ws = ws;
         //}
 
-        private void RaiseOnNewMessage(string username)
+        private void RaiseOnNewMessage(string logdata, string username)
         {
-            OnNewMessage?.Invoke(null, new NewMessageEventArgs { Username = username });
+            OnNewMessage?.Invoke(null, new NewMessageEventArgs { LogData = logdata, Username = username });
         }
 
-        public void SetInit(ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws)
+        public void SetInit(ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws, ResyncDel rs)
         {
             this.clientLogin = clientlog;
             products = p;
             update = u;
             this.ws = ws;
+            this.resyncDel = rs;
         }
 
         /// <summary>
@@ -64,13 +66,16 @@ namespace Bid501_Server
             
             if (msgs.Length == 3)
             {
+                string logdata = msgs[0];
                 string username = msgs[1];
                 string password = msgs[2];
-                RaiseOnNewMessage(username);
-                //send the username and passwords to the controller to handle
-                //NEED TO WORK ON DELEGATES
-                clientLogin(username, password); 
-      
+                RaiseOnNewMessage(logdata, username);
+
+                if (msgs[0] == "Login")
+                {
+                    clientLogin(username, password);
+                    resyncDel();
+                }
             }
             else
             {

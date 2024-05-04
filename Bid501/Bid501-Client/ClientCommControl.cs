@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 using System.Deployment.Application;
 using Bid501_Shared;
 using WebSocketSharp.Server;
-using System.Text.Json;
+//using System.Text.Json;
 using Bid501_Server;
 //using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using System.IO;
 
 namespace Bid501_Client
@@ -19,7 +20,7 @@ namespace Bid501_Client
     public delegate void AddProduct(IProduct product);
     public class ClientCommControl : WebSocketBehavior
     {
-        private static WebSocket ws = new WebSocket("ws://10.130.160.109:8001/shared");
+        private static WebSocket ws = new WebSocket("ws://10.150.103.90:8001/shared");
         public Product_ProxyDB ppd { get; set; }
         public UpdateLoginStatus updateLoginStatus { get; set; }
         public UpdateListDel updateList { get; set; }
@@ -43,7 +44,7 @@ namespace Bid501_Client
 
         public void SendBidItem(IProduct product)
         {
-            ws.Send("Bid:" + JsonSerializer.Serialize<IProduct>(product));
+            ws.Send("Bid:" + JsonConvert.SerializeObject(product));
         }
 
         public void LogoutUser(string cred)
@@ -114,7 +115,7 @@ namespace Bid501_Client
         }
         private List<Product_Proxy> DeserializeProductList(string s)
         {
-            List<Product_Proxy> product_Proxy = JsonSerializer.Deserialize<List<Product_Proxy>>(s);
+            List<Product_Proxy> product_Proxy = JsonConvert.DeserializeObject<List<Product_Proxy>>(s);
             //List<Product_Proxy> product_Proxy = JsonConvert.DeserializeObject<List<Product_Proxy>>(s);
             return product_Proxy;
             //send the proxy and also make a new view.
@@ -122,7 +123,7 @@ namespace Bid501_Client
 
         private Product_Proxy DeserializeProduct(string s)
         {
-            Product_Proxy product_Proxy = JsonSerializer.Deserialize<Product_Proxy>(s);
+            Product_Proxy product_Proxy = JsonConvert.DeserializeObject<Product_Proxy>(s);
             //Product_Proxy product_Proxy = JsonConvert.DeserializeObject<Product_Proxy>(s);
             return product_Proxy;
             //send the proxy and also make a new view.

@@ -65,7 +65,7 @@ namespace Bid501_Server
             IPAddress localIP;
             using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
             {
-                socket.Connect("10.130.160.109", port);
+                socket.Connect("10.150.103.90", port);
                 IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
                 localIP = endPoint.Address;
             }
@@ -76,7 +76,7 @@ namespace Bid501_Server
             wssv.AddWebSocketService<ServerCommControl>("/shared", () =>
             {
                 //ServerCommControl scc = new ServerCommControl();
-                scc.SetInit(controller.ClientLogin, controller.UpdateProducts, pm, wssv);
+                scc.SetInit(controller.ClientLogin, controller.UpdateProducts, pm, wssv, adminView.Resync);
                 return scc;
                 //controller.InitializeDelegates(scc.SendProductList, scc.InvalidLogin, scc.UpdateProduct, addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, scc.BidEnded, scc.SendServerProduct);
             });
