@@ -45,20 +45,18 @@ namespace Bid501_Client
             //}
             int port = 8001;
             string wsAddress = $"ws://10.130.160.110:{port}/shared";
-            string wsAddress1 = $"ws://10.130.160.110:{port}/client";
 
-            this.ws = new WebSocket(wsAddress1);
+            this.ws = new WebSocket(wsAddress);
 
-            if (ws.ReadyState == WebSocketState.Open)
-            {
-                ws.Connect();
-            }
-            else
-            {
-                this.ws = new WebSocket(wsAddress);
+            //ws.Connect();
+            //while (ws.ReadyState != WebSocketState.Open)
+            //{
+            //    port++;
+            //    this.ws = new WebSocket(wsAddress);
 
-                ws.Connect();
-            }
+                
+            //}
+            ws.Connect();
             OnOpen();
             ws.OnMessage += (sender, e) => { handleCom(e.Data); };
         }
