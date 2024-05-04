@@ -40,7 +40,7 @@ namespace Bid501_Server
         {
            model.ProductModelAdd((Product)productList.SelectedItem);
            model.RemoveHardcoded((Product)productList.SelectedItem);
-            ssp((Product)productList.SelectedItem);
+           ssp((Product)productList.SelectedItem);
            this.Close();
         }
 

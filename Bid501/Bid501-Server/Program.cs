@@ -75,7 +75,9 @@ namespace Bid501_Server
             controller.InitializeDelegates(scc.SendProductList, scc.InvalidLogin, scc.UpdateProduct, addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, scc.BidEnded, scc.SendServerProduct);
             wssv.AddWebSocketService<ServerCommControl>("/shared", () =>
             {
-                scc.SetInit(controller.ClientLogin, controller.UpdateProducts, pm, wssv);
+                //ServerCommControl scc = new ServerCommControl();
+                scc.SetInit(controller.ClientLogin, controller.UpdateProducts, pm, wssv, adminView.Resync);
+
                 return scc;
             });
             wssv.Start();

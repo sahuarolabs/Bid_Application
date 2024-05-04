@@ -101,6 +101,7 @@
     <Compile Include="LoginView.Designer.cs">
       <DependentUpon>LoginView.cs</DependentUpon>
     </Compile>
+    <Compile Include="NewMessageEventArgs.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="ProductModel.cs" />
     <Compile Include="Program.cs" />

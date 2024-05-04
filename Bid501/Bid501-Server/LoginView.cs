@@ -56,6 +56,7 @@ namespace Bid501_Server
                         usernameText.Text = "";
                         passwordText.Text = "";
                         userTextPrompt.Text = "Congrats! You are Logged In.";
+                    //this.Visible = false;
                     this.Hide();
                     adOpen();
                         

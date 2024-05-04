@@ -24,6 +24,8 @@ namespace Bid501_Server
         private List<string> listClients = new List<string>();
         private static Dictionary<string, WebSocket> allActiveSockets = new Dictionary<string, WebSocket>();
 
+        public static event EventHandler<NewMessageEventArgs> OnNewMessage;
+
         /// <summary>
         /// Empty constructor
         /// </summary>
@@ -31,9 +33,9 @@ namespace Bid501_Server
         private ProductModel products;
         private ClientLogin clientLogin;
         private Update update;
+        private ResyncDel resyncDel;
         private List<Product> modProd;
-
-        
+      
         //public ServerCommControl(ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws)
         //{
         //    this.clientLogin = clientlog;
@@ -42,12 +44,18 @@ namespace Bid501_Server
         //    this.ws = ws;
         //}
 
-        public void SetInit(ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws)
+        private void RaiseOnNewMessage(string logdata, string username)
+        {
+            OnNewMessage?.Invoke(null, new NewMessageEventArgs { LogData = logdata, Username = username });
+        }
+
+        public void SetInit(ClientLogin clientlog, Update u, ProductModel p, WebSocketServer ws, ResyncDel rs)
         {
             this.clientLogin = clientlog;
             products = p;
             update = u;
             this.ws = ws;
+            this.resyncDel = rs;
             modProd = p.products;
         }
 
@@ -61,12 +69,16 @@ namespace Bid501_Server
             string[] msgs2 = e.Data.ToString().Split(':');
             if (msgs2.Length == 3)
             {
-                string username = msgs2[1];
-                string password = msgs2[2];
-                //send the username and passwords to the controller to handle
-                //NEED TO WORK ON DELEGATES
-                clientLogin(username, password); 
-      
+                string logdata = msgs[0];
+                string username = msgs[1];
+                string password = msgs[2];
+                RaiseOnNewMessage(logdata, username);
+
+                if (msgs[0] == "Login")
+                {
+                    clientLogin(username, password);
+                    resyncDel();
+                }
             }
             else if(msgs[0] == "Connection")
             {
