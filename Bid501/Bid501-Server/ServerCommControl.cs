@@ -69,12 +69,12 @@ namespace Bid501_Server
             string[] msgs2 = e.Data.ToString().Split(':');
             if (msgs2.Length == 3)
             {
-                string logdata = msgs[0];
-                string username = msgs[1];
-                string password = msgs[2];
+                string logdata = msgs2[0];
+                string username = msgs2[1];
+                string password = msgs2[2];
                 RaiseOnNewMessage(logdata, username);
 
-                if (msgs[0] == "Login")
+                if (msgs2[0] == "Login")
                 {
                     clientLogin(username, password);
                     resyncDel();

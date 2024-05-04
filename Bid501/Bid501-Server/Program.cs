@@ -39,16 +39,16 @@ namespace Bid501_Server
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
+
             AccountModel am = new AccountModel();
             ProductModel pm = new ProductModel();
             Controller controller = new Controller(pm, am);
-        
+
             LoginView view = new LoginView(controller.AdminOpen, am);
             //WebSocketServer wss = new WebSocketServer("ws://10.7.172.110:8001");
             //wss.ReuseAddress = true;
             //wss.Start();
-            
+
             //ServerCommControl sc = new ServerCommControl();
             //sc.SetInit(controller.ClientLogin, controller.UpdateProducts, pm, wss);
             //wss.AddWebSocketService<ServerCommControl>("/shared", s => s.SetInit(controller.ClientLogin, controller.UpdateProducts, pm, wss));
@@ -56,18 +56,21 @@ namespace Bid501_Server
             //wss.Start();
 
             //AdminView adminView = new AdminView(controller.BidEnded, controller.AddProduct, pm, am);
-            AddProductView addProduct = new AddProductView(controller.SendServerProduct , pm);
-       //     controller.displayState = view.DisplayState; //added
+            AddProductView addProduct = new AddProductView(controller.SendServerProduct, pm);
+            //     controller.displayState = view.DisplayState; //added
             view.handleLogin = controller.handleEvents; //added
-            
+
 
             int port = 8001;
-            IPAddress localIP;
-            using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
+            IPAddress localIP = null;
+            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
             {
-                socket.Connect("192.168.86.143", port);
-                IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
-                localIP = endPoint.Address;
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    localIP = ip;
+                    break;
+                }
             }
             var wssv = new WebSocketServer(localIP, port);
             AdminView adminView = new AdminView(controller.BidEnded, controller.AddProduct, pm, am);
@@ -88,7 +91,7 @@ namespace Bid501_Server
             //wss.Stop();
             //controller.Close();
 
-            
+
 
         }
     }

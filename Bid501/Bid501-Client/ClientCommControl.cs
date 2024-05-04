@@ -36,7 +36,19 @@ namespace Bid501_Client
 
         public ClientCommControl()
         {
-            WebSocket ws1 = new WebSocket("ws://192.168.86.21:8001/shared");
+            IPAddress localIP = null;
+            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    localIP = ip;
+                    break;
+                }
+            }
+            int port = 8001;
+            string wsAddress = $"ws://{localIP}:{port}/shared";
+            WebSocket ws1 = new WebSocket(wsAddress);
             this.ws = ws1;
             ws.Connect();
             OnOpen();
@@ -56,7 +68,7 @@ namespace Bid501_Client
         public void LogoutUser(string cred)
         {
             ws.Send("Logout:" + cred);
-            ws.Close();
+            ws.Close(); //doesnt allow for same computer to connect more than once
         }
 
         private void UpdateLoginStatus(Bid501_Shared.State s)
@@ -125,7 +137,7 @@ namespace Bid501_Client
         protected override void OnOpen()
         {
             base.OnOpen();
-            ws.Send("Connection|" + Dns.GetHostName());
+            ws.Send("Connection|" + Dns.GetHostName()); //breaks on second client instance
         }
 
         private List<Product_Proxy> DeserializeProductList(string s)
