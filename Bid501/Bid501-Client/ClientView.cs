@@ -79,7 +79,7 @@ namespace Bid501_Client
                     {
                         ListViewItem item = new ListViewItem(p.Name);
                         UxListView.Items.Add(item.Text.ToString());
-                        UxAmountBids.Text = listOfProducts[curIndex].Bidders.ToString();
+                        UxAmountBids.Text = "(" + listOfProducts[curIndex].Bidders.ToString() + " bids)";
                     });
                 }
                 else
