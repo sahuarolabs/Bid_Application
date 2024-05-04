@@ -47,7 +47,7 @@ namespace Bid501_Client
             //    }
             //}
             int port = 8001;
-            string wsAddress = $"ws://10.130.160.110:{port}/shared";
+            string wsAddress = $"ws://10.130.160.109:{port}/shared";
             WebSocket ws1 = new WebSocket(wsAddress);
 
             this.ws = ws1;

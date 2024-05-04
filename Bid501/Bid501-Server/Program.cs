@@ -70,9 +70,11 @@ namespace Bid501_Server
                 IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
                 localIP = endPoint.Address;
             }
-            var wssv = new WebSocketServer(localIP, port);
+
+            WebSocketServer wssv = new WebSocketServer(localIP, port);
             AdminView adminView = new AdminView(controller.BidEnded, controller.AddProduct, pm, am);
             ServerCommControl scc = new ServerCommControl();
+
             controller.InitializeDelegates(scc.SendProductList, scc.InvalidLogin, scc.UpdateProduct, addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, scc.BidEnded, scc.SendServerProduct);
             wssv.AddWebSocketService<ServerCommControl>("/shared", () =>
             {
@@ -86,7 +88,7 @@ namespace Bid501_Server
             //controller.InitializeDelegates(sc.SendProductList, sc.InvalidLogin, sc.UpdateProduct, addProduct.AddProduct, adminView.Resync, adminView.AdminOpen, sc.BidEnded, sc.SendServerProduct);
 
             Application.Run(view);
-            //wss.Stop();
+            //wssv.Stop();
             //controller.Close();
 
 
