@@ -29,24 +29,31 @@ namespace Bid501_Client
         }
         public void PopulateView()
         {
-            listOfProducts = pdb.PL;
-           
-            UxItemName.Text = listOfProducts[curIndex].Name;
-            UxTimeLeft.Text = listOfProducts[curIndex].Time.ToString();
-            if (listOfProducts[curIndex].Status)
+            try
             {
-                UxStatus.BackColor = Color.Blue;
-            }
-            else
-            {
-                UxStatus.BackColor = Color.Red;
+                listOfProducts = pdb.PL;
 
+                UxItemName.Text = listOfProducts[curIndex].Name;
+                UxTimeLeft.Text = listOfProducts[curIndex].Time.ToString();
+                if (listOfProducts[curIndex].Status)
+                {
+                    UxStatus.BackColor = Color.Blue;
+                }
+                else
+                {
+                    UxStatus.BackColor = Color.Red;
+
+                }
+                //UxAmountBids.Text = listOfProducts[ind]
+                //UxAmountBids.Text = "(x bids)";
+                //UxStatus.BackColor = Color.Blue;
+                UxMinBid.Text = "Minimum bid $" + listOfProducts[curIndex].Price.ToString();
             }
-            //UxAmountBids.Text = listOfProducts[ind]
-            //UxAmountBids.Text = "(x bids)";
-            //UxStatus.BackColor = Color.Blue;
-            UxMinBid.Text = "Minimum bid $" + listOfProducts[curIndex].Price.ToString();
-            UpdateList();
+            catch
+            {
+                MessageBox.Show("Invalid Selection");
+            }
+            //UpdateList();
        
         }
 
@@ -66,66 +73,63 @@ namespace Bid501_Client
 
             foreach (Product_Proxy p in pdb.PL)
             {
-                //UxListView.Items.Add(p.Name);
                 if (UxListView.InvokeRequired)
                 {
                     UxListView.Invoke((MethodInvoker)delegate ()
                     {
                         ListViewItem item = new ListViewItem(p.Name);
                         UxListView.Items.Add(item.Text.ToString());
-                        UxAmountBids.Text = listOfProducts[curIndex].Bidders.ToString();
-                        //UxListView.EnsureVisible(UxListView.Items.Count - 1);
+                        UxAmountBids.Text = "(" + listOfProducts[curIndex].Bidders.ToString() + " bids)";
                     });
                 }
                 else
                 {
                     UxListView.Items.Add(p.Name);
                 }
-
-
-                //this.Invoke(new Action(() =>
-                //{
-                //    UxListView.Items.Add(p.Name);
-                //}));
-
             }
             listOfProducts = pdb.PL;
+            try
+            {
+                UxItemName.Text = listOfProducts[curIndex].Name;
+                UxTimeLeft.Text = listOfProducts[curIndex].Time.ToString();
+                if (listOfProducts[curIndex].Status)
+                {
+                    UxStatus.BackColor = Color.Blue;
+                }
+                else
+                {
+                    if (UxListView.InvokeRequired)
+                    {
+                        UxListView.Invoke((MethodInvoker)delegate ()
+                        {
+                            UxStatus.BackColor = Color.Red;
+                        });
+                    }
+                    else
+                    {
+                        UxStatus.BackColor = Color.Red;
+                    }
 
-            UxItemName.Text = listOfProducts[curIndex].Name;
-            UxTimeLeft.Text = listOfProducts[curIndex].Time.ToString();
-            if (listOfProducts[curIndex].Status)
-            {
-                UxStatus.BackColor = Color.Blue;
-            }
-            else
-            {
+                }
+                //UxAmountBids.Text = "(x bids)";
                 if (UxListView.InvokeRequired)
                 {
                     UxListView.Invoke((MethodInvoker)delegate ()
                     {
-                        UxStatus.BackColor = Color.Red;
+                        UxMinBid.Text = "Minimum bid $" + listOfProducts[curIndex].Price.ToString();
                     });
                 }
                 else
                 {
-                    UxStatus.BackColor = Color.Red;
-                }
-
-            }
-
-            //UxAmountBids.Text = "(x bids)";
-            //UxStatus.BackColor = Color.Blue;
-            if (UxListView.InvokeRequired)
-            {
-                UxListView.Invoke((MethodInvoker)delegate ()
-                {
                     UxMinBid.Text = "Minimum bid $" + listOfProducts[curIndex].Price.ToString();
-                });
+                }
             }
-            else
+            catch
             {
-                UxMinBid.Text = "Minimum bid $" + listOfProducts[curIndex].Price.ToString();
+                MessageBox.Show("Invalid Selection");
             }
+
+            
             
         }
 

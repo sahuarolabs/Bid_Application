@@ -57,8 +57,6 @@ namespace Bid501_Client
             controller.populateListView = clientView.PopulateView;
             controller.listUpdateToServer = ccm.SendBidItem;
             clientView.sendBid = controller.CheckMinBid;
-            //controller.updateList = clientView.UpdateList;
-            //controller.UpdateLoginState = loginView.DisplayState;
             loginView.handleLogin = controller.LogInHandler;
             Application.Run(loginView);
             Application.Run(clientView);
